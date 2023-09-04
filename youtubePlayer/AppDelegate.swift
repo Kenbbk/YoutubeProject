@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  YoutubeProject
+//  youtubePlayer
 //
-//  Created by Woojun Lee on 2023/09/04.
+//  Created by JeonSangHyeok on 2023/09/04.
 //
 
 import UIKit
