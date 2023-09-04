@@ -11,7 +11,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     private lazy var tabBarController = makeTabBarVC()
-    
+    private lazy var userRepository = UserRepository()
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
         
@@ -25,17 +25,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
     }
     
+    //MARK: - VC Factory
+    
     private func makeTabBarVC() -> UITabBarController {
         let tabBar = UITabBarController()
-        tabBar.tabBar.isTranslucent = false
         tabBar.modalPresentationStyle = .fullScreen
+        tabBar.tabBar.tintColor = .black
         return tabBar
     }
     
     private func makeLoginVC() -> LoginVC {
         let storyBoard = UIStoryboard(name: StoryBoards.login, bundle: nil)
         let vc = storyBoard.instantiateViewController(withIdentifier: VCIdentifier.loginVC) as! LoginVC
-        
+        vc.userRepository = self.userRepository
         vc.presentTabBar = {
             vc.present(self.tabBarController, animated: true)
         }
@@ -50,7 +52,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func makeMyPageVC() -> MyPageVC {
-        let vc = MyPageVC()
+        let storyBoard = UIStoryboard(name: StoryBoards.myPage, bundle: nil)
+        let vc = storyBoard.instantiateViewController(withIdentifier: VCIdentifier.myPageVC) as! MyPageVC
         vc.tabBarItem = UITabBarItem(title: "My Page", image: UIImage(systemName: "person.crop.circle"), tag: 1)
         return vc
     }

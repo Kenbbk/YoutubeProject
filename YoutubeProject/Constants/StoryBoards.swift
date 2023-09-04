@@ -12,7 +12,4 @@ enum StoryBoards {
     static let myPage = "MyPage"
 }
 
-enum VCIdentifier {
-    static let loginVC = "LoginVC"
-    static let myPageVC = "MyPageVC"
-}
+

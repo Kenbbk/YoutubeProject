@@ -9,6 +9,8 @@ import UIKit
 
 class LoginVC: UIViewController {
     
+    var userRepository: UserRepository?
+    
      var presentTabBar: (() -> Void)?
     
     private lazy var button: UIButton = {

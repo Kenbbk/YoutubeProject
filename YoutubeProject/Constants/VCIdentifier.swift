@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+enum VCIdentifier {
+    static let loginVC = "LoginVC"
+    static let myPageVC = "MyPageVC"
+}

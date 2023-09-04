@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+class UserRepository {
+    
+    var userList: [User] = []
+    
+    func addUser(user: User) {
+        userList.append(user)
+    }
+}
