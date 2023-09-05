@@ -10,8 +10,8 @@
 		672D26A6DBAEBEE25FABB887 /* Pods_youtubePlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F82780C5DA1FF30ABA82FB7 /* Pods_youtubePlayer.framework */; };
 		D600C1CB2AA5BB8800525B43 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600C1CA2AA5BB8800525B43 /* DetailViewController.swift */; };
 		D600C1CD2AA5BEF100525B43 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600C1CC2AA5BEF100525B43 /* DataManager.swift */; };
-		D600C1CF2AA5C09100525B43 /* VideoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600C1CE2AA5C09100525B43 /* VideoData.swift */; };
-		D600C1D12AA5C88000525B43 /* VideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600C1D02AA5C88000525B43 /* VideoModel.swift */; };
+		D600C1CF2AA5C09100525B43 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600C1CE2AA5C09100525B43 /* Data.swift */; };
+		D600C1D12AA5C88000525B43 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600C1D02AA5C88000525B43 /* Model.swift */; };
 		D64D017B2AA5B68D003B07BB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64D017A2AA5B68D003B07BB /* AppDelegate.swift */; };
 		D64D017D2AA5B68D003B07BB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64D017C2AA5B68D003B07BB /* SceneDelegate.swift */; };
 		D64D017F2AA5B68D003B07BB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64D017E2AA5B68D003B07BB /* ViewController.swift */; };
@@ -29,8 +29,8 @@
 		86D456BB912CD64F54A4B25A /* Pods-youtubePlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-youtubePlayer.debug.xcconfig"; path = "Target Support Files/Pods-youtubePlayer/Pods-youtubePlayer.debug.xcconfig"; sourceTree = "<group>"; };
 		D600C1CA2AA5BB8800525B43 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		D600C1CC2AA5BEF100525B43 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
-		D600C1CE2AA5C09100525B43 /* VideoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoData.swift; sourceTree = "<group>"; };
-		D600C1D02AA5C88000525B43 /* VideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoModel.swift; sourceTree = "<group>"; };
+		D600C1CE2AA5C09100525B43 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		D600C1D02AA5C88000525B43 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		D64D01772AA5B68D003B07BB /* youtubePlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = youtubePlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D64D017A2AA5B68D003B07BB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D64D017C2AA5B68D003B07BB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,8 +121,8 @@
 			isa = PBXGroup;
 			children = (
 				D600C1CC2AA5BEF100525B43 /* DataManager.swift */,
-				D600C1CE2AA5C09100525B43 /* VideoData.swift */,
-				D600C1D02AA5C88000525B43 /* VideoModel.swift */,
+				D600C1CE2AA5C09100525B43 /* Data.swift */,
+				D600C1D02AA5C88000525B43 /* Model.swift */,
 				D66B3AB52AA70C66001EA3BD /* Formatter.swift */,
 			);
 			path = Model;
@@ -248,11 +248,11 @@
 				D600C1CD2AA5BEF100525B43 /* DataManager.swift in Sources */,
 				D64D017B2AA5B68D003B07BB /* AppDelegate.swift in Sources */,
 				D66B3AB62AA70C66001EA3BD /* Formatter.swift in Sources */,
-				D600C1D12AA5C88000525B43 /* VideoModel.swift in Sources */,
+				D600C1D12AA5C88000525B43 /* Model.swift in Sources */,
 				D64D017D2AA5B68D003B07BB /* SceneDelegate.swift in Sources */,
 				D66B3AB32AA6F655001EA3BD /* DescriptionViewController.swift in Sources */,
 				D600C1CB2AA5BB8800525B43 /* DetailViewController.swift in Sources */,
-				D600C1CF2AA5C09100525B43 /* VideoData.swift in Sources */,
+				D600C1CF2AA5C09100525B43 /* Data.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

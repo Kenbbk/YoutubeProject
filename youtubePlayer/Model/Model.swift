@@ -7,8 +7,10 @@
 
 import Foundation
 
+// 영상 모델
 struct VideoModel {
     let id: String
+    let channelId: String
     
     let publishedAt: String
     let title: String
@@ -16,4 +18,13 @@ struct VideoModel {
     
     let viewCount: String
     let likeCount: String
+}
+
+
+// 채널 모델
+struct ChannelModel {
+    let channelId: String
+    let title: String
+    let thumbnailURL: String
+    let subscriberCount: String
 }

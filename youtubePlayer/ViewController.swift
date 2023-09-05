@@ -15,6 +15,8 @@ class ViewController: UIViewController {
     
     var videos: [VideoModel] = []
     
+    var channelInfo: ChannelModel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -25,6 +27,7 @@ class ViewController: UIViewController {
         dataManager.delegate = self
         
         dataManager.perforRequest()
+        
     }
 }
 
@@ -37,6 +40,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         if let detailVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController {
             
+            detailVC.channelID = selectedVideo.channelId
             detailVC.videoID = selectedVideo.id
             detailVC.videoDate = selectedVideo.publishedAt
             detailVC.videoTitle = selectedVideo.title
@@ -64,6 +68,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - DataManagerDeleage
 extension ViewController: DataManagerDeleage {
+    
+    func didUpdateChannelInfo(channelInfo: ChannelModel) {
+        self.channelInfo = channelInfo
+    }
     
     // 업데이트를 비동기 처리
     func didUpdateVideos(videos: [VideoModel]) {
