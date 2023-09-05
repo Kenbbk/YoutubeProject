@@ -15,6 +15,10 @@ class DetailViewController: UIViewController {
     
     var videoID: String = ""
     var videoTitle: String = ""
+    var videoDescription: String = ""
+    var videoViewCount: String = ""
+    var videoLikeCount: String = ""
+    var videoDate: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +28,28 @@ class DetailViewController: UIViewController {
         
         videoTitleLabel.text = videoTitle
         
-        //videoTitleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(<#T##@objc method#>)))
-        //videoTitleLabel.isUserInteractionEnabled = true
+        videoTitleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(labelTapped)))
+        videoTitleLabel.isUserInteractionEnabled = true
+    }
+    
+    @objc func labelTapped() {
+        let descriptionVC = DescriptionViewController()
+        descriptionVC.modalPresentationStyle = .pageSheet
+        descriptionVC.modalTransitionStyle = .coverVertical
+        
+        if let sheet = descriptionVC.sheetPresentationController {
+            sheet.detents = [.medium(), .large()]
+            
+            sheet.prefersGrabberVisible = true
+        }
+        
+        descriptionVC.videoDate = videoDate
+        descriptionVC.videoTitle = videoTitle
+        descriptionVC.videoDescription = videoDescription
+        
+        descriptionVC.videoViewCount = videoViewCount
+        descriptionVC.videoLikeCount = videoLikeCount
+        
+        present(descriptionVC, animated: true)
     }
 }

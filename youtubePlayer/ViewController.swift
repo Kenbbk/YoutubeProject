@@ -38,7 +38,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         if let detailVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController {
             
             detailVC.videoID = selectedVideo.id
+            detailVC.videoDate = selectedVideo.publishedAt
             detailVC.videoTitle = selectedVideo.title
+            detailVC.videoDescription = selectedVideo.description
+            
+            detailVC.videoViewCount = selectedVideo.viewCount
+            detailVC.videoLikeCount = selectedVideo.likeCount
             
             navigationController?.pushViewController(detailVC, animated: true)
         }
@@ -59,6 +64,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - DataManagerDeleage
 extension ViewController: DataManagerDeleage {
+    
+    // 업데이트를 비동기 처리
     func didUpdateVideos(videos: [VideoModel]) {
         self.videos = videos
         DispatchQueue.main.async {

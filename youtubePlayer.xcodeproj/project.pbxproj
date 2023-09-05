@@ -18,6 +18,9 @@
 		D64D01822AA5B68D003B07BB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D64D01802AA5B68D003B07BB /* Main.storyboard */; };
 		D64D01842AA5B68E003B07BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D64D01832AA5B68E003B07BB /* Assets.xcassets */; };
 		D64D01872AA5B68E003B07BB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D64D01852AA5B68E003B07BB /* LaunchScreen.storyboard */; };
+		D66B3AB32AA6F655001EA3BD /* DescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66B3AB12AA6F655001EA3BD /* DescriptionViewController.swift */; };
+		D66B3AB42AA6F655001EA3BD /* DescriptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D66B3AB22AA6F655001EA3BD /* DescriptionViewController.xib */; };
+		D66B3AB62AA70C66001EA3BD /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66B3AB52AA70C66001EA3BD /* Formatter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +39,9 @@
 		D64D01832AA5B68E003B07BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D64D01862AA5B68E003B07BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D64D01882AA5B68E003B07BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D66B3AB12AA6F655001EA3BD /* DescriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DescriptionViewController.swift; path = ../../../../../../../.Trash/YoutubeProject/youtubePlayer/Controller/DescriptionViewController.swift; sourceTree = "<group>"; };
+		D66B3AB22AA6F655001EA3BD /* DescriptionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DescriptionViewController.xib; path = ../../../../../../../.Trash/YoutubeProject/youtubePlayer/Controller/DescriptionViewController.xib; sourceTree = "<group>"; };
+		D66B3AB52AA70C66001EA3BD /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Formatter.swift; path = ../../../../../../../.Trash/YoutubeProject/youtubePlayer/Model/Formatter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +77,8 @@
 			isa = PBXGroup;
 			children = (
 				D600C1CA2AA5BB8800525B43 /* DetailViewController.swift */,
+				D66B3AB12AA6F655001EA3BD /* DescriptionViewController.swift */,
+				D66B3AB22AA6F655001EA3BD /* DescriptionViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -115,6 +123,7 @@
 				D600C1CC2AA5BEF100525B43 /* DataManager.swift */,
 				D600C1CE2AA5C09100525B43 /* VideoData.swift */,
 				D600C1D02AA5C88000525B43 /* VideoModel.swift */,
+				D66B3AB52AA70C66001EA3BD /* Formatter.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -180,6 +189,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D64D01872AA5B68E003B07BB /* LaunchScreen.storyboard in Resources */,
+				D66B3AB42AA6F655001EA3BD /* DescriptionViewController.xib in Resources */,
 				D64D01842AA5B68E003B07BB /* Assets.xcassets in Resources */,
 				D64D01822AA5B68D003B07BB /* Main.storyboard in Resources */,
 			);
@@ -237,8 +247,10 @@
 				D64D017F2AA5B68D003B07BB /* ViewController.swift in Sources */,
 				D600C1CD2AA5BEF100525B43 /* DataManager.swift in Sources */,
 				D64D017B2AA5B68D003B07BB /* AppDelegate.swift in Sources */,
+				D66B3AB62AA70C66001EA3BD /* Formatter.swift in Sources */,
 				D600C1D12AA5C88000525B43 /* VideoModel.swift in Sources */,
 				D64D017D2AA5B68D003B07BB /* SceneDelegate.swift in Sources */,
+				D66B3AB32AA6F655001EA3BD /* DescriptionViewController.swift in Sources */,
 				D600C1CB2AA5BB8800525B43 /* DetailViewController.swift in Sources */,
 				D600C1CF2AA5C09100525B43 /* VideoData.swift in Sources */,
 			);
