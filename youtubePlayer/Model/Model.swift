@@ -18,6 +18,8 @@ struct VideoModel {
     
     let viewCount: String
     let likeCount: String
+    
+    var commentList: [Comment]?
 }
 
 
@@ -28,3 +30,17 @@ struct ChannelModel {
     let thumbnailURL: String
     let subscriberCount: String
 }
+
+struct UserInfo {
+    let userName: String
+    let userImageURL: String
+}
+
+struct Comment {
+    let userName: String
+    let userImageURL: String
+    let comment: String
+}
+
+
+let userInfoList = UserInfo(userName: "전상혁", userImageURL: "https://i.namu.wiki/i/QCzfxF1JCp9K2NGB1aGCk0oUB-fLKjKTIEEZaSuvQnfIms8qCDiNKJekRnqms4aWC9EAUL5jGOeRc-06A_u5gKVnbNE-9d1qGCL32QTeiUNvJZIznWxZOqry8Z9RaafGnWjJU40t99uZLihoAIflGQ.webp")

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol DataManagerDeleage {
     // 영상 정보 업데이트
@@ -147,5 +148,36 @@ class DataManager {
             delegate?.didFailWithError(error: error)
             return nil
         }
+    }
+}
+
+protocol ImageLoad {
+    func loadImage(urlString: String, imageView: UIImageView)
+}
+
+extension ImageLoad {
+    func loadImage(urlString: String, imageView: UIImageView) {
+        guard let url = URL(string: urlString) else { return }
+        
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard let data = data, error == nil else {
+                print("데이터 가져오기 오류")
+                return
+            }
+            
+            if let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    imageView.image = image
+                    imageView.layer.cornerRadius = imageView.frame.height / 2
+                    imageView.layer.borderWidth = 1
+                    imageView.layer.borderColor = UIColor.clear.cgColor
+                    imageView.clipsToBounds = true
+                }
+            } else {
+                print("이미지 가져오기 오류")
+            }
+        }
+        // API 요청 시작
+        task.resume()
     }
 }

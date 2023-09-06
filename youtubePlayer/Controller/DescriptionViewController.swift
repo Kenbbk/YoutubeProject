@@ -34,25 +34,26 @@ class DescriptionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        updateDescriptionView()
+    }
+    
+    func updateDescriptionView() {
+        
+        // 설명 버튼 클릭 시 회색 화면 이펙트 없앰
         leftButton.isUserInteractionEnabled = false
         
         titleLabel.text = videoTitle
-        decriptionLabel.text = videoDescription
-        
-        decriptionLabel.textAlignment = .left
-        
+        // 타이틀 레이블 border
         titleLabel.layer.addBorder([.top, .bottom], color: .black, width: 0.5)
         
+        decriptionLabel.text = videoDescription
+        decriptionLabel.textAlignment = .left
         decriptionLabel.sizeToFit()
         
         scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: decriptionLabel.frame.size.height)
         
         viewCountLabel.text = Formatter.formatViewCount(videoViewCount)
         likeCountLabel.text = Formatter.formatLikeCount(videoLikeCount)
-        
-        print(Formatter.formatDate(videoDate)?.year)
-        print(Formatter.formatDate(videoDate)?.mothDay)
-        
         yearLabel.text = Formatter.formatDate(videoDate)?.year
         monthDayLabel.text = Formatter.formatDate(videoDate)?.mothDay
     }
