@@ -21,7 +21,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         let mainVC = makeMainVC()
         let myPageVC = makeMyPageVC()
-        tabBarController.viewControllers = [mainVC, myPageVC]
+        let myPageNavigation = UINavigationController(rootViewController: myPageVC)
+        
+        tabBarController.viewControllers = [mainVC, myPageNavigation]
         
     }
     
@@ -52,8 +54,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func makeMyPageVC() -> MyPageVC {
-        let storyBoard = UIStoryboard(name: StoryBoards.myPage, bundle: nil)
-        let vc = storyBoard.instantiateViewController(withIdentifier: VCIdentifier.myPageVC) as! MyPageVC
+        //        let storyBoard = UIStoryboard(name: StoryBoards.myPage, bundle: nil)
+        //        let vc = storyBoard.instantiateViewController(withIdentifier: VCIdentifier.myPageVC) as! MyPageVC
+        let vc = MyPageVC()
         vc.tabBarItem = UITabBarItem(title: "My Page", image: UIImage(systemName: "person.crop.circle"), tag: 1)
         return vc
     }
@@ -61,4 +64,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
    
    
 }
-
