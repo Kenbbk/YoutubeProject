@@ -29,7 +29,7 @@ class LongCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont.systemFont(ofSize: 16)
         label.numberOfLines = 2
         return label
     }()
@@ -65,7 +65,8 @@ class LongCell: UICollectionViewCell {
     }
     
     func play(model: VideoModel) {
-        
+        titleLabel.text = model.title
+        infoLabel.attributedText = NSAttributedString(string: "\(model.channelTitle) ・ \(model.viewCount.formatViewCounts()) ・ \(model.publishedAt.getHowLongAgo())", attributes: [.foregroundColor: UIColor.darkGray, .font: UIFont.systemFont(ofSize: 12)])
         videoView.load(withVideoId: model.id)
         
     }
@@ -122,7 +123,7 @@ class LongCell: UICollectionViewCell {
     
     private func configureImageView() {
         NSLayoutConstraint.activate([
-            channelImageView.topAnchor.constraint(equalTo: videoView.bottomAnchor, constant: 10),
+            channelImageView.topAnchor.constraint(equalTo: videoView.bottomAnchor, constant: 11),
             channelImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 7),
             channelImageView.widthAnchor.constraint(equalToConstant: 36),
             channelImageView.heightAnchor.constraint(equalToConstant: 36)
@@ -131,7 +132,7 @@ class LongCell: UICollectionViewCell {
     
     private func configureTitleLabel() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: videoView.bottomAnchor, constant: 5),
+            titleLabel.topAnchor.constraint(equalTo: videoView.bottomAnchor, constant: -3),
             titleLabel.leadingAnchor.constraint(equalTo: channelImageView.trailingAnchor, constant: 10),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
             titleLabel.heightAnchor.constraint(equalToConstant: 45)
@@ -140,8 +141,8 @@ class LongCell: UICollectionViewCell {
     
     private func configureInfoLabel() {
         NSLayoutConstraint.activate([
-            infoLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 0),
-            infoLabel.leadingAnchor.constraint(equalTo: channelImageView.trailingAnchor, constant: 10),
+            infoLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: -9),
+            infoLabel.leadingAnchor.constraint(equalTo: channelImageView.trailingAnchor, constant: 11),
             infoLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
             infoLabel.heightAnchor.constraint(equalToConstant: 15)
         ])

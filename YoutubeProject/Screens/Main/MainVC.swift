@@ -27,11 +27,9 @@ class MainVC: UIViewController {
         configureContainerView()
         addVCS()
         getModels {
-            print("get model")
-            self.collectionVC.videoModels = self.videoModels
             
+            self.giveSnapshot()
         }
-        
     }
     
     //MARK: - Actions
@@ -51,6 +49,23 @@ class MainVC: UIViewController {
             }
         }
     }
+    
+    private func giveSnapshot() {
+        
+        var snapshot = NSDiffableDataSourceSnapshot<Section, VideoModel>()
+        
+        snapshot.appendSections([.firstVideos, .firstShorts, .secondVideos, .secondShorts, .thirdVideos])
+        if videoModels.count != 0 {
+            snapshot.appendItems([videoModels[0]], toSection: .firstVideos)
+        }
+        
+        snapshot.appendItems([], toSection: .firstShorts)
+        snapshot.appendItems([], toSection: .secondVideos)
+        snapshot.appendItems([], toSection: .secondShorts)
+        snapshot.appendItems([], toSection: .thirdVideos)
+        collectionVC.snapshot = snapshot
+    }
+
     
     private func addVCS() {
         

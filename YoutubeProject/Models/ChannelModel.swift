@@ -12,6 +12,14 @@ struct ChannelModel {
     let title: String
     let thumbnailURL: String
     let subscriberCount: String
+    
+    init(channelItem: ChannelItem) {
+        self.channelId = channelItem.id
+        self.title = channelItem.snippet.title
+        self.thumbnailURL = channelItem.snippet.thumbnails.default.url
+        self.subscriberCount = channelItem.statistics.subscriberCount
+        
+    }
 }
 
 struct UserInfo {

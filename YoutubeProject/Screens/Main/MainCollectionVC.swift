@@ -23,18 +23,17 @@ class MainCollectionVC: UICollectionViewController {
     
     var dataSource: UICollectionViewDiffableDataSource<Section, VideoModel>!
     
-    var videoModels: [VideoModel] = [] {
+    var snapshot: NSDiffableDataSourceSnapshot<Section, VideoModel>! {
         didSet {
-            applySanpshot()
-            print("I am called")
+            dataSource.apply(snapshot)
         }
     }
     
-    override func viewDidLoad() {
+   override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
         configureDataSource()
-        applySanpshot()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -59,6 +58,7 @@ class MainCollectionVC: UICollectionViewController {
             let a = [0, 2, 4]
             if a.contains(indexPath.section) {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LongCell.identifier, for: indexPath) as! LongCell
+                
                 cell.play(model: itemIdentifier)
                 return cell
             } else {
@@ -77,21 +77,6 @@ class MainCollectionVC: UICollectionViewController {
             
             return sectionHeader
         }
-    }
-    
-    private func applySanpshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, VideoModel>()
-        
-        snapshot.appendSections([.firstVideos, .firstShorts, .secondVideos, .secondShorts, .thirdVideos])
-        if videoModels.count != 0 {
-            snapshot.appendItems([videoModels[0]], toSection: .firstVideos)
-        }
-        
-        snapshot.appendItems([], toSection: .firstShorts)
-        snapshot.appendItems([], toSection: .secondVideos)
-        snapshot.appendItems([], toSection: .secondShorts)
-        snapshot.appendItems([], toSection: .thirdVideos)
-        dataSource.apply(snapshot)
     }
     
     private func supplementaryHeaderItem() -> NSCollectionLayoutBoundarySupplementaryItem    {

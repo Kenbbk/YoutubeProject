@@ -23,6 +23,7 @@ struct VideoSnippet: Codable {
     let title: String
     let description: String
     let publishedAt: String
+    let channelTitle: String
 }
 
 struct VideoStatistics: Codable {

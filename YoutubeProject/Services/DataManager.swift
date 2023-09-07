@@ -83,22 +83,11 @@ class DataManager {
             let decodedData = try decoder.decode(VideoData.self, from: videoData)
             let videoItems = decodedData.items
             
-            let videos = videoItems.map { item in
-                let videoId = item.id
-                let snippet = item.snippet
-                let statistics = item.statistics
-                
-                let channelId = snippet.channelId
-                let date = snippet.publishedAt
-                let title = snippet.title
-                let description = snippet.description
-                
-                let viewCount = statistics.viewCount
-                let likeCount = statistics.likeCount
-                
-                return VideoModel(id: videoId, channelId: channelId, publishedAt: date, title: title, description: description, viewCount: viewCount, likeCount: likeCount)
+            let videoModels = videoItems.map { item in
+                return VideoModel(videoItem: item)
             }
-            return videos
+            return videoModels
+            
         } catch {
             delegate?.didFailWithError(error: error)
             return nil
@@ -120,7 +109,7 @@ class DataManager {
                 
                 if let safeData = data {
                     if let channelInfo = self.parseChannelJSON(safeData) {
-                        //self.delegate?.didUpdateChannelInfo(channelInfo: channelInfo)
+                        self.delegate?.didUpdateChannelInfo(channelInfo: channelInfo)
                         completion(channelInfo)
                     } else {
                         completion(nil)
@@ -136,27 +125,14 @@ class DataManager {
         
         do {
             let decodedData = try decoder.decode(ChannelData.self, from: channelData)
-            let channelItem = decodedData.items.first
-            
-            if let item = channelItem {
-                let snippet = item.snippet
-                let statistics = item.statistics
-                let title = snippet.title
-                
-                let thumbnailURL = snippet.thumbnails.default.url
-                let subscriberCount = statistics.subscriberCount
-                
-                let channelInfo = ChannelModel(
-                    channelId: item.id,
-                    title: title,
-                    thumbnailURL: thumbnailURL,
-                    subscriberCount: subscriberCount
-                )
-                return channelInfo
+            if let channelItem = decodedData.items.first {
+                let channelModel = ChannelModel(channelItem: channelItem)
+                return channelModel
             } else {
                 return nil
             }
-        } catch {
+        }
+        catch {
             delegate?.didFailWithError(error: error)
             return nil
         }
