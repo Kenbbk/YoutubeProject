@@ -8,6 +8,7 @@
 import Foundation
 
 struct Comment {
-    var user: User
-    var userComment: String
+    let userName: String
+    let userImageURL: String
+    let comment: String
 }

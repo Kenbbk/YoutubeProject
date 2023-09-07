@@ -304,4 +304,6 @@ extension LoginVC: UITextFieldDelegate {
     
     
     
+    // viewController 만들어줌 let vc = MyPageVC()
+    // viewcontroller present(), navigationController.push(viewCOntroller: vc) 보내버림
 }
