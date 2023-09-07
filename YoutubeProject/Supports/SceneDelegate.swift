@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = makeLoginVC()
+        window?.rootViewController = UINavigationController(rootViewController: makeLoginVC())
         window?.makeKeyAndVisible()
         let mainVC = makeMainVC()
         let myPageVC = makeMyPageVC()
@@ -37,8 +37,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func makeLoginVC() -> LoginVC {
-        let storyBoard = UIStoryboard(name: StoryBoards.login, bundle: nil)
-        let vc = storyBoard.instantiateViewController(withIdentifier: VCIdentifier.loginVC) as! LoginVC
+        
+        let vc = LoginVC()
+        
         vc.userRepository = self.userRepository
         vc.presentTabBar = {
             vc.present(self.tabBarController, animated: true)
@@ -61,6 +62,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return vc
     }
     
-   
-   
 }

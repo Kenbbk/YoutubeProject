@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D90EEDD2AA857400039728D /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D90EEDC2AA857400039728D /* RegisterVC.swift */; };
 		7B0969A32AA8390200784962 /* LikeVideoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0969A22AA8390200784962 /* LikeVideoVC.swift */; };
 		7B0969A52AA83D3700784962 /* LogoutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0969A42AA83D3700784962 /* LogoutVC.swift */; };
 		7B7D4A872AA6C4E00087B54C /* ProfileEditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7D4A862AA6C4E00087B54C /* ProfileEditVC.swift */; };
@@ -52,6 +53,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7D90EEDC2AA857400039728D /* RegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
 		7B0969A22AA8390200784962 /* LikeVideoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeVideoVC.swift; sourceTree = "<group>"; };
 		7B0969A42AA83D3700784962 /* LogoutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutVC.swift; sourceTree = "<group>"; };
 		7B7D4A862AA6C4E00087B54C /* ProfileEditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditVC.swift; sourceTree = "<group>"; };
@@ -112,6 +114,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7D90EEDB2AA856DF0039728D /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				7D90EEDC2AA857400039728D /* RegisterVC.swift */,
+			);
+			path = Register;
 		0A9B8701BBB93713864B9878 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -222,6 +230,7 @@
 				D66817882AA897ED00F2DD25 /* Detail */,
 				D6F09EA12AA5B551002E87D5 /* Main */,
 				D6F09E9E2AA5B342002E87D5 /* MyPage */,
+				7D90EEDB2AA856DF0039728D /* Register */,
 				D6F09E9B2AA5B28A002E87D5 /* Login */,
 			);
 			path = Screens;
@@ -459,6 +468,7 @@
 				7B0969A32AA8390200784962 /* LikeVideoVC.swift in Sources */,
 				D6F09EB12AA5BB03002E87D5 /* CurrentUser.swift in Sources */,
 				D6F09E7D2AA59CC3002E87D5 /* SceneDelegate.swift in Sources */,
+				7D90EEDD2AA857400039728D /* RegisterVC.swift in Sources */,
 				7B0969A52AA83D3700784962 /* LogoutVC.swift in Sources */,
 				D66817842AA8965300F2DD25 /* ChannelModel.swift in Sources */,
 			);
