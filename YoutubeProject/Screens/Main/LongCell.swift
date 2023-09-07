@@ -14,10 +14,16 @@ class LongCell: UICollectionViewCell {
     
     var videoModel: VideoModel?
     
-    let videoView: YTPlayerView = {
+    lazy var videoView: YTPlayerView = {
         let view = YTPlayerView()
+
+        view.isUserInteractionEnabled = false
         return view
     }()
+    
+    @objc func tapped() {
+        print("SEESES")
+    }
     
     let channelImageView: UIImageView = {
         let iv = UIImageView()
@@ -67,7 +73,7 @@ class LongCell: UICollectionViewCell {
     func play(model: VideoModel) {
         titleLabel.text = model.title
         infoLabel.attributedText = NSAttributedString(string: "\(model.channelTitle) ・ \(model.viewCount.formatViewCounts()) ・ \(model.publishedAt.getHowLongAgo())", attributes: [.foregroundColor: UIColor.darkGray, .font: UIFont.systemFont(ofSize: 12)])
-        videoView.load(withVideoId: model.id)
+        videoView.load(withVideoId: model.id, playerVars: ["controls": 1, "modestbranding": 0])
         
     }
     

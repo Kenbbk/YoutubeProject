@@ -70,7 +70,7 @@ class MainVC: UIViewController {
     private func addVCS() {
         
         add(collectionVC, to: containerView)
-        
+        collectionVC.delegate = self
     }
     
     private func configureContainerView() {
@@ -87,3 +87,14 @@ class MainVC: UIViewController {
     }
 }
 
+extension MainVC: MainCollectionVCDelegate {
+    func itemTapped(indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "Detail", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+        vc.videoModel = videoModels[indexPath.row]
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+    }
+    
+    
+}

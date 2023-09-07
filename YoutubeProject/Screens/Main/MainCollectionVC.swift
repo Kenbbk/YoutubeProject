@@ -17,7 +17,13 @@ enum Section {
 
 private let reuseIdentifier = "Cell"
 
+protocol MainCollectionVCDelegate: AnyObject {
+    func itemTapped(indexPath: IndexPath)
+}
+
 class MainCollectionVC: UICollectionViewController {
+    
+    weak var delegate: MainCollectionVCDelegate?
     
     let sections: [Section] = [.firstVideos, .firstShorts, .secondVideos, .secondShorts, .thirdVideos]
     
@@ -119,6 +125,10 @@ class MainCollectionVC: UICollectionViewController {
         
     }
     
-    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.itemTapped(indexPath: indexPath)
+    }
     
 }
+
+

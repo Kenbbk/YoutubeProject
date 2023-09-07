@@ -27,12 +27,9 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate, ImageLoad {
     var thumbnailURL: String = ""
     
     // 영상 정보
-    var videoID: String = ""
-    var videoTitle: String = ""
-    var videoDescription: String = ""
-    var videoViewCount: String = ""
-    var videoLikeCount: String = ""
-    var videoDate: String = ""
+    
+    var videoModel: VideoModel?
+    
     
     let dataManager = DataManager()
     
@@ -50,7 +47,7 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate, ImageLoad {
     
     // 공유 버튼
     @IBAction func shareButton(_ sender: UIButton) {
-        let shareText: String = "https://www.youtube.com/watch?v=\(videoID)"
+        let shareText: String = "https://www.youtube.com/watch?v=\(videoModel!.id)"
         var shareObject = [Any]()
         
         shareObject.append(shareText)
@@ -64,9 +61,9 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate, ImageLoad {
     
     func updateDetailView() {
         // youtube 영상의 고유 id를 영상으로 변환 후 로드 및 자동재생
-        playerView.load(withVideoId: videoID, playerVars: ["autoplay":1, "modestbranding":1])
+        playerView.load(withVideoId: videoModel!.id, playerVars: ["autoplay":1, "modestbranding":1])
         
-        videoTitleLabel.text = videoTitle
+        videoTitleLabel.text = videoModel!.title
         
         // 타이틀레이블 클릭 시 액션 추가
         videoTitleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(labelTapped)))
@@ -97,7 +94,7 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate, ImageLoad {
             sheet.prefersGrabberVisible = true
         }
         
-        commentVC.selectedVideoId = videoID
+        commentVC.selectedVideoId = videoModel!.id
         
         present(commentVC, animated: true)
     }
@@ -113,12 +110,12 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate, ImageLoad {
             sheet.prefersGrabberVisible = true
         }
         
-        descriptionVC.videoDate = videoDate
-        descriptionVC.videoTitle = videoTitle
-        descriptionVC.videoDescription = videoDescription
+        descriptionVC.videoDate = videoModel!.publishedAt
+        descriptionVC.videoTitle = videoModel!.title
+        descriptionVC.videoDescription = videoModel!.description
         
-        descriptionVC.videoViewCount = videoViewCount
-        descriptionVC.videoLikeCount = videoLikeCount
+        descriptionVC.videoViewCount = videoModel!.viewCount
+        descriptionVC.videoLikeCount = videoModel!.likeCount
         
         present(descriptionVC, animated: true)
     }
