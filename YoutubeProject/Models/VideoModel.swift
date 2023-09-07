@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct VideoModel {
+struct VideoModel: Equatable, Hashable {
     let id: String
     let channelId: String
     
@@ -19,4 +19,12 @@ struct VideoModel {
     let likeCount: String
     
     var commentList: [Comment]?
+    
+    static func == (lhs: VideoModel, rhs: VideoModel) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }

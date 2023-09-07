@@ -35,32 +35,44 @@ class DataManager {
     
     var delegate: DataManagerDeleage?
     
-    func perforRequest() {
+    func performRequest(completion: @escaping (Result<[VideoModel], VideoError>) -> Void) {
         let urlString = "\(videoString)&maxResults=\(maxResult)&key=\(apiKey)"
         
         // url 생성
-        if let url = URL(string: urlString) {
-            
-            // URLSession 생성
-            let session = URLSession(configuration: .default)
-            
-            // 세션에 임무 배정
-            let task = session.dataTask(with: url) { (data, response, error) in
-                if error != nil {
-                    self.delegate?.didFailWithError(error: error!)
-                    return
-                }
-                
-                if let safeData = data {
-                    if let videos = self.parseJSON(safeData) {
-                        self.delegate?.didUpdateVideos(videos: videos)
-                    }
-                }
-            }
-            // 임무 시작
-            task.resume()
+        guard let url = URL(string: urlString) else {
+            completion(.failure(.invalidURL))
+            return
         }
+        
+        // URLSession 생성
+        let session = URLSession(configuration: .default)
+        // 세션에 임무 배정
+        let task = session.dataTask(with: url) { (data, response, error) in
+            
+            if let error = error {
+                completion(.failure(.failDataTask))
+                return
+            }
+            
+            guard let data else {
+                completion(.failure(.noData))
+                return
+            }
+            
+            guard let videoModels = self.parseJSON(data) else {
+                completion(.failure(.failParsing))
+                return
+            }
+            
+            completion(.success(videoModels))
+            
+        }
+        task.resume()
     }
+    
+    
+    
+    
     
     // JSON 데이터를 videoModel 객체 배열로 디코딩 및 데이토 구조로 반환
     func parseJSON(_ videoData: Data) -> [VideoModel]? {

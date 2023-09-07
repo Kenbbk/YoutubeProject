@@ -6,14 +6,16 @@
 //
 
 import UIKit
+import youtube_ios_player_helper
 
 class LongCell: UICollectionViewCell {
     
     static let identifier = "LongCell"
     
-    let videoView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemPink
+    var videoModel: VideoModel?
+    
+    let videoView: YTPlayerView = {
+        let view = YTPlayerView()
         return view
     }()
     
@@ -26,20 +28,20 @@ class LongCell: UICollectionViewCell {
     }()
     
     let titleLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15)
         label.numberOfLines = 2
         return label
     }()
     
     let infoLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         
         return label
     }()
     
     private lazy var optionImageView: UIImageView = {
-       let iv = UIImageView()
+        let iv = UIImageView()
         iv.image = UIImage(named: "option2")
         iv.backgroundColor = .white
         iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(optionImageTapped)))
@@ -54,11 +56,18 @@ class LongCell: UICollectionViewCell {
         configureUI()
         setTitle()
         setImage()
+        
     }
     
     @objc func optionImageTapped() {
         print("optioin image tapped")
         print(self.frame)
+    }
+    
+    func play(model: VideoModel) {
+        
+        videoView.load(withVideoId: model.id)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -146,6 +155,6 @@ class LongCell: UICollectionViewCell {
             optionImageView.heightAnchor.constraint(equalToConstant: 14)
         ])
     }
-        
+    
     
 }

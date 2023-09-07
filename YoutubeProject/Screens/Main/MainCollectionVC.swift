@@ -21,7 +21,14 @@ class MainCollectionVC: UICollectionViewController {
     
     let sections: [Section] = [.firstVideos, .firstShorts, .secondVideos, .secondShorts, .thirdVideos]
     
-    var dataSource: UICollectionViewDiffableDataSource<Section, String>!
+    var dataSource: UICollectionViewDiffableDataSource<Section, VideoModel>!
+    
+    var videoModels: [VideoModel] = [] {
+        didSet {
+            applySanpshot()
+            print("I am called")
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +58,8 @@ class MainCollectionVC: UICollectionViewController {
             
             let a = [0, 2, 4]
             if a.contains(indexPath.section) {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LongCell.identifier, for: indexPath)
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LongCell.identifier, for: indexPath) as! LongCell
+                cell.play(model: itemIdentifier)
                 return cell
             } else {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShortCell.identifier, for: indexPath)
@@ -72,13 +80,17 @@ class MainCollectionVC: UICollectionViewController {
     }
     
     private func applySanpshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, String>()
+        var snapshot = NSDiffableDataSourceSnapshot<Section, VideoModel>()
+        
         snapshot.appendSections([.firstVideos, .firstShorts, .secondVideos, .secondShorts, .thirdVideos])
-        snapshot.appendItems(["a"], toSection: .firstVideos)
-        snapshot.appendItems(["b", "c", "d", "e", "f"], toSection: .firstShorts)
-        snapshot.appendItems(["g"], toSection: .secondVideos)
-        snapshot.appendItems(["h", "i", "j", "k", "l"], toSection: .secondShorts)
-        snapshot.appendItems(["1", "2", "3", "4", "5", "6"], toSection: .thirdVideos)
+        if videoModels.count != 0 {
+            snapshot.appendItems([videoModels[0]], toSection: .firstVideos)
+        }
+        
+        snapshot.appendItems([], toSection: .firstShorts)
+        snapshot.appendItems([], toSection: .secondVideos)
+        snapshot.appendItems([], toSection: .secondShorts)
+        snapshot.appendItems([], toSection: .thirdVideos)
         dataSource.apply(snapshot)
     }
     
