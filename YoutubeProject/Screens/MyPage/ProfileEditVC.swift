@@ -1,10 +1,14 @@
 
 import UIKit
 
+protocol SendDataDelegate: AnyObject {
+    // 수정된 데이터 전달할 델리게이트
+    func didEditUserInfo(data: User)
+}
+
+//MARK: - Properties
+
 class ProfileEditVC: UIViewController {
-    
-    //MARK: - Properties
-    
     var userInfo: User?
     var myPageVC = MyPageVC()
     let profileImagePicker = UIImagePickerController()
@@ -13,8 +17,8 @@ class ProfileEditVC: UIViewController {
     var profileImage: UIImage!
     var backgroundImage: UIImage!
     
-    lazy var safeArea = view.safeAreaLayoutGuide
     weak var delegate: SendDataDelegate?
+    lazy var safeArea = view.safeAreaLayoutGuide
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -161,7 +165,6 @@ class ProfileEditVC: UIViewController {
         if let backgroundImage = backgroundImage {
             backgroundImageView.image = backgroundImage
         }
-        
         configureUI()
     }
     
@@ -210,18 +213,46 @@ class ProfileEditVC: UIViewController {
     }
     
     @objc func editCompleteButtonTapped(_ button: UIButton){
-        // 데이터 수정 값
-        let editedData = EditUserInfo(editProfileImage: profileImageView.image!, editBackgroundImage: backgroundImageView.image!, editFirstName: firstNameTextField.text ?? "", editLastName: lastNameTextField.text ?? "", editAddress: addressTextField.text ?? "")
-        
+        // 데이터 수정 값 받아오기
+        let editedData = User(id: "user1", firstName: firstNameTextField.text ?? "", lastName: lastNameTextField.text ?? "", address: addressTextField.text ?? "", password: "1234", profileImage: profileImageView.image!, backgroundImage: backgroundImageView.image!)
         // 델리게이트를 통해 데이터 전달
         delegate?.didEditUserInfo(data: editedData)
         
         self.dismiss(animated: true)
     }
+    
+    
+    //MARK: - Helper
+    
+    func textFieldDeselectTapGesture() {
+        // 화면의 다른 부분을 탭할 때 커서 사라지게 하기
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    func updateTextFieldBorderStyle() {
+        let firstNameIsEmpty = firstNameTextField.text?.isEmpty ?? true
+        let lastNameIsEmpty = lastNameTextField.text?.isEmpty ?? true
+        let addressIsEmpty = addressTextField.text?.isEmpty ?? true
+        // TextField 활성화일 때 Button Color 지정
+        editCompleteButton.isEnabled = !firstNameIsEmpty && !lastNameIsEmpty && !addressIsEmpty
+        editCompleteButton.backgroundColor = editCompleteButton.isEnabled ? .systemBlue : .lightGray
+    }
+    
+    func profileImageLibrary(){
+        profileImagePicker.sourceType = .photoLibrary
+        present(profileImagePicker, animated: false, completion: nil)
+    }
+    
+    func backgroundImageLibrary(){
+        backgroundImagePicker.sourceType = .photoLibrary
+        present(backgroundImagePicker, animated: false, completion: nil)
+    }
+    
 }
 
 
-//MARK: - Helper
+//MARK: - TextField Delegate
 
 extension ProfileEditVC: UITextFieldDelegate{
     
@@ -233,15 +264,6 @@ extension ProfileEditVC: UITextFieldDelegate{
     func textFieldDidEndEditing(_ textField: UITextField) {
         // TextField 비활성화일 때 Border Color 지정
         textField.layer.borderColor = UIColor.lightGray.cgColor
-    }
-    
-    func updateTextFieldBorderStyle() {
-        let firstNameIsEmpty = firstNameTextField.text?.isEmpty ?? true
-        let lastNameIsEmpty = lastNameTextField.text?.isEmpty ?? true
-        let addressIsEmpty = addressTextField.text?.isEmpty ?? true
-        // TextField 활성화일 때 Button Color 지정
-        editCompleteButton.isEnabled = !firstNameIsEmpty && !lastNameIsEmpty && !addressIsEmpty
-        editCompleteButton.backgroundColor = editCompleteButton.isEnabled ? .systemBlue : .lightGray
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -265,14 +287,18 @@ extension ProfileEditVC: UITextFieldDelegate{
 
 
 extension ProfileEditVC: SendDataDelegate{
-    func didEditUserInfo(data: EditUserInfo) {
-        self.firstNameTextField.text = data.editFirstName
-        self.lastNameTextField.text = data.editLastName
-        self.addressTextField.text = data.editAddress
-        self.profileImage = data.editProfileImage
-        self.backgroundImage = data.editBackgroundImage
+    func didEditUserInfo(data: User) {
+        // User 모델에 수정된 데이터 저장
+        self.firstNameTextField.text = data.firstName
+        self.lastNameTextField.text = data.lastName
+        self.addressTextField.text = data.address
+        self.profileImage = data.profileImage
+        self.backgroundImage = data.backgroundImage
     }
 }
+
+
+//MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
 
 extension ProfileEditVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -291,29 +317,6 @@ extension ProfileEditVC: UIImagePickerControllerDelegate, UINavigationController
         }
         dismiss(animated: true, completion: nil)
     }
-    
-    func profileImageLibrary(){
-        profileImagePicker.sourceType = .photoLibrary
-        present(profileImagePicker, animated: false, completion: nil)
-    }
-    func backgroundImageLibrary(){
-        backgroundImagePicker.sourceType = .photoLibrary
-        present(backgroundImagePicker, animated: false, completion: nil)
-    }
-}
-
-struct EditUserInfo {
-    // 수정된 데이터들을 저장할 변수
-    let editProfileImage: UIImage
-    let editBackgroundImage: UIImage
-    let editFirstName: String
-    let editLastName: String
-    let editAddress: String
-}
-
-protocol SendDataDelegate: AnyObject {
-    // 데이터 전달할 델리게이트
-    func didEditUserInfo(data: EditUserInfo)
 }
 
 
@@ -322,7 +325,7 @@ protocol SendDataDelegate: AnyObject {
 extension ProfileEditVC {
     
     func configureUI() {
-        TapGesture()
+        textFieldDeselectTapGesture()
         configureBackgroundImageView()
         configureProfileImageView()
         configureProfileImageEditButton()
@@ -337,11 +340,6 @@ extension ProfileEditVC {
         configureEditCompleteButton()
     }
     
-    func TapGesture() {
-        // 화면의 다른 부분을 탭할 때 커서 사라지게 하기
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        view.addGestureRecognizer(tapGesture)
-    }
     
     
     //MARK: - ImageView

@@ -8,7 +8,7 @@ class MyPageVC: UIViewController {
     private var user: User?
     
     lazy var safeArea = view.safeAreaLayoutGuide
-
+    
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "profile5")
@@ -35,7 +35,7 @@ class MyPageVC: UIViewController {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 24)
         label.textColor = .black
-    
+        
         return label
     }()
     
@@ -80,6 +80,7 @@ class MyPageVC: UIViewController {
         return button
     }()
     
+    
     //MARK: - LifeCycle
     
     override func viewDidLoad() {
@@ -121,13 +122,14 @@ class MyPageVC: UIViewController {
     @objc func likeVideoButtonTapped(_ button: UIButton){
         let likeVideoVC = LikeVideoVC()
         likeVideoVC.myPageVC = self
-//        likeVideoVC.delegate = self
-        // likeVideoVC로 화면 전환
+        // likeVideoVC.delegate = self
+        
+        // LikeVideoVC로 화면 전환
         self.navigationController?.pushViewController(likeVideoVC, animated: true)
     }
     
     @objc func logoutButtonTapped(_ button: UIButton){
-     
+        // Logout Page
     }
     
     
@@ -139,7 +141,6 @@ class MyPageVC: UIViewController {
             userNameLabel.text = "\(user.lastName)\(user.firstName)"
             userAddressLabel.text = "@\(user.address)"
         }
-        
     }
     
     func initiateUser(){
@@ -148,12 +149,12 @@ class MyPageVC: UIViewController {
     }
 }
 
+
 extension MyPageVC: SendDataDelegate {
-    func didEditUserInfo(data: EditUserInfo) {
-        // EditUserInfo 객체를 통해 수정된 데이터 전달받기
-        self.user?.firstName = data.editFirstName
-        self.user?.lastName = data.editLastName
-        self.user?.address = data.editAddress
+    func didEditUserInfo(data: User) {
+        self.user?.firstName = data.firstName
+        self.user?.lastName = data.lastName
+        self.user?.address = data.address
         self.setUserInfoLabels()
     }
 }
@@ -255,6 +256,5 @@ extension MyPageVC {
             logoutButton.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor)
         ])
     }
-    
 }
 
