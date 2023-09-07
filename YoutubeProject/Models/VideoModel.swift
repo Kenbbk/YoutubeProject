@@ -17,7 +17,7 @@ struct VideoModel: Equatable, Hashable {
     
     let viewCount: String
     let likeCount: String
-    
+    let thumbnails: String
     var commentList: [Comment] = []
     
     init(videoItem: VideoItem) {
@@ -29,7 +29,9 @@ struct VideoModel: Equatable, Hashable {
         self.description = videoItem.snippet.description
         self.viewCount = videoItem.statistics.viewCount
         self.likeCount = videoItem.statistics.likeCount
+        self.thumbnails = videoItem.snippet.thumbnails.standard.url
         self.commentList = []
+        
     }
     
     static func == (lhs: VideoModel, rhs: VideoModel) -> Bool {

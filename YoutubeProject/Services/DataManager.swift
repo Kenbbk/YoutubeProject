@@ -120,6 +120,30 @@ class DataManager {
         }
     }
     
+    func getImage(urlString: String, completion: @escaping (Result<UIImage, VideoError>) -> Void) {
+        guard let url = URL(string: urlString) else {
+            completion(.failure(.invalidURL))
+            return
+            
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard let data = data, error == nil else {
+                completion(.failure(.failDataTask))
+                return
+            }
+            
+            if let image = UIImage(data: data) {
+                completion(.success(image))
+            } else {
+                completion(.failure(.failParsing))
+                return
+            }
+        }
+        // API 요청 시작
+        task.resume()
+    }
+    
     func parseChannelJSON(_ channelData: Data) -> ChannelModel? {
         let decoder = JSONDecoder()
         
@@ -156,9 +180,9 @@ extension ImageLoad {
             if let image = UIImage(data: data) {
                 DispatchQueue.main.async {
                     imageView.image = image
-                    imageView.layer.cornerRadius = imageView.frame.height / 2
-                    imageView.layer.borderWidth = 1
-                    imageView.layer.borderColor = UIColor.clear.cgColor
+//                    imageView.layer.cornerRadius = imageView.frame.height
+//                    imageView.layer.borderWidth = 1
+//                    imageView.layer.borderColor = UIColor.clear.cgColor
                     imageView.clipsToBounds = true
                 }
             } else {
@@ -168,4 +192,30 @@ extension ImageLoad {
         // API 요청 시작
         task.resume()
     }
+    
+    
+    
+    
+    
+    
+//    func getImage(urlString: String, completion: @escaping (Result<UIImage, >) -> Void)) {
+//        guard let url = URL(string: urlString) else {
+//            completion(
+//            return }
+//
+//        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+//            guard let data = data, error == nil else {
+//                print("데이터 가져오기 오류")
+//                return
+//            }
+//
+//            if let image = UIImage(data: data) {
+//               return image
+//            } else {
+//                print("이미지 가져오기 오류")
+//            }
+//        }
+//        // API 요청 시작
+//        task.resume()
+//    }
 }

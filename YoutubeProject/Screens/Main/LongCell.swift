@@ -8,7 +8,7 @@
 import UIKit
 import youtube_ios_player_helper
 
-class LongCell: UICollectionViewCell {
+class LongCell: UICollectionViewCell, ImageLoad {
     
     static let identifier = "LongCell"
     
@@ -16,7 +16,7 @@ class LongCell: UICollectionViewCell {
     
     lazy var videoView: YTPlayerView = {
         let view = YTPlayerView()
-
+        
         view.isUserInteractionEnabled = false
         return view
     }()
@@ -24,6 +24,16 @@ class LongCell: UICollectionViewCell {
     @objc func tapped() {
         print("SEESES")
     }
+    
+    let imageView: UIImageView = {
+        let iv = UIImageView()
+//        iv.backgroundColor = .red
+        iv.contentMode = .scaleToFill
+        iv.backgroundColor = .black
+        iv.clipsToBounds = true
+        
+        return iv
+    }()
     
     let channelImageView: UIImageView = {
         let iv = UIImageView()
@@ -65,17 +75,44 @@ class LongCell: UICollectionViewCell {
         
     }
     
+    func cropImage1(image: UIImage, rect: CGRect) -> UIImage {
+        let cgImage = image.cgImage! // better to write "guard" in realm app
+        let croppedCGImage = cgImage.cropping(to: rect)
+        return UIImage(cgImage: croppedCGImage!)
+    }
+    
+    
+    
     @objc func optionImageTapped() {
         print("optioin image tapped")
-        print(self.frame)
+        
     }
     
     func play(model: VideoModel) {
-        titleLabel.text = model.title
-        infoLabel.attributedText = NSAttributedString(string: "\(model.channelTitle) ・ \(model.viewCount.formatViewCounts()) ・ \(model.publishedAt.getHowLongAgo())", attributes: [.foregroundColor: UIColor.darkGray, .font: UIFont.systemFont(ofSize: 12)])
-        videoView.load(withVideoId: model.id, playerVars: ["controls": 1, "modestbranding": 0])
+        
+        DataManager().getImage(urlString: model.thumbnails) { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let image):
+                
+                let image = self.cropImage1(image: image, rect: CGRect(x: 0, y: 64, width: 640, height: 354))
+                DispatchQueue.main.async {
+                
+                    self.imageView.image = image
+                    self.titleLabel.text = model.title
+                    self.infoLabel.attributedText = NSAttributedString(string: "\(model.channelTitle) ・ \(model.viewCount.formatViewCounts()) ・ \(model.publishedAt.getHowLongAgo())", attributes: [.foregroundColor: UIColor.darkGray, .font: UIFont.systemFont(ofSize: 12)])
+                }
+                
+            }
+        }
+
+        
+        
         
     }
+    
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -103,6 +140,7 @@ class LongCell: UICollectionViewCell {
         
         addSubViews()
         configureView()
+        configureThumbnail()
         configureImageView()
         configureTitleLabel()
         configureInfoLabel()
@@ -112,7 +150,7 @@ class LongCell: UICollectionViewCell {
     
     
     private func addSubViews() {
-        [videoView, channelImageView, titleLabel, infoLabel, optionImageView].forEach { view in
+        [videoView, imageView, channelImageView, titleLabel, infoLabel, optionImageView].forEach { view in
             contentView.addSubview(view)
             view.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -127,6 +165,14 @@ class LongCell: UICollectionViewCell {
         ])
     }
     
+    private func configureThumbnail() {
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: videoView.topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: videoView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: videoView.trailingAnchor),
+            imageView.bottomAnchor.constraint(equalTo: videoView.bottomAnchor)
+        ])
+    }
     private func configureImageView() {
         NSLayoutConstraint.activate([
             channelImageView.topAnchor.constraint(equalTo: videoView.bottomAnchor, constant: 11),

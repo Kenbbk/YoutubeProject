@@ -24,6 +24,20 @@ struct VideoSnippet: Codable {
     let description: String
     let publishedAt: String
     let channelTitle: String
+    let thumbnails: VideoThumbnail
+}
+
+struct VideoThumbnail: Codable {
+    let `default`: VideoThumbnailInfo
+    let medium: VideoThumbnailInfo
+    let high: VideoThumbnailInfo
+    let standard: VideoThumbnailInfo
+//    let maxres: VideoThumbnailInfo
+}
+
+struct VideoThumbnailInfo: Codable {
+    let url: String
+    
 }
 
 struct VideoStatistics: Codable {
