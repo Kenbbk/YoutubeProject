@@ -65,24 +65,38 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
         super.viewDidLoad()
         
         updateDetailView()
+        updateChannelInfo()
         
         playerView.delegate = self
         
+        setUpUi()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        print(videoModel.commentList.first?.comment)
     }
     
     func setUpUi() {
-        userComment.text = userInfoList.userName
-        imageLoader.loadImage(urlString: userInfoList.userImageURL) { result in
+        userComment.text = videoModel.commentList.first?.comment
+        imageLoader.loadImage(urlString: channelModel.thumbnailURL) { result in
             switch result {
             case .success(let userImageURL):
-                self.userImageView.image = userImageURL
+                if userImageURL != nil {
+                    DispatchQueue.main.async {
+                        self.userImageView.image = userImageURL
+                    }
+                } else {
+                    print("이미지 없음")
+                }
             case .failure(let error):
                 print(error)
             }
         }
         
         thumbnailImage.layer.cornerRadius = thumbnailImage.frame.height / 2
+        userImageView.layer.cornerRadius = userImageView.frame.height / 2
         
         commmentView.layer.borderColor = UIColor.black.cgColor
         commmentView.layer.borderWidth = 0.5
@@ -140,6 +154,8 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
         }
         
         commentVC.selectedVideoId = videoModel.id
+        
+        commentVC.delegate = self
 
         present(commentVC, animated: true)
     }
@@ -189,5 +205,11 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
                 }
             }
         }
+    }
+}
+
+extension DetailViewController: CommentViewControllerDelegate {
+    func dismissTapped(commentText: String) {
+        self.userComment.text = commentText
     }
 }

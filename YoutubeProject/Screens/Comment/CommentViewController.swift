@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol CommentViewControllerDelegate: AnyObject {
+    func dismissTapped(commentText: String)
+}
+
 class CommentViewController: UIViewController {
     
     @IBOutlet weak var leftButton: UIButton!
@@ -18,7 +22,10 @@ class CommentViewController: UIViewController {
     @IBOutlet weak var textFieldView: UIView!
     @IBOutlet weak var textFieldViewHeightConstraint: NSLayoutConstraint!
     
+    weak var delegate: CommentViewControllerDelegate?
+    
     var selectedVideoId: String = ""
+    
     
 //    init(selectedVideoId: String) {
 //        self.selectedVideoId = selectedVideoId
@@ -43,6 +50,8 @@ class CommentViewController: UIViewController {
             updateTextFieldHeight()
             
             commentTableView.reloadData()
+            
+            delegate?.dismissTapped(commentText: commentText)
         }
     }
     
@@ -100,8 +109,7 @@ extension CommentViewController: UITableViewDelegate, UITableViewDataSource {
         cell.userName.text = comment.userName
         cell.userComment.text = comment.comment
         
-        // 이미지 구현 꼭 하기
-//        loadImage(urlString: comment.userImageURL, imageView: cell.userImageView)
+        
         
         return cell
     }

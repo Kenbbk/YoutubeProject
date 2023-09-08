@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct VideoModel: Equatable, Hashable {
+class VideoModel: Equatable, Hashable {
     let id: String
     let channelId: String
     let channelTitle: String
