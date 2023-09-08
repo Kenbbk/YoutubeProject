@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CommentViewController: UIViewController, ImageLoad {
+class CommentViewController: UIViewController {
     
     @IBOutlet weak var leftButton: UIButton!
     @IBOutlet weak var commentTableView: UITableView!
@@ -18,8 +18,15 @@ class CommentViewController: UIViewController, ImageLoad {
     @IBOutlet weak var textFieldView: UIView!
     @IBOutlet weak var textFieldViewHeightConstraint: NSLayoutConstraint!
     
-    
     var selectedVideoId: String = ""
+    
+//    init(selectedVideoId: String) {
+//        self.selectedVideoId = selectedVideoId
+//    }
+//
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
     
     @IBAction func rightButton(_ sender: UIButton) {
         dismiss(animated: true)
@@ -54,9 +61,6 @@ class CommentViewController: UIViewController, ImageLoad {
     }
     
     func setUpCommentView() {
-        
-        loadImage(urlString: userInfoList.userImageURL, imageView: userImageView)
-        
         commentTableView.dataSource = self
         commentTableView.delegate = self
         
@@ -96,7 +100,8 @@ extension CommentViewController: UITableViewDelegate, UITableViewDataSource {
         cell.userName.text = comment.userName
         cell.userComment.text = comment.comment
         
-        loadImage(urlString: comment.userImageURL, imageView: cell.userImageView)
+        // 이미지 구현 꼭 하기
+//        loadImage(urlString: comment.userImageURL, imageView: cell.userImageView)
         
         return cell
     }

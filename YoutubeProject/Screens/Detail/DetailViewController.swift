@@ -8,7 +8,7 @@
 import UIKit
 import youtube_ios_player_helper
 
-class DetailViewController: UIViewController, YTPlayerViewDelegate, ImageLoad {
+class DetailViewController: UIViewController, YTPlayerViewDelegate {
     
     @IBOutlet weak var playerView: YTPlayerView!
     @IBOutlet weak var videoTitleLabel: UILabel!
@@ -20,18 +20,46 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate, ImageLoad {
     
     @IBOutlet weak var commmentView: UIView!
     
-    var channelInfo: ChannelModel?
-    
     // 채널 정보
-    var channelID: String = ""
-    var thumbnailURL: String = ""
+    var channelModel: ChannelModel
     
     // 영상 정보
+    var videoModel: VideoModel
     
-    var videoModel: VideoModel?
+    let dataManager: DataManager
+    let imageLoader: ImageLoader
+
+//    init?(videoModel: VideoModel) {
+//    self.videoModel = videoModel
+//
+//    super.init(videoModel: VideoModel)
+//    }
+
+    @IBAction func backButton(_ sender: UIButton) {
+        dismiss(animated: true)
+    }
     
+    required init?(coder: NSCoder, dataManager: DataManager, imageLoader: ImageLoader, videoModel: VideoModel, channelModel: ChannelModel) {
+        self.dataManager = dataManager
+        self.imageLoader = imageLoader
+        self.videoModel = videoModel
+        self.channelModel = channelModel
+        
+        super.init(coder: coder)
+    }
     
-    let dataManager = DataManager()
+//    init(dataManager: DataManager, imageLoader: ImageLoader, videoModel: VideoModel, channelModel: ChannelModel) {
+//        self.dataManager = dataManager
+//        self.imageLoader = imageLoader
+//        self.channelModel = channelModel
+//        self.videoModel = videoModel
+//
+//        super.init()
+//    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +68,22 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate, ImageLoad {
         
         playerView.delegate = self
         
+        
+    }
+    
+    func setUpUi() {
+        userComment.text = userInfoList.userName
+        imageLoader.loadImage(urlString: userInfoList.userImageURL) { result in
+            switch result {
+            case .success(let userImageURL):
+                self.userImageView.image = userImageURL
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        thumbnailImage.layer.cornerRadius = thumbnailImage.frame.height / 2
+        
         commmentView.layer.borderColor = UIColor.black.cgColor
         commmentView.layer.borderWidth = 0.5
         commmentView.layer.cornerRadius = 20
@@ -47,7 +91,7 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate, ImageLoad {
     
     // 공유 버튼
     @IBAction func shareButton(_ sender: UIButton) {
-        let shareText: String = "https://www.youtube.com/watch?v=\(videoModel!.id)"
+        let shareText: String = "https://www.youtube.com/watch?v=\(videoModel.id)"
         var shareObject = [Any]()
         
         shareObject.append(shareText)
@@ -61,9 +105,9 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate, ImageLoad {
     
     func updateDetailView() {
         // youtube 영상의 고유 id를 영상으로 변환 후 로드 및 자동재생
-        playerView.load(withVideoId: videoModel!.id, playerVars: ["autoplay":1, "modestbranding":1])
+        playerView.load(withVideoId: videoModel.id, playerVars: ["autoplay":1, "modestbranding":1])
         
-        videoTitleLabel.text = videoModel!.title
+        videoTitleLabel.text = videoModel.title
         
         // 타이틀레이블 클릭 시 액션 추가
         videoTitleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(labelTapped)))
@@ -72,30 +116,31 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate, ImageLoad {
         commmentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(commentViewTapped)))
         commmentView.isUserInteractionEnabled = true
         
-        dataManager.fetchChannelInfo(channelId: channelID) { [weak self] channelInfo in
-            if let channelInfo = channelInfo {
-                self?.channelInfo = channelInfo
-                self?.updateChannelInfo()
-                self?.loadImage(urlString: self!.channelInfo!.thumbnailURL, imageView: self!.thumbnailImage)
+        dataManager.fetchChannelInfo(channelId: channelModel.channelId) { [weak self] result in
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let channelInfo):
+                self?.channelModel = channelInfo
             }
         }
-        
-        //loadImage(urlString: <#T##String#>, imageView: <#T##UIImageView#>)
     }
+    
+    
     
     @objc func commentViewTapped() {
         let commentVC = CommentViewController()
         commentVC.modalPresentationStyle = .pageSheet
         commentVC.modalTransitionStyle = .coverVertical
-        
+
         if let sheet = commentVC.sheetPresentationController {
             sheet.detents = [.medium(), .large()]
-            
+
             sheet.prefersGrabberVisible = true
         }
         
-        commentVC.selectedVideoId = videoModel!.id
-        
+        commentVC.selectedVideoId = videoModel.id
+
         present(commentVC, animated: true)
     }
     
@@ -110,63 +155,39 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate, ImageLoad {
             sheet.prefersGrabberVisible = true
         }
         
-        descriptionVC.videoDate = videoModel!.publishedAt
-        descriptionVC.videoTitle = videoModel!.title
-        descriptionVC.videoDescription = videoModel!.description
+        descriptionVC.videoDate = videoModel.publishedAt
+        descriptionVC.videoTitle = videoModel.title
+        descriptionVC.videoDescription = videoModel.description
         
-        descriptionVC.videoViewCount = videoModel!.viewCount
-        descriptionVC.videoLikeCount = videoModel!.likeCount
+        descriptionVC.videoViewCount = videoModel.viewCount
+        descriptionVC.videoLikeCount = videoModel.likeCount
         
         present(descriptionVC, animated: true)
     }
     
     func updateChannelInfo() {
-        if let channelInfoData = channelInfo {
-            let channelName = channelInfoData.title
-            let subscriberCount = Formatter.formatLikeCount(channelInfoData.subscriberCount)
-            
-            let attributedText = NSMutableAttributedString(string: "")
-            
-            let channelNameText = NSAttributedString(string: channelName + "    ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)])
-            attributedText.append(channelNameText)
-            
-            let subscriberText = NSAttributedString(string: subscriberCount, attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
-            attributedText.append(subscriberText)
-            
-            DispatchQueue.main.async {
-                self.channelNameLabel.attributedText = attributedText
-                self.channelNameLabel.sizeToFit()
-                self.loadImage(urlString: self.channelInfo?.thumbnailURL ?? "", imageView: self.thumbnailImage)
+        let channelName = channelModel.title
+        let subscriberCount = Formatter.formatLikeCount(channelModel.subscriberCount)
+        
+        let attributedText = NSMutableAttributedString(string: "")
+        
+        let channelNameText = NSAttributedString(string: channelName + "    ", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16)])
+        attributedText.append(channelNameText)
+        
+        let subscriberText = NSAttributedString(string: subscriberCount, attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
+        attributedText.append(subscriberText)
+        
+        self.channelNameLabel.attributedText = attributedText
+        self.channelNameLabel.sizeToFit()
+        imageLoader.loadImage(urlString: videoModel.thumbnails) { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let image):
+                DispatchQueue.main.async {
+                    self.thumbnailImage.image = image
+                }
             }
         }
     }
-    
-//    func loadUrlImage() {
-//        if let channelInfoData = channelInfo {
-//            let channelImageUrl = channelInfoData.thumbnailURL
-//
-//            guard let url = URL(string: channelImageUrl) else { return }
-//
-//            let task = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
-//                guard let data = data, error == nil else {
-//                    print("데이터 가져오기 오류")
-//                    return
-//                }
-//
-//                if let image = UIImage(data: data) {
-//                    DispatchQueue.main.async {
-//                        self?.thumbnailImage.image = image
-//                        self?.thumbnailImage.layer.cornerRadius = (self?.thumbnailImage.frame.height)! / 2
-//                        self?.thumbnailImage.layer.borderWidth = 1
-//                        self?.thumbnailImage.layer.borderColor = UIColor.clear.cgColor
-//                        self?.thumbnailImage.clipsToBounds = true
-//                    }
-//                } else {
-//                    print("이미지 가져오기 오류")
-//                }
-//            }
-//            // API 요청 시작부분
-//            task.resume()
-//        }
-//    }
 }

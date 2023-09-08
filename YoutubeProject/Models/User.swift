@@ -9,5 +9,4 @@ struct User {
     let password: String
     var profileImage = UIImage()
     var backgroundImage = UIImage()
-    
 }

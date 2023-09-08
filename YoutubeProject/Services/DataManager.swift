@@ -59,26 +59,23 @@ class DataManager {
                 return
             }
             
-            guard let videoModels = self.parseJSON(data) else {
-                completion(.failure(.failParsing))
-                return
-            }
-            
-            completion(.success(videoModels))
-            
+            self.parseJSON(data, compeltion: { result in
+                switch result {
+                case .failure(let error):
+                    completion(.failure(error))
+                    
+                    return
+                case .success(let videoModels):
+                    completion(.success(videoModels))
+                }
+            })
         }
         task.resume()
     }
     
-    
-    
-    
-    
-    // JSON 데이터를 videoModel 객체 배열로 디코딩 및 데이토 구조로 반환
-    func parseJSON(_ videoData: Data) -> [VideoModel]? {
+    func parseJSON(_ videoData: Data, compeltion: @escaping (Result<[VideoModel], VideoError>) -> Void) {
         let decoder = JSONDecoder()
         
-        // JSON 디코딩 중 오류 발생 시 처리
         do {
             let decodedData = try decoder.decode(VideoData.self, from: videoData)
             let videoItems = decodedData.items
@@ -86,37 +83,65 @@ class DataManager {
             let videoModels = videoItems.map { item in
                 return VideoModel(videoItem: item)
             }
-            return videoModels
+            
+            compeltion(.success(videoModels))
             
         } catch {
-            delegate?.didFailWithError(error: error)
-            return nil
+            compeltion(.failure(.failParsing))
+            return
         }
     }
-    
-    func fetchChannelInfo(channelId: String, completion: @escaping (ChannelModel?) -> Void) {
+
+    func fetchChannelInfo(channelId: String, completion: @escaping (Result<ChannelModel, VideoError>) -> Void) {
         let channelurl = "\(channelString)&id=\(channelId)&key=\(apiKey)"
         
-        if let channelInfoUrl = URL(string: channelurl) {
-            let session = URLSession(configuration: .default)
+        guard let channelInfoURL = URL(string: channelurl) else {
+            completion(.failure(.invalidURL))
+            return
+        }
+        
+        let session = URLSession(configuration: .default)
+        
+        let task = session.dataTask(with: channelInfoURL) { (data, response, error) in
+            guard error == nil else {
+                completion(.failure(.failDataTask))
+                return
+            }
             
-            let task = session.dataTask(with: channelInfoUrl) { (data, response, error) in
-                if error != nil {
-                    self.delegate?.didFailWithError(error: error!)
-                    completion(nil)
+            guard let data else {
+                completion(.failure(.noData))
+                return
+            }
+            
+            self.parseChannelJSON(data) { result in
+                switch result {
+                case .failure(let error):
+                    completion(.failure(error))
                     return
-                }
-                
-                if let safeData = data {
-                    if let channelInfo = self.parseChannelJSON(safeData) {
-                        self.delegate?.didUpdateChannelInfo(channelInfo: channelInfo)
-                        completion(channelInfo)
-                    } else {
-                        completion(nil)
-                    }
+                case .success(let channelModel):
+                    completion(.success(channelModel))
                 }
             }
-            task.resume()
+        }
+        task.resume()
+    }
+    
+    func parseChannelJSON(_ channelData: Data, completion: @escaping (Result<ChannelModel, VideoError>) -> Void) {
+        let decoder = JSONDecoder()
+        
+        do {
+            let decodedData = try decoder.decode(ChannelData.self, from: channelData)
+            
+            guard let channelItem = decodedData.items.first else {
+                completion(.failure(.failParsing))
+                return
+            }
+            
+            let channelModel = ChannelModel(channelItem: channelItem)
+            
+            completion(.success(channelModel))
+        } catch {
+            completion(.failure(.failParsing))
         }
     }
     
@@ -143,79 +168,4 @@ class DataManager {
         // API 요청 시작
         task.resume()
     }
-    
-    func parseChannelJSON(_ channelData: Data) -> ChannelModel? {
-        let decoder = JSONDecoder()
-        
-        do {
-            let decodedData = try decoder.decode(ChannelData.self, from: channelData)
-            if let channelItem = decodedData.items.first {
-                let channelModel = ChannelModel(channelItem: channelItem)
-                return channelModel
-            } else {
-                return nil
-            }
-        }
-        catch {
-            delegate?.didFailWithError(error: error)
-            return nil
-        }
-    }
-}
-
-protocol ImageLoad {
-    func loadImage(urlString: String, imageView: UIImageView)
-}
-
-extension ImageLoad {
-    func loadImage(urlString: String, imageView: UIImageView) {
-        guard let url = URL(string: urlString) else { return }
-        
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            guard let data = data, error == nil else {
-                print("데이터 가져오기 오류")
-                return
-            }
-            
-            if let image = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    imageView.image = image
-//                    imageView.layer.cornerRadius = imageView.frame.height
-//                    imageView.layer.borderWidth = 1
-//                    imageView.layer.borderColor = UIColor.clear.cgColor
-                    imageView.clipsToBounds = true
-                }
-            } else {
-                print("이미지 가져오기 오류")
-            }
-        }
-        // API 요청 시작
-        task.resume()
-    }
-    
-    
-    
-    
-    
-    
-//    func getImage(urlString: String, completion: @escaping (Result<UIImage, >) -> Void)) {
-//        guard let url = URL(string: urlString) else {
-//            completion(
-//            return }
-//
-//        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-//            guard let data = data, error == nil else {
-//                print("데이터 가져오기 오류")
-//                return
-//            }
-//
-//            if let image = UIImage(data: data) {
-//               return image
-//            } else {
-//                print("이미지 가져오기 오류")
-//            }
-//        }
-//        // API 요청 시작
-//        task.resume()
-//    }
 }

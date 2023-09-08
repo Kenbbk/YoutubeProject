@@ -8,7 +8,7 @@
 import UIKit
 import youtube_ios_player_helper
 
-class LongCell: UICollectionViewCell, ImageLoad {
+class LongCell: UICollectionViewCell {
     
     static let identifier = "LongCell"
     

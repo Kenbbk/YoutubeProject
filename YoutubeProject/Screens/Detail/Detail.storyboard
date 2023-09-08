@@ -11,7 +11,7 @@
         <!--Detail View Controller-->
         <scene sceneID="t2O-8p-e10">
             <objects>
-                <viewController storyboardIdentifier="DetailViewController" id="bZ1-O7-NP9" customClass="DetailViewController" customModule="youtubePlayer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DetailViewController" id="bZ1-O7-NP9" customClass="DetailViewController" customModule="YoutubeProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5SR-C3-MeG">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -80,6 +80,15 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pIo-gs-eGq">
+                                <rect key="frame" x="6" y="59" width="75" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <connections>
+                                    <action selector="backButton:" destination="bZ1-O7-NP9" eventType="touchUpInside" id="ReK-v3-qe6"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="K0L-lm-K23"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
