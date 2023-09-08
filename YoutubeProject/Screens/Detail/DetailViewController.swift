@@ -29,12 +29,6 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
     let dataManager: DataManager
     let imageLoader: ImageLoader
 
-//    init?(videoModel: VideoModel) {
-//    self.videoModel = videoModel
-//
-//    super.init(videoModel: VideoModel)
-//    }
-
     @IBAction func backButton(_ sender: UIButton) {
         dismiss(animated: true)
     }
@@ -47,15 +41,6 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
         
         super.init(coder: coder)
     }
-    
-//    init(dataManager: DataManager, imageLoader: ImageLoader, videoModel: VideoModel, channelModel: ChannelModel) {
-//        self.dataManager = dataManager
-//        self.imageLoader = imageLoader
-//        self.channelModel = channelModel
-//        self.videoModel = videoModel
-//
-//        super.init()
-//    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -70,12 +55,6 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
         playerView.delegate = self
         
         setUpUi()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        print(videoModel.commentList.first?.comment)
     }
     
     func setUpUi() {
@@ -195,7 +174,7 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
         
         self.channelNameLabel.attributedText = attributedText
         self.channelNameLabel.sizeToFit()
-        imageLoader.loadImage(urlString: videoModel.thumbnails) { result in
+        imageLoader.loadImage(urlString: channelModel.thumbnailURL) { result in
             switch result {
             case .failure(let error):
                 print(error)

@@ -26,15 +26,6 @@ class CommentViewController: UIViewController {
     
     var selectedVideoId: String = ""
     
-    
-//    init(selectedVideoId: String) {
-//        self.selectedVideoId = selectedVideoId
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-    
     @IBAction func rightButton(_ sender: UIButton) {
         dismiss(animated: true)
     }
