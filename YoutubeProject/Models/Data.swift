@@ -42,7 +42,7 @@ struct VideoThumbnailInfo: Codable {
 
 struct VideoStatistics: Codable {
     let viewCount: String
-    let likeCount: String
+//    let likeCount: String
 }
 
 // 채널

@@ -28,10 +28,9 @@ class VideoModel: Equatable, Hashable {
         self.title = videoItem.snippet.title
         self.description = videoItem.snippet.description
         self.viewCount = videoItem.statistics.viewCount
-        self.likeCount = videoItem.statistics.likeCount
+        self.likeCount = "0"
         self.thumbnails = videoItem.snippet.thumbnails.standard.url
         self.commentList = []
-        
     }
     
     static func == (lhs: VideoModel, rhs: VideoModel) -> Bool {
