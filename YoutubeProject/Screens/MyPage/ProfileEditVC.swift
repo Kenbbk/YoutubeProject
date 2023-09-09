@@ -226,16 +226,16 @@ class ProfileEditVC: UIViewController {
     backgroundData = backgroundImage.jpegData(compressionQuality: 1.0)
     }
 
-    let editedData = User(id: "user1",
-    firstName: firstNameTextField.text ?? "",
-    lastName: lastNameTextField.text ?? "",
-    address: addressTextField.text ?? "",
-    password: "1234",
-    profileImageData: profileData,
-    backgroundImageData: backgroundData)
+//    let editedData = User1(id: "user1",
+//    firstName: firstNameTextField.text ?? "",
+//    lastName: lastNameTextField.text ?? "",
+//    address: addressTextField.text ?? "",
+//    password: "1234",
+//    profileImageData: profileData,
+//    backgroundImageData: backgroundData)
 
     // 델리게이트를 통해 데이터 전달
-    delegate?.didEditUserInfo(data: editedData)
+//    delegate?.didEditUserInfo(data: editedData)
 
     self.dismiss(animated: true)
     }

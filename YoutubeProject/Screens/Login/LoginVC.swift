@@ -126,7 +126,7 @@ class LoginVC: UIViewController {
         button.backgroundColor = .clear
         button.setTitle("회원가입", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        button.addTarget(self, action: #selector(registerButtonTapped  ), for: .touchUpInside)
+        button.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -142,8 +142,8 @@ class LoginVC: UIViewController {
         print()
         configure()
         setupAutoLayout()
-        let a = UserDefaultsManager.shared.fetchUser()
-        print(a)
+        //        let a = UserDefaultsManager.shared.fetchUser()
+        //        print(a)
     }
     
     // 셋팅
@@ -203,7 +203,7 @@ class LoginVC: UIViewController {
         registerButton.heightAnchor.constraint(equalToConstant: textViewHeight).isActive = true
         
     }
-
+    
     
     // MARK: - 비밀번호 가리기 모드 켜고 끄기
     @objc private func passwordSecureModeSetting() {
@@ -211,42 +211,44 @@ class LoginVC: UIViewController {
         passwordTextField.isSecureTextEntry.toggle()
     }
     
-//    // 로그인 버튼 누르면 동작하는 함수
-//    @objc func loginButtonTapped() {
-//        presentTabBar?()
-//        print("다음 화면으로 넘어가기")
-//    }
+    //    // 로그인 버튼 누르면 동작하는 함수
+    //    @objc func loginButtonTapped() {
+    //        presentTabBar?()
+    //        print("다음 화면으로 넘어가기")
+    //    }
     
     @objc private func loginButtonTapped() {
         
-        let user = UserDefaultsManager.shared.fetchUser()!
-        
-    // UserDefaults에서 저장된 이메일과 비밀번호 가져오기
-        let savedEmail = user.address
-        let savedPassword = user.password
-
-    // 입력된 이메일과 비밀번호가 저장된 값과 일치하는지 확인
-    if emailTextField.text == savedEmail && passwordTextField.text == savedPassword {
-    // 로그인 성공
-    presentTabBar?() // TabBar를 보여주는 함수 호출
-    } else {
-    // 로그인 실패
-    let alert = UIAlertController(title: "로그인 실패", message: "이메일 또는 비밀번호가 일치하지 않습니다.", preferredStyle: .alert)
-    let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
-    alert.addAction(okAction)
-    present(alert, animated: true, completion: nil)
+        //        let user = UserDefaultsManager.shared.fetchUser()!
+        //
+        // UserDefaults에서 저장된 이메일과 비밀번호 가져오기
+        //        let savedEmail = user.address
+        ////        let savedPassword = user.password
+        //
+        //    // 입력된 이메일과 비밀번호가 저장된 값과 일치하는지 확인
+        ////    if emailTextField.text == savedEmail && passwordTextField.text == savedPassword {
+        //    // 로그인 성공
+            presentTabBar?() // TabBar를 보여주는 함수 호출
+        //    } else {
+        //    // 로그인 실패
+        //    let alert = UIAlertController(title: "로그인 실패", message: "이메일 또는 비밀번호가 일치하지 않습니다.", preferredStyle: .alert)
+        //    let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+        //    alert.addAction(okAction)
+        //    present(alert, animated: true, completion: nil)
+        //    }
+        //    }
+        //
+        //
+        //
+        //    // 회원가입버튼 눌리면 회원가입화면으로 넘어가는함수
     }
-    }
-    
-    
-    
-    // 회원가입버튼 눌리면 회원가입화면으로 넘어가는함수
     @objc func registerButtonTapped() {
-        let registerVC = RegisterVC()
-        self.navigationController?.pushViewController(registerVC, animated: true)
-        print("회원가입 버튼 눌림")
-       
+        //                let registerVC = RegisterVC()
+        //                self.navigationController?.pushViewController(registerVC, animated: true)
+        //                print("회원가입 버튼 눌림")
+        
     }
+    
 }
 
 
@@ -327,8 +329,9 @@ extension LoginVC: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-    
-    
-    
-    
 }
+
+
+
+
+

@@ -336,27 +336,27 @@ class RegisterVC: UIViewController {
         }
         
         // User 인스턴스 생성
-        let user = User(id: UUID().uuidString, // 임의의 UUID 사용. 필요에 따라 변경 가능.
-                        firstName: firstName,
-                        lastName: lastName,
-                        address: email, // 이 부분은 필요한 정보가 없기 때문에 일단 빈 문자열로 설정.
-                        password: password)
+//        let user = User(id: UUID().uuidString, // 임의의 UUID 사용. 필요에 따라 변경 가능.
+//                        firstName: firstName,
+//                        lastName: lastName,
+//                        address: email, // 이 부분은 필요한 정보가 없기 때문에 일단 빈 문자열로 설정.
+//                        password: password)
         
         // UserDefaultsManager를 사용하여 사용자 저장
-        UserDefaultsManager.shared.saveUser(user: user)
-        
-        // UserDefaults에서 사용자를 다시 가져와서 확인
-        if let fetchedUser = UserDefaultsManager.shared.fetchUser() {
-            print("Saved User:")
-            print("ID: \(fetchedUser.id)")
-            print("First Name: \(fetchedUser.firstName)")
-            print("Last Name: \(fetchedUser.lastName)")
-            print("Email: \(fetchedUser.address)") // 이 부분에 주의. 주소 필드에는 현재 값이 설정되지 않았습니다.
-            print("Password: \(fetchedUser.password)") // 실제 앱에서는 암호를 출력하면 안 됩니다.
-        } else {
-            print("Failed to fetch the saved user from UserDefaults.")
-        }
-        
+//        UserDefaultsManager.shared.saveUser(user: user)
+//
+//        // UserDefaults에서 사용자를 다시 가져와서 확인
+//        if let fetchedUser = UserDefaultsManager.shared.fetchUser() {
+//            print("Saved User:")
+//            print("ID: \(fetchedUser.id)")
+//            print("First Name: \(fetchedUser.firstName)")
+//            print("Last Name: \(fetchedUser.lastName)")
+//            print("Email: \(fetchedUser.address)") // 이 부분에 주의. 주소 필드에는 현재 값이 설정되지 않았습니다.
+//            print("Password: \(fetchedUser.password)") // 실제 앱에서는 암호를 출력하면 안 됩니다.
+//        } else {
+//            print("Failed to fetch the saved user from UserDefaults.")
+//        }
+//
         navigationController?.popViewController(animated: true)
     }
 }
