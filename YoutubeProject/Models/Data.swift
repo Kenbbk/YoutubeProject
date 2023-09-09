@@ -7,7 +7,7 @@
 
 import Foundation
 
-// 영상
+// MARK: - Video Data
 struct VideoData: Codable {
     let items: [VideoItem]
 }
@@ -45,7 +45,22 @@ struct VideoStatistics: Codable {
 //    let likeCount: String
 }
 
-// 채널
+// MARK: - Search Data
+struct SearchData: Codable {
+    let nextPageToken: String
+    let items: [SearchItem]
+}
+
+struct SearchItem: Codable {
+    let snippet: SearchSnippet
+}
+
+struct SearchSnippet: Codable {
+    let title: String
+}
+
+
+// MARK: Channel Data
 struct ChannelData: Codable {
     let items: [ChannelItem]
 }
