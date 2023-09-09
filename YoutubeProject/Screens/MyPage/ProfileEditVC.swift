@@ -212,14 +212,42 @@ class ProfileEditVC: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    @objc func editCompleteButtonTapped(_ button: UIButton){
-        // 데이터 수정 값 받아오기
-        let editedData = User(id: "user1", firstName: firstNameTextField.text ?? "", lastName: lastNameTextField.text ?? "", address: addressTextField.text ?? "", password: "1234", profileImage: profileImageView.image!, backgroundImage: backgroundImageView.image!)
-        // 델리게이트를 통해 데이터 전달
-        delegate?.didEditUserInfo(data: editedData)
-        
-        self.dismiss(animated: true)
+    @objc func editCompleteButtonTapped(_ button: UIButton) {
+    // 데이터 수정 값 받아오기
+
+    var profileData: Data? = nil
+    var backgroundData: Data? = nil
+
+    if let profileImage = profileImageView.image {
+    profileData = profileImage.jpegData(compressionQuality: 1.0)
     }
+
+    if let backgroundImage = backgroundImageView.image {
+    backgroundData = backgroundImage.jpegData(compressionQuality: 1.0)
+    }
+
+    let editedData = User(id: "user1",
+    firstName: firstNameTextField.text ?? "",
+    lastName: lastNameTextField.text ?? "",
+    address: addressTextField.text ?? "",
+    password: "1234",
+    profileImageData: profileData,
+    backgroundImageData: backgroundData)
+
+    // 델리게이트를 통해 데이터 전달
+    delegate?.didEditUserInfo(data: editedData)
+
+    self.dismiss(animated: true)
+    }
+//    ///tㅅ
+//    @objc func editCompleteButtonTapped(_ button: UIButton){
+//        // 데이터 수정 값 받아오기
+//        let editedData = User(id: "user1", firstName: firstNameTextField.text ?? "", lastName: lastNameTextField.text ?? "", address: addressTextField.text ?? "", password: "1234", profileImageData: profileImageView.image!, backgroundImageData: backgroundImageView.image!)
+//        // 델리게이트를 통해 데이터 전달
+//        delegate?.didEditUserInfo(data: editedData)
+//
+//        self.dismiss(animated: true)
+//    }
     
     
     //MARK: - Helper

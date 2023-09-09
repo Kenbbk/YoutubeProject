@@ -142,6 +142,8 @@ class LoginVC: UIViewController {
         print()
         configure()
         setupAutoLayout()
+        let a = UserDefaultsManager.shared.fetchUser()
+        print(a)
     }
     
     // 셋팅
@@ -209,11 +211,34 @@ class LoginVC: UIViewController {
         passwordTextField.isSecureTextEntry.toggle()
     }
     
-    // 로그인 버튼 누르면 동작하는 함수
-    @objc func loginButtonTapped() {
-        presentTabBar?()
-        print("다음 화면으로 넘어가기")
+//    // 로그인 버튼 누르면 동작하는 함수
+//    @objc func loginButtonTapped() {
+//        presentTabBar?()
+//        print("다음 화면으로 넘어가기")
+//    }
+    
+    @objc private func loginButtonTapped() {
+        
+        let user = UserDefaultsManager.shared.fetchUser()!
+        
+    // UserDefaults에서 저장된 이메일과 비밀번호 가져오기
+        let savedEmail = user.address
+        let savedPassword = user.password
+
+    // 입력된 이메일과 비밀번호가 저장된 값과 일치하는지 확인
+    if emailTextField.text == savedEmail && passwordTextField.text == savedPassword {
+    // 로그인 성공
+    presentTabBar?() // TabBar를 보여주는 함수 호출
+    } else {
+    // 로그인 실패
+    let alert = UIAlertController(title: "로그인 실패", message: "이메일 또는 비밀번호가 일치하지 않습니다.", preferredStyle: .alert)
+    let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+    alert.addAction(okAction)
+    present(alert, animated: true, completion: nil)
     }
+    }
+    
+    
     
     // 회원가입버튼 눌리면 회원가입화면으로 넘어가는함수
     @objc func registerButtonTapped() {
@@ -222,13 +247,9 @@ class LoginVC: UIViewController {
         print("회원가입 버튼 눌림")
        
     }
-    
-    // 앱의 화면을 터치하면 동작하는 함수
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
-
 }
+
+
 
 extension LoginVC: UITextFieldDelegate {
     // MARK: - 텍스트필드 편집 시작할때의 설정 - 문구가 위로올라가면서 크기 작아지고, 오토레이아웃 업데이트
