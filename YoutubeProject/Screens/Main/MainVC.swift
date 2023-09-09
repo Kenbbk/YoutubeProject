@@ -61,9 +61,10 @@ class MainVC: UIViewController {
         snapshot.appendSections([.firstVideos, .firstShorts, .secondVideos, .secondShorts, .thirdVideos])
         if videoModels.count != 0 {
             snapshot.appendItems([videoModels[0]], toSection: .firstVideos)
+            snapshot.appendItems([videoModels[1],videoModels[2],videoModels[3],videoModels[4]], toSection: .firstShorts)
         }
         
-        snapshot.appendItems([], toSection: .firstShorts)
+        
         snapshot.appendItems([], toSection: .secondVideos)
         snapshot.appendItems([], toSection: .secondShorts)
         snapshot.appendItems([], toSection: .thirdVideos)
