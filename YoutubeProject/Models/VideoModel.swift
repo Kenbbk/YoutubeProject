@@ -14,7 +14,7 @@ class VideoModel: Equatable, Hashable {
     let publishedAt: String
     let title: String
     let description: String
-    
+    let duration: String
     let viewCount: String
     let likeCount: String
     let thumbnails: String
@@ -31,6 +31,7 @@ class VideoModel: Equatable, Hashable {
         self.likeCount = "0"
         self.thumbnails = videoItem.snippet.thumbnails.standard.url
         self.commentList = []
+        self.duration = videoItem.contentDetails.duration
     }
     
     static func == (lhs: VideoModel, rhs: VideoModel) -> Bool {

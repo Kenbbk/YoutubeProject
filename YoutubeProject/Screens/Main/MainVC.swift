@@ -21,6 +21,7 @@ class MainVC: UIViewController {
     
     var videoModels: [VideoModel] = []
     
+    var shortVidoeModels: [VideoModel] = []
     var formattedVideoModels: [[VideoModel]] = []
     
     private lazy var collectionView: UICollectionView = {
@@ -28,6 +29,7 @@ class MainVC: UIViewController {
         collectionView.register(ShortCell.self, forCellWithReuseIdentifier: ShortCell.identifier)
         collectionView.register(LongCell.self, forCellWithReuseIdentifier: LongCell.identifier)
         collectionView.register(ShortHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ShortHeader.identifier)
+        collectionView.delegate = self
         
         return collectionView
     }()
@@ -57,13 +59,28 @@ class MainVC: UIViewController {
         
         getModels {
             self.formattedVideoModels = DataFormatter().makeLongVideos(models: self.videoModels)
-            DispatchQueue.main.async {
-                self.makeSnapshot()
-                self.collectionView.contentInset = .init(top: 80, left: 0, bottom: 0, right: 0)
-                self.collectionView.delegate = self
-                self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+            self.dataManager.performRequest(categoryId: "20") { result in
+                switch result {
+                case .failure(let error):
+                    print(error)
+                case .success(let videomodels):
+                    self.shortVidoeModels = videomodels
+
+                    DispatchQueue.main.async {
+                        self.makeSnapshot()
+                        self.collectionView.contentInset = .init(top: 80, left: 0, bottom: 0, right: 0)
+                        self.collectionView.delegate = self
+                        self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+                    }
+                }
             }
+
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        changeStatusBarBgColor(bgColor: .white)
     }
     
     //MARK: - Actions
@@ -81,14 +98,32 @@ class MainVC: UIViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Section, VideoModel>()
         
         snapshot.appendSections([.firstVideos, .firstShorts, .secondVideos, .secondShorts, .thirdVideos])
-       
-        
         
         snapshot.appendItems(formattedVideoModels[0], toSection: .firstVideos)
         snapshot.appendItems(formattedVideoModels[1], toSection: .secondVideos)
         snapshot.appendItems(formattedVideoModels[2], toSection: .thirdVideos)
+        print(shortVidoeModels.count)
+        
+        snapshot.appendItems([shortVidoeModels[1],shortVidoeModels[2],shortVidoeModels[3],shortVidoeModels[4]], toSection: .firstShorts)
+        snapshot.appendItems([shortVidoeModels[5],shortVidoeModels[6],shortVidoeModels[7],shortVidoeModels[8]], toSection: .secondShorts)
         dataSource.apply(snapshot)
     }
+    
+    func changeStatusBarBgColor(bgColor: UIColor?) {
+        if #available(iOS 13.0, *) {
+            let window = UIApplication.shared.windows.first
+            let statusBarManager = window?.windowScene?.statusBarManager
+            
+            let statusBarView = UIView(frame: statusBarManager?.statusBarFrame ?? .zero)
+            statusBarView.backgroundColor = bgColor
+            
+            window?.addSubview(statusBarView)
+        } else {
+            let statusBarView = UIApplication.shared.value(forKey: "statusBar") as? UIView
+            statusBarView?.backgroundColor = bgColor
+        }
+    }
+    
     
     private func getModels(completion: @escaping () -> Void) {
         dataManager.performRequest { result in
@@ -140,8 +175,8 @@ class MainVC: UIViewController {
                 cell.play(model: itemIdentifier)
                 return cell
             } else {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShortCell.identifier, for: indexPath)
-                cell.backgroundColor = .yellow
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShortCell.identifier, for: indexPath) as! ShortCell
+                cell.setImage(model: itemIdentifier)
                 return cell
             }
             
@@ -187,7 +222,27 @@ class MainVC: UIViewController {
 }
 
 extension MainVC: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "Detail", bundle: nil)
+        dataManager.fetchChannelInfo(channelId: videoModels[indexPath.row].channelId) { result in
+            switch result {
+            case .failure(let failure):
+                print(failure)
+            case .success(let channelModel):
+                self.channelModel = channelModel
+                
+                DispatchQueue.main.async {
+                    let vc = storyboard.instantiateViewController(identifier: "DetailViewController") { coder ->  DetailViewController in
+                        DetailViewController(coder: coder, dataManager: self.dataManager, imageLoader: self.imageLoader, videoModel: self.videoModels[indexPath.row], channelModel: channelModel)!
+                        
+                    }
+                    vc.videoModel = self.videoModels[indexPath.row]
+                    vc.modalPresentationStyle = .fullScreen
+                    self.present(vc, animated: true)
+                }
+            }
+        }
+    }
 }
 
 extension MainVC: UIScrollViewDelegate {
@@ -208,36 +263,12 @@ extension MainVC: UIScrollViewDelegate {
         
     }
 }
-//
-//extension MainVC: MainCollectionVCDelegate {
-//    func itemTapped(indexPath: IndexPath) {
-//        let storyboard = UIStoryboard(name: "Detail", bundle: nil)
-//        dataManager.fetchChannelInfo(channelId: videoModels[indexPath.row].channelId) { result in
-//            switch result {
-//            case .failure(let failure):
-//                print(failure)
-//            case .success(let channelModel):
-//                self.channelModel = channelModel
-//
-//
-//
-//                DispatchQueue.main.async {
-//                    let vc = storyboard.instantiateViewController(identifier: "DetailViewController") { coder ->  DetailViewController in
-//                        DetailViewController(coder: coder, dataManager: self.dataManager, imageLoader: self.imageLoader, videoModel: self.videoModels[indexPath.row], channelModel: channelModel)!
-//
-//                    }
-//                    vc.videoModel = self.videoModels[indexPath.row]
-//                    vc.modalPresentationStyle = .fullScreen
-//                    self.present(vc, animated: true)
-//                }
-//            }
-//        }
-//    }
+
+
 
 extension MainVC: YoutubeLogoViewDelegate {
     func logoTappedFromCollapsableView(on logo: YoutubeLogos) {
         print(logo)
     }
-    
-    
 }
+

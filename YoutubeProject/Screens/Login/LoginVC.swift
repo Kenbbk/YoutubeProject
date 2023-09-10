@@ -144,6 +144,17 @@ class LoginVC: UIViewController {
         setupAutoLayout()
         //        let a = UserDefaultsManager.shared.fetchUser()
         //        print(a)
+//        DataManager().performRequest(categoryId: "20") { result in
+//            switch result {
+//            case .failure(let error):
+//                print(error)
+//            case . success(let videoModels):
+//                for item in videoModels {
+////                    print(item.duration, item.id)
+//                }
+//            }
+//        }
+       
     }
     
     // 셋팅

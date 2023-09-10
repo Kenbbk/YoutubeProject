@@ -13,7 +13,7 @@ class ShortCell: UICollectionViewCell {
     
     private var imageView: UIImageView = {
        let iv = UIImageView()
-        iv.backgroundColor = .blue
+        
         return iv
     }()
     
@@ -29,7 +29,7 @@ class ShortCell: UICollectionViewCell {
     }
     
     private func configureSelf() {
-        self.backgroundColor = .yellow
+        
         self.layer.cornerRadius = 10
         self.clipsToBounds = true
     }
@@ -45,7 +45,20 @@ class ShortCell: UICollectionViewCell {
         ])
     }
     
-    func setImage() {
+    func setImage(model: VideoModel) {
+        ImageLoader().loadImage(urlString: model.thumbnails) { result in
+            
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let image):
+                DispatchQueue.main.async {
+
+                    self.imageView.image = image
+                }
+
+            }
+        }
         
     }
 }

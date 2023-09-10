@@ -22,7 +22,7 @@ protocol DataManagerDeleage {
 class DataManager {
     
     // 비디오 JSON url
-    let videoString = "https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=statistics&chart=mostPopular"
+    let videoString = "https://youtube.googleapis.com/youtube/v3/videos?part=snippet&part=statistics&part=contentDetails&chart=mostPopular"
     
     // 채널 JSON url
     let channelString = "https://youtube.googleapis.com/youtube/v3/channels?part=snippet&part=statistics"
@@ -45,6 +45,9 @@ class DataManager {
         let urlString = "\(videoString)&maxResults=\(maxResult)\(categoryIdString)&key=\(apiKey)"
         
         // url 생성
+        
+        print(urlString)
+        
         guard let url = URL(string: urlString) else {
             completion(.failure(.invalidURL))
             return
