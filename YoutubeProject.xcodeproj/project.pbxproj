@@ -36,11 +36,12 @@
 		D66817B32AA9F00400F2DD25 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66817B22AA9F00400F2DD25 /* RegisterVC.swift */; };
 		D66F0A7E2AACCFFF00A06B8D /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66F0A7D2AACCFFF00A06B8D /* SearchManager.swift */; };
 		D6C4F1492AAC950200D7DE26 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F1482AAC950200D7DE26 /* UserDefaultsManager.swift */; };
-		D6C4F14B2AAC9C9600D7DE26 /* YoutubeLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F14A2AAC9C9600D7DE26 /* YoutubeLogoView.swift */; };
+		D6C4F14B2AAC9C9600D7DE26 /* YoutubeCollapsableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F14A2AAC9C9600D7DE26 /* YoutubeCollapsableView.swift */; };
 		D6C4F14F2AAD55E900D7DE26 /* CompositionalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F14E2AAD55E900D7DE26 /* CompositionalLayout.swift */; };
 		D6C4F1512AAD6FEE00D7DE26 /* CategoryCollectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F1502AAD6FEE00D7DE26 /* CategoryCollectionVC.swift */; };
 		D6C4F1532AAD732800D7DE26 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F1522AAD732800D7DE26 /* CategoryCell.swift */; };
 		D6C4F15A2AADAD7000D7DE26 /* MainLogosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F1592AADAD7000D7DE26 /* MainLogosView.swift */; };
+		D6C4F15C2AADC3F000D7DE26 /* DataFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F15B2AADC3F000D7DE26 /* DataFormatter.swift */; };
 		D6DDCDFD2AAAE1FC0098D67D /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DDCDFC2AAAE1FC0098D67D /* ImageLoader.swift */; };
 		D6F09E7B2AA59CC3002E87D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F09E7A2AA59CC3002E87D5 /* AppDelegate.swift */; };
 		D6F09E7D2AA59CC3002E87D5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F09E7C2AA59CC3002E87D5 /* SceneDelegate.swift */; };
@@ -89,11 +90,12 @@
 		D66817B22AA9F00400F2DD25 /* RegisterVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
 		D66F0A7D2AACCFFF00A06B8D /* SearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		D6C4F1482AAC950200D7DE26 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
-		D6C4F14A2AAC9C9600D7DE26 /* YoutubeLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeLogoView.swift; sourceTree = "<group>"; };
+		D6C4F14A2AAC9C9600D7DE26 /* YoutubeCollapsableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeCollapsableView.swift; sourceTree = "<group>"; };
 		D6C4F14E2AAD55E900D7DE26 /* CompositionalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionalLayout.swift; sourceTree = "<group>"; };
 		D6C4F1502AAD6FEE00D7DE26 /* CategoryCollectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionVC.swift; sourceTree = "<group>"; };
 		D6C4F1522AAD732800D7DE26 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		D6C4F1592AADAD7000D7DE26 /* MainLogosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLogosView.swift; sourceTree = "<group>"; };
+		D6C4F15B2AADC3F000D7DE26 /* DataFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFormatter.swift; sourceTree = "<group>"; };
 		D6DDCDFC2AAAE1FC0098D67D /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		D6F09E772AA59CC3002E87D5 /* YoutubeProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YoutubeProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F09E7A2AA59CC3002E87D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				D668177E2AA8962900F2DD25 /* CommentManager.swift */,
 				D6C4F1482AAC950200D7DE26 /* UserDefaultsManager.swift */,
 				D66F0A7D2AACCFFF00A06B8D /* SearchManager.swift */,
+				D6C4F15B2AADC3F000D7DE26 /* DataFormatter.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -206,7 +209,7 @@
 		D6C4F1582AADAD2700D7DE26 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
-				D6C4F14A2AAC9C9600D7DE26 /* YoutubeLogoView.swift */,
+				D6C4F14A2AAC9C9600D7DE26 /* YoutubeCollapsableView.swift */,
 				D6C4F1592AADAD7000D7DE26 /* MainLogosView.swift */,
 			);
 			path = "Custom Views";
@@ -497,9 +500,10 @@
 				D6F09E992AA5A836002E87D5 /* StoryBoards.swift in Sources */,
 				7B0969A32AA8390200784962 /* LikeVideoVC.swift in Sources */,
 				D6F09EB12AA5BB03002E87D5 /* CurrentUser.swift in Sources */,
+				D6C4F15C2AADC3F000D7DE26 /* DataFormatter.swift in Sources */,
 				D6F09E7D2AA59CC3002E87D5 /* SceneDelegate.swift in Sources */,
 				7B0969A52AA83D3700784962 /* LogoutVC.swift in Sources */,
-				D6C4F14B2AAC9C9600D7DE26 /* YoutubeLogoView.swift in Sources */,
+				D6C4F14B2AAC9C9600D7DE26 /* YoutubeCollapsableView.swift in Sources */,
 				D6C4F14F2AAD55E900D7DE26 /* CompositionalLayout.swift in Sources */,
 				D66817842AA8965300F2DD25 /* ChannelModel.swift in Sources */,
 				D6DDCDFD2AAAE1FC0098D67D /* ImageLoader.swift in Sources */,

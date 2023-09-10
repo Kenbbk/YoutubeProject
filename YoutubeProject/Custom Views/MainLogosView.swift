@@ -7,55 +7,96 @@
 
 import UIKit
 
+enum YoutubeLogos {
+    case bell, search, square, profile, main
+}
+
+protocol MainLogosViewDelegate: AnyObject {
+    func youtubeLogoImagesTapped(on logo: YoutubeLogos)
+}
+
 class MainLogosView: UIView {
     
-    let squareImageView: UIImageView = {
+    weak var delegate: MainLogosViewDelegate?
+    
+    lazy var squareImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.image = UIImage(named: "squareLogo")
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(squareImageTapped)))
         return iv
     }()
     
-    let bellImageView: UIImageView = {
+    lazy var bellImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.image = UIImage(systemName: "bell")
         iv.tintColor = .black
-//        iv.image = UIImage(named: "bellLogo")
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(bellImageTapped)))
         return iv
     }()
     
-    let searchImageView: UIImageView = {
+    lazy var searchImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(systemName: "magnifyingglass")
         iv.tintColor = .black
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(searchImageTapped)))
         return iv
     }()
     
-    let profileImageView: UIImageView = {
+    lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.backgroundColor = .red
         iv.layer.cornerRadius = 14
         iv.clipsToBounds = true
         iv.image = UIImage(named: "profile1")
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileImageTapped)))
         return iv
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
+        addGestures()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc func squareImageTapped() {
+        delegate?.youtubeLogoImagesTapped(on: .square)
+    }
+    
+    @objc func bellImageTapped() {
+        delegate?.youtubeLogoImagesTapped(on: .bell)
+    }
+    @objc func searchImageTapped() {
+        delegate?.youtubeLogoImagesTapped(on: .search)
+    }
+    @objc func profileImageTapped() {
+        delegate?.youtubeLogoImagesTapped(on: .profile)
+    }
+   
+    
     private func configureUI() {
+        self.isUserInteractionEnabled = true
         addsubViews()
         configureProfileImageView()
         configureSearchImageView()
         configureBellImageView()
         configureSquareImageView()
+    }
+    
+    private func addGestures() {
+        [squareImageView, bellImageView, profileImageView, searchImageView].forEach { view in
+            
+            
+        }
     }
     
     private func addsubViews() {

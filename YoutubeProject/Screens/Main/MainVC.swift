@@ -26,7 +26,7 @@ class MainVC: UIViewController {
         collectionView.register(ShortCell.self, forCellWithReuseIdentifier: ShortCell.identifier)
         collectionView.register(LongCell.self, forCellWithReuseIdentifier: LongCell.identifier)
         collectionView.register(ShortHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ShortHeader.identifier)
-
+        
         return collectionView
     }()
     
@@ -34,7 +34,12 @@ class MainVC: UIViewController {
     
     var channelModel: ChannelModel!
     
-    let youtubeLogoView = YoutubeLogoView()
+    private lazy var youtubeLogoView: YoutubeCollapsableView = {
+        let view = YoutubeCollapsableView()
+        view.delegate = self
+        return view
+    }()
+    
     
     var collectionVC: CategoryCollectionVC!
     
@@ -190,11 +195,11 @@ extension MainVC: UIScrollViewDelegate {
         let height = scrollView.frame.size.height
         let contentYoffset = scrollView.contentOffset.y
         let distanceFromBottom = scrollView.contentSize.height - contentYoffset
-       
+        
         if distanceFromBottom < height {
             heightConstraint.constant = 0
         } else if contentYoffset <= -80 {
-           
+            
         } else {
             aa()
             updateOffset(offsetY: scrollView.contentOffset.y)
@@ -229,24 +234,10 @@ extension MainVC: UIScrollViewDelegate {
 //        }
 //    }
 
-//    func scrollViewDidScrolled(_ scrollView: UIScrollView) {
-//        let height = scrollView.frame.size.height
-//        let contentYoffset = scrollView.contentOffset.y
-//        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
-//        //        print(UIScreen.main.bounds.height)
-//        //        print(distanceFromBottom)
-//        if distanceFromBottom < height {
-//            heightConstraint.constant = 0
-//        } else if contentYoffset <= -80 {
-//            //              print(" you reached top of the table")
-//            //              updateOffset1(offsetY: scrollView.contentOffset.y)
-//        } else {
-//            aa()
-//            updateOffset(offsetY: scrollView.contentOffset.y)
-//            //              print(Int(currentOffsetY), Int(lastPositionY), Int(bottomConstraint.constant))
-//        }
-//
-//
-//        //        print(scrollView.contentOffset.y)
-//    }
-//}
+extension MainVC: YoutubeLogoViewDelegate {
+    func logoTappedFromCollapsableView(on logo: YoutubeLogos) {
+        print(logo)
+    }
+    
+    
+}

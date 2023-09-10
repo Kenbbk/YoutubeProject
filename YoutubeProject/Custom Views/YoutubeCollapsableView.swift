@@ -7,7 +7,13 @@
 
 import UIKit
 
-class YoutubeLogoView: UIView {
+protocol YoutubeLogoViewDelegate: AnyObject {
+    func logoTappedFromCollapsableView(on logo: YoutubeLogos)
+}
+
+class YoutubeCollapsableView: UIView {
+    
+    weak var delegate: YoutubeLogoViewDelegate?
     
     let upperContainerView: UIView = {
        let view = UIView()
@@ -15,13 +21,19 @@ class YoutubeLogoView: UIView {
         return view
     }()
     
-    let logoSectionView = MainLogosView()
+    private lazy var logoSectionView: MainLogosView = {
+        let view = MainLogosView()
+        view.delegate = self
+        return view
+    }()
     
   
     
-    let logoImageView: UIImageView = {
+    lazy var logoImageView: UIImageView = {
        let iv = UIImageView()
         iv.image = UIImage(named: "youtubeLogo")
+        iv.isUserInteractionEnabled = true
+        iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(mainYoutubeLogoTapped)))
         return iv
     }()
     
@@ -30,13 +42,21 @@ class YoutubeLogoView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc func mainYoutubeLogoTapped() {
+        delegate?.logoTappedFromCollapsableView(on: .main)
+    }
+    
+    
+    
     private func configureUI() {
+        self.isUserInteractionEnabled = true
         collectionVCContinerView.backgroundColor = .brown
         addSubViews()
         configureCollectionVCContainerView()
@@ -92,5 +112,11 @@ class YoutubeLogoView: UIView {
             logoSectionView.bottomAnchor.constraint(equalTo: upperContainerView.bottomAnchor, constant: -5),
             logoSectionView.widthAnchor.constraint(equalToConstant: 180)
         ])
+    }
+}
+
+extension YoutubeCollapsableView: MainLogosViewDelegate {
+    func youtubeLogoImagesTapped(on logo: YoutubeLogos) {
+        delegate?.logoTappedFromCollapsableView(on: logo)
     }
 }
