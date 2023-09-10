@@ -50,6 +50,7 @@ class UserDefaultsManager {
         let key = "Login"
         return userDefaults.object(forKey: key) == nil ? false : true
     }
+    //
     
     
 }
