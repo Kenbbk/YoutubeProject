@@ -19,13 +19,6 @@ class MainVC: UIViewController {
     
     let imageLoader = ImageLoader()
     
-    let containerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemPink
-        
-        return view
-    }()
-    
     var videoModels: [VideoModel] = []
     
     private lazy var collectionView: UICollectionView = {
@@ -34,22 +27,16 @@ class MainVC: UIViewController {
         collectionView.register(LongCell.self, forCellWithReuseIdentifier: LongCell.identifier)
         collectionView.register(ShortHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ShortHeader.identifier)
 
-               
         return collectionView
     }()
-    
-    //    private lazy var collectionVC: MainCollectionVC = {
-    //        let collectionVC = MainCollectionVC(collectionViewLayout: CompositionalLayout().makeLayout())
-    //
-    //
-    //        return collectionVC
-    //    }()
     
     var dataSource: UICollectionViewDiffableDataSource<Section, VideoModel>!
     
     var channelModel: ChannelModel!
     
     let youtubeLogoView = YoutubeLogoView()
+    
+    var collectionVC: CategoryCollectionVC!
     
     //MARK: - Lifecycle
     
@@ -58,27 +45,17 @@ class MainVC: UIViewController {
         view.backgroundColor = .white
         
         configureUI()
+        addVC()
         configureDataSource()
-        self.collectionView.contentInset = .init(top: 80, left: 0, bottom: 0, right: 0)
+        
         getModels {
             DispatchQueue.main.async {
                 self.makeSnapshot()
-                
+                self.collectionView.contentInset = .init(top: 80, left: 0, bottom: 0, right: 0)
                 self.collectionView.delegate = self
                 self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
-                //                self.addVCS()
-                //                self.giveSnapshot()
-                //                self.collectionVC.collectionView.contentInset = .init(top: 80, left: 0, bottom: 0, right: 0)
-                //                self.collectionVC.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
-                //                print("get models get called")
-                //
             }
-            
-            
-            
-            
         }
-        
     }
     
     //MARK: - Actions
@@ -86,6 +63,11 @@ class MainVC: UIViewController {
     
     
     //MARK: - Helpers
+    
+    private func addVC() {
+        collectionVC = CategoryCollectionVC(collectionViewLayout: UICollectionViewFlowLayout())
+        add(collectionVC, to: youtubeLogoView.collectionVCContinerView)
+    }
     
     private func makeSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, VideoModel>()
@@ -115,36 +97,10 @@ class MainVC: UIViewController {
         }
     }
     
-    //    private func giveSnapshot() {
-    //
-    //        var snapshot = NSDiffableDataSourceSnapshot<Section, VideoModel>()
-    //
-    //        snapshot.appendSections([.firstVideos, .firstShorts, .secondVideos, .secondShorts, .thirdVideos])
-    //        if videoModels.count != 0 {
-    //            snapshot.appendItems([videoModels[0]], toSection: .firstVideos)
-    //            snapshot.appendItems([videoModels[1],videoModels[2],videoModels[3],videoModels[4]], toSection: .firstShorts)
-    //        }
-    //
-    //
-    //        snapshot.appendItems([], toSection: .secondVideos)
-    //        snapshot.appendItems([], toSection: .secondShorts)
-    //        snapshot.appendItems([], toSection: .thirdVideos)
-    //        collectionVC.snapshot = snapshot
-    //    }
-    
     private func configureUI() {
         configureCollectionView()
         configureYoutubeLogoView()
-        //        configureContainerView()
-       
-        view.bringSubviewToFront(youtubeLogoView)
     }
-    
-    //    private func addVCS() {
-    //
-    //        add(collectionVC, to: containerView)
-    //        collectionVC.delegate = self
-    //    }
     
     private func configureYoutubeLogoView() {
         view.addSubview(youtubeLogoView)
@@ -155,7 +111,6 @@ class MainVC: UIViewController {
             youtubeLogoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             youtubeLogoView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             heightConstraint
-            
         ])
     }
     
@@ -168,15 +123,10 @@ class MainVC: UIViewController {
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-        
-        
-//        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
     }
     
     private func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
-            
-            
             
             let a = [0, 2, 4]
             if a.contains(indexPath.section) {
@@ -197,23 +147,9 @@ class MainVC: UIViewController {
                 fatalError("Could not dequeue sectionHeader: \(ShortHeader.identifier)")
             }
             
-            
             return sectionHeader
         }
     }
-    
-    
-    //    private func configureContainerView() {
-    //
-    //        view.addSubview(containerView)
-    //        containerView.translatesAutoresizingMaskIntoConstraints = false
-    //        NSLayoutConstraint.activate([
-    //            containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-    //            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-    //            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-    //            containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-    //        ])
-    //    }
     
     func updateOffset(offsetY: CGFloat) {
         guard offsetY != 0 else { return }
@@ -254,21 +190,17 @@ extension MainVC: UIScrollViewDelegate {
         let height = scrollView.frame.size.height
         let contentYoffset = scrollView.contentOffset.y
         let distanceFromBottom = scrollView.contentSize.height - contentYoffset
-        //        print(UIScreen.main.bounds.height)
-        //        print(distanceFromBottom)
+       
         if distanceFromBottom < height {
             heightConstraint.constant = 0
         } else if contentYoffset <= -80 {
-            //              print(" you reached top of the table")
-            //              updateOffset1(offsetY: scrollView.contentOffset.y)
+           
         } else {
             aa()
             updateOffset(offsetY: scrollView.contentOffset.y)
-            //              print(Int(currentOffsetY), Int(lastPositionY), Int(bottomConstraint.constant))
+            
         }
         
-        
-        //        print(scrollView.contentOffset.y)
     }
 }
 //

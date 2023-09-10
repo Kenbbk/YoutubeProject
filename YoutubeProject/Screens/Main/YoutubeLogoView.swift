@@ -11,7 +11,7 @@ class YoutubeLogoView: UIView {
     
     let upperContainerView: UIView = {
        let view = UIView()
-        view.backgroundColor = .yellow
+        
         return view
     }()
     
@@ -22,6 +22,12 @@ class YoutubeLogoView: UIView {
         view.spacing = 10
         view.backgroundColor = .brown
         return view
+    }()
+    
+    let logoImageView: UIImageView = {
+       let iv = UIImageView()
+        iv.image = UIImage(named: "logo1")
+        return iv
     }()
     
     let squareImageView: UIImageView = {
@@ -65,11 +71,10 @@ class YoutubeLogoView: UIView {
         addSubViews()
         configureCollectionVCContainerView()
         configureUpperContainerView()
+        configureLogoImageView()
         configureStackView()
         
     }
-    
-    
     
     private func addSubViews() {
         [upperContainerView, collectionVCContinerView].forEach { view in
@@ -78,8 +83,7 @@ class YoutubeLogoView: UIView {
         }
     }
     
-    
-   private func configureCollectionVCContainerView() {
+    private func configureCollectionVCContainerView() {
        NSLayoutConstraint.activate([
         collectionVCContinerView.bottomAnchor.constraint(equalTo: bottomAnchor),
         collectionVCContinerView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -94,6 +98,17 @@ class YoutubeLogoView: UIView {
             upperContainerView.leadingAnchor.constraint(equalTo: collectionVCContinerView.leadingAnchor),
             upperContainerView.trailingAnchor.constraint(equalTo: collectionVCContinerView.trailingAnchor),
             upperContainerView.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    
+    private func configureLogoImageView() {
+        upperContainerView.addSubview(logoImageView)
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            logoImageView.bottomAnchor.constraint(equalTo: upperContainerView.bottomAnchor, constant: -7.5),
+            logoImageView.leadingAnchor.constraint(equalTo: upperContainerView.leadingAnchor, constant: 10),
+            logoImageView.heightAnchor.constraint(equalToConstant: 25),
+            logoImageView.widthAnchor.constraint(equalToConstant: 90)
         ])
     }
     
