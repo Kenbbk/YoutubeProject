@@ -11,7 +11,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     private lazy var tabBarController = makeTabBarVC()
-    private lazy var userRepository = UserRepository()
+    private lazy var userRepository = UserRepository(currentUser: User(email: "AA", password: "1234", firstName: "bb", lastName: "cc"))
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
         
@@ -58,8 +58,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func makeMyPageVC() -> MyPageVC {
         //        let storyBoard = UIStoryboard(name: StoryBoards.myPage, bundle: nil)
         //        let vc = storyBoard.instantiateViewController(withIdentifier: VCIdentifier.myPageVC) as! MyPageVC
-        let vc = MyPageVC()
+        let vc = MyPageVC(userRepository: userRepository)
         vc.tabBarItem = UITabBarItem(title: "My Page", image: UIImage(systemName: "person.crop.circle"), tag: 1)
+        
         return vc
     }
     

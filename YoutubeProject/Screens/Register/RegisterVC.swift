@@ -5,6 +5,10 @@ class RegisterVC: UIViewController {
     
     // MARK: - 라스트네임 입력하는 텍스트 뷰
     
+    let userRepository: UserRepository
+    
+    let user: User
+    
     private lazy var lastNameTextFieldView: UIView = {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
@@ -230,6 +234,16 @@ class RegisterVC: UIViewController {
         makeUI()
     }
     
+    init(userRepository: UserRepository) {
+        self.userRepository = userRepository
+        self.user = userRepository.getCurrentUser()
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.topItem?.title = ""
@@ -322,10 +336,11 @@ class RegisterVC: UIViewController {
         }
         
         // User 인스턴스를 불러와 회원가입 시 입력한 유저의 값 저장
-        let newUser = User1(firstName: firstName, lastName: lastName, email: email, password: password)
-        
+        let newUser = User(email: email, password: password, firstName: firstName, lastName: lastName)
+        print(newUser, "!@#!@#!@#!@#!@#!@#@!")
         // UserDefaultsManager를 사용하여 사용자 저장
         UserDefaultsManager.shared.saveUser(user: newUser)
+        
 
         // UserDefaults에서 사용자를 다시 가져와서 확인
         if let fetchedUser = UserDefaultsManager.shared.fetchUser(email: newUser.email) {

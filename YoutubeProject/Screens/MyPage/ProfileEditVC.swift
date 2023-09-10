@@ -1,23 +1,28 @@
 
 import UIKit
 
-protocol SendDataDelegate: AnyObject {
+protocol ProfileEditVCDelegate: AnyObject {
     // 수정된 데이터 전달할 델리게이트
-    func didEditUserInfo(data: User1)
+    func editButtonTapped()
 }
 
 //MARK: - Properties
 
+
+
 class ProfileEditVC: UIViewController {
-    var userInfo: User1?
-    var myPageVC = MyPageVC()
+    
+    var userRepository: UserRepository
+    
+    var user: User
+    
     let profileImagePicker = UIImagePickerController()
     let backgroundImagePicker = UIImagePickerController()
     
     var profileImage: UIImage!
     var backgroundImage: UIImage!
     
-    weak var delegate: SendDataDelegate?
+    weak var delegate: ProfileEditVCDelegate?
     lazy var safeArea = view.safeAreaLayoutGuide
     
     let profileImageView: UIImageView = {
@@ -75,7 +80,7 @@ class ProfileEditVC: UIViewController {
         return label
     }()
     
-    let firstNameTextField: UITextField = {
+    lazy var firstNameTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .clear
         textField.textColor = .white
@@ -84,11 +89,11 @@ class ProfileEditVC: UIViewController {
         textField.layer.borderColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 0)) // 커서 위치 설정
         textField.leftViewMode = .always
-        
+        textField.delegate = self
         return textField
     }()
     
-    let lastNameTextField: UITextField = {
+    lazy var lastNameTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .clear
         textField.textColor = .white
@@ -97,11 +102,11 @@ class ProfileEditVC: UIViewController {
         textField.layer.borderColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 0))
         textField.leftViewMode = .always
-        
+        textField.delegate = self
         return textField
     }()
     
-    let addressTextField: UITextField = {
+    lazy var channelNameTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .clear
         textField.textColor = .white
@@ -110,7 +115,7 @@ class ProfileEditVC: UIViewController {
         textField.layer.borderColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 0))
         textField.leftViewMode = .always
-        
+        textField.delegate = self
         return textField
     }()
     
@@ -160,9 +165,10 @@ class ProfileEditVC: UIViewController {
         view.backgroundColor = .black
         profileImagePicker.delegate = self
         backgroundImagePicker.delegate = self
-        firstNameTextField.delegate = self
-        lastNameTextField.delegate = self
-        addressTextField.delegate = self
+        
+        setUserInformation()
+        
+        
         
         // 이미지 가져오기
         if let profileImage = loadImageFromUserDefaults(forKey: "ProfileImage") {
@@ -172,6 +178,16 @@ class ProfileEditVC: UIViewController {
             backgroundImageView.image = backgroundImage
         }
         configureUI()
+    }
+    
+    init(userRepository: UserRepository) {
+        self.userRepository = userRepository
+        self.user = userRepository.getCurrentUser()
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -219,16 +235,43 @@ class ProfileEditVC: UIViewController {
     }
     
     @objc func editCompleteButtonTapped(_ button: UIButton) {
-//        let editedData = User(id: "user1", firstName: firstNameTextField.text ?? "", lastName: lastNameTextField.text ?? "", address: addressTextField.text ?? "", password: "1234", profileImage: profileImageView.image!, backgroundImage: backgroundImageView.image!)
+
+        user.firstName = firstNameTextField.text!
+        user.lastName = lastNameTextField.text!
+        user.channelName = channelNameTextField.text!
+        let profileImageData = profileImageView.image?.jpegData(compressionQuality: 1)
+        let backgroundImageData = backgroundImageView.image?.jpegData(compressionQuality: 1)
+        user.profileImageData = profileImageData
+        user.backgroundImageData = backgroundImageData
         
-        let edit = User1(firstName: firstNameTextField.text ?? "", lastName: lastNameTextField.text ?? "", email: <#T##String#>, password: <#T##String#>)
+        userRepository.editCurrentUser(user: user)
+        UserDefaultsManager.shared.saveUser(user: user)
         // 델리게이트를 통해 데이터 전달
-        delegate?.didEditUserInfo(data: editedData)
+        delegate?.editButtonTapped()
         self.dismiss(animated: true)
     }
+     // locaRepository, userdefaultRepository // register 2 저장을 // 로그인 2 페치 // 1번에 저장 // edit 1번에 변경정보 저장 // default 저장을 해요
+    // 1
     
     
     //MARK: - Helper
+    
+    private func setUserInformation() {
+
+        channelNameTextField.text = user.channelName
+        firstNameTextField.text = user.firstName
+        lastNameTextField.text = user.lastName
+        if let profileimageData = user.profileImageData {
+            profileImageView.image = UIImage(data: profileimageData)
+        }
+        if let backgroundImageData = user.backgroundImageData {
+            backgroundImageView.image = UIImage(data: backgroundImageData)
+        }
+        
+        
+        
+        
+    }
     
     func textFieldDeselectTapGesture() {
         // 화면의 다른 부분을 탭할 때 커서 사라지게 하기
@@ -239,7 +282,7 @@ class ProfileEditVC: UIViewController {
     func updateTextFieldBorderStyle() {
         let firstNameIsEmpty = firstNameTextField.text?.isEmpty ?? true
         let lastNameIsEmpty = lastNameTextField.text?.isEmpty ?? true
-        let addressIsEmpty = addressTextField.text?.isEmpty ?? true
+        let addressIsEmpty = channelNameTextField.text?.isEmpty ?? true
         // TextField 활성화일 때 Button Color 지정
         editCompleteButton.isEnabled = !firstNameIsEmpty && !lastNameIsEmpty && !addressIsEmpty
         editCompleteButton.backgroundColor = editCompleteButton.isEnabled ? .systemRed : .lightGray
@@ -284,7 +327,7 @@ extension ProfileEditVC: UITextFieldDelegate{
         
         if let firstName = firstNameTextField.text, !firstName.isEmpty,
            let lastName = lastNameTextField.text, !lastName.isEmpty,
-           let address = addressTextField.text, !address.isEmpty {
+           let address = channelNameTextField.text, !address.isEmpty {
             editCompleteButton.isEnabled = true
             editCompleteButton.backgroundColor = .systemRed
         } else {
@@ -298,18 +341,6 @@ extension ProfileEditVC: UITextFieldDelegate{
         return true
     }
 }
-
-extension ProfileEditVC: SendDataDelegate{
-    func didEditUserInfo(data: User) {
-        // User 모델에 수정된 데이터 저장
-        self.firstNameTextField.text = data.firstName
-        self.lastNameTextField.text = data.lastName
-        self.addressTextField.text = data.address
-        self.profileImage = data.profileImage
-        self.backgroundImage = data.backgroundImage
-    }
-}
-
 
 //MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
 
@@ -419,7 +450,7 @@ extension ProfileEditVC {
         addressDataLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             addressDataLabel.widthAnchor.constraint(equalToConstant: 330),
-            addressDataLabel.topAnchor.constraint(equalTo: addressTextField.bottomAnchor, constant: 5),
+            addressDataLabel.topAnchor.constraint(equalTo: channelNameTextField.bottomAnchor, constant: 5),
             addressDataLabel.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor)
         ])
     }
@@ -450,14 +481,14 @@ extension ProfileEditVC {
     }
     
     func configureAddressTextField(){
-        view.addSubview(addressTextField)
+        view.addSubview(channelNameTextField)
         
-        addressTextField.translatesAutoresizingMaskIntoConstraints = false
+        channelNameTextField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            addressTextField.widthAnchor.constraint(equalToConstant: 340),
-            addressTextField.heightAnchor.constraint(equalToConstant: 50),
-            addressTextField.topAnchor.constraint(equalTo: addressLabel.bottomAnchor, constant: 10),
-            addressTextField.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor)
+            channelNameTextField.widthAnchor.constraint(equalToConstant: 340),
+            channelNameTextField.heightAnchor.constraint(equalToConstant: 50),
+            channelNameTextField.topAnchor.constraint(equalTo: addressLabel.bottomAnchor, constant: 10),
+            channelNameTextField.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor)
             
         ])
     }
@@ -501,3 +532,6 @@ extension ProfileEditVC {
     }
     
 }
+
+// 1.회원가입할때 유저를 만들고 유저를 저장 2. 로그인페이지로가서 그 저장된 유저의 이메일로 로그인. 3. 누가 지금 로그인되어있는가에 관한 파일을 만든다 4. 이걸 바꾼다 그러면 유저디폴트에 값을 수정해준다. 5. 로컬 유저값도 바꿔준다
+// 6. 로그아웃을 했을때 로그아웃을 시켜준다

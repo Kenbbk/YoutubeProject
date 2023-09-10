@@ -42,6 +42,7 @@
 		D6C4F1532AAD732800D7DE26 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F1522AAD732800D7DE26 /* CategoryCell.swift */; };
 		D6C4F15A2AADAD7000D7DE26 /* MainLogosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F1592AADAD7000D7DE26 /* MainLogosView.swift */; };
 		D6C4F15C2AADC3F000D7DE26 /* DataFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F15B2AADC3F000D7DE26 /* DataFormatter.swift */; };
+		D6C4F17E2AAE14EB00D7DE26 /* ImageEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F17D2AAE14EB00D7DE26 /* ImageEncoder.swift */; };
 		D6DDCDFD2AAAE1FC0098D67D /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DDCDFC2AAAE1FC0098D67D /* ImageLoader.swift */; };
 		D6F09E7B2AA59CC3002E87D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F09E7A2AA59CC3002E87D5 /* AppDelegate.swift */; };
 		D6F09E7D2AA59CC3002E87D5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F09E7C2AA59CC3002E87D5 /* SceneDelegate.swift */; };
@@ -96,6 +97,7 @@
 		D6C4F1522AAD732800D7DE26 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		D6C4F1592AADAD7000D7DE26 /* MainLogosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLogosView.swift; sourceTree = "<group>"; };
 		D6C4F15B2AADC3F000D7DE26 /* DataFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFormatter.swift; sourceTree = "<group>"; };
+		D6C4F17D2AAE14EB00D7DE26 /* ImageEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEncoder.swift; sourceTree = "<group>"; };
 		D6DDCDFC2AAAE1FC0098D67D /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		D6F09E772AA59CC3002E87D5 /* YoutubeProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YoutubeProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F09E7A2AA59CC3002E87D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				D6C4F1482AAC950200D7DE26 /* UserDefaultsManager.swift */,
 				D66F0A7D2AACCFFF00A06B8D /* SearchManager.swift */,
 				D6C4F15B2AADC3F000D7DE26 /* DataFormatter.swift */,
+				D6C4F17D2AAE14EB00D7DE26 /* ImageEncoder.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -474,6 +477,7 @@
 				D6F09E7B2AA59CC3002E87D5 /* AppDelegate.swift in Sources */,
 				D66817712AA8959900F2DD25 /* CommentTableViewCell.swift in Sources */,
 				D6F09E8F2AA59D1F002E87D5 /* MainVC.swift in Sources */,
+				D6C4F17E2AAE14EB00D7DE26 /* ImageEncoder.swift in Sources */,
 				D6F09E972AA5A640002E87D5 /* LoginVC.swift in Sources */,
 				D668175D2AA8330700F2DD25 /* MainCollectionVC.swift in Sources */,
 				D6F09EAA2AA5B869002E87D5 /* VideoInfo.swift in Sources */,
@@ -660,6 +664,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.woojun.lee.YoutubeProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -688,6 +693,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.woojun.lee.YoutubeProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -9,7 +9,7 @@ import UIKit
 
 class LogoutVC: UIViewController {
     
-    var userInfo: User?
+//    var userInfo: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()

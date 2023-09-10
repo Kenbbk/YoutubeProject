@@ -5,7 +5,9 @@ class MyPageVC: UIViewController {
     
     //MARK: - Properties
     
-    private var user: User?
+    var userRepository: UserRepository
+    
+    var currentUser: User
     
     lazy var safeArea = view.safeAreaLayoutGuide
     
@@ -39,7 +41,7 @@ class MyPageVC: UIViewController {
         return label
     }()
     
-    let userAddressLabel: UILabel = {
+    let userChannelNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .lightGray
@@ -96,52 +98,32 @@ class MyPageVC: UIViewController {
         view.backgroundColor = .black
         
         configureUI()
-        initiateUser()
         setUserInfoLabels()
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        self.tabBarController?.tabBar.isHidden = true // Tapbar 숨기기
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.currentUser = userRepository.getCurrentUser()
+        setUserInfoLabels()
+        print("\(currentUser.firstName), \(userRepository.getCurrentUser().firstName)")
+    }
+    
+    
+    init(userRepository: UserRepository) {
+        self.userRepository = userRepository
+        self.currentUser = userRepository.getCurrentUser()
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     //MARK: - Actions
     
     @objc func profileEditButtonTapped(_ button: UIButton){
-        let editVC = ProfileEditVC()
-        
-        editVC.myPageVC = self
-        // MyPageVC User Data -> ProfileEditVC text로 전달
-        editVC.firstNameTextField.text = self.user?.firstName
-        editVC.lastNameTextField.text = self.user?.lastName
-        editVC.addressTextField.text = self.user?.address
-        
-        // address 앞에 @ 붙이기
-        if let userAddress = self.user?.address {
-            editVC.addressDataLabel.text = "@" + userAddress
-        } else {
-            editVC.addressDataLabel.text = nil
-        }
-        
-        // UserDefaults에서 프로필 이미지 불러오기
-        if let profileImageData = UserDefaults.standard.data(forKey: "UserProfileImageKey") {
-            if let profileImage = UIImage(data: profileImageData) {
-                profileImageView.image = profileImage
-            }
-        }
-
-        // UserDefaults에서 배경 이미지 불러오기
-        if let backgroundImageData = UserDefaults.standard.data(forKey: "UserBackgroundImageKey") {
-            if let backgroundImage = UIImage(data: backgroundImageData) {
-                backgroundImageView.image = backgroundImage
-            }
-        }
-        
-        // MyPageVC 이미지뷰의 이미지 -> ProfileEditVC 이미지뷰로 전달
-        editVC.profileImage = self.profileImageView.image
-        editVC.backgroundImage = self.backgroundImageView.image
-        
+        let editVC = ProfileEditVC(userRepository: userRepository)
         editVC.delegate = self
         self.present(editVC, animated: true)
     }
@@ -160,8 +142,8 @@ class MyPageVC: UIViewController {
         navController.modalPresentationStyle = .fullScreen
         self.present(navController, animated: true, completion: nil)
         // LoginVC로 화면 전환
-//        self.navigationController?.pushViewController(loginVC, animated: true)
-//        self.present(loginVC, animated: true)
+        //        self.navigationController?.pushViewController(loginVC, animated: true)
+        //        self.present(loginVC, animated: true)
     }
     
     
@@ -169,26 +151,27 @@ class MyPageVC: UIViewController {
     
     func setUserInfoLabels(){
         // User 데이터 가지고 오기
-        if let user = user {
-            userNameLabel.text = "\(user.lastName)\(user.firstName)"
-            userAddressLabel.text = "@\(user.address)"
+        
+        userNameLabel.text = "\(currentUser.lastName)\(currentUser.firstName)"
+        userChannelNameLabel.text = "@\(currentUser.channelName)"
+        if let profileImageData = currentUser.profileImageData {
+            profileImageView.image = UIImage(data: profileImageData)
         }
-    }
-    
-    func initiateUser(){
-        // User 초기화
-        user = User(id: "User1", firstName: "구름", lastName: "정", address: "guruem", password: "1234")
+        
+        if let backgroumdImageData = currentUser.backgroundImageData {
+            backgroundImageView.image = UIImage(data: backgroumdImageData)
+        }
+        
     }
 }
 
-
-extension MyPageVC: SendDataDelegate {
-    func didEditUserInfo(data: User) {
-        self.user?.firstName = data.firstName
-        self.user?.lastName = data.lastName
-        self.user?.address = data.address
-        self.setUserInfoLabels()
+extension MyPageVC: ProfileEditVCDelegate {
+    func editButtonTapped() {
+        currentUser = userRepository.getCurrentUser()
+        setUserInfoLabels()
+        print("Hello!@#!@#@!#")
     }
+    
 }
 
 
@@ -242,12 +225,12 @@ extension MyPageVC {
     }
     
     func configureUserAddressLabel(){
-        view.addSubview(userAddressLabel)
+        view.addSubview(userChannelNameLabel)
         
-        userAddressLabel.translatesAutoresizingMaskIntoConstraints = false
+        userChannelNameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            userAddressLabel.topAnchor.constraint(equalTo: userNameLabel.topAnchor, constant: 30),
-            userAddressLabel.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor)
+            userChannelNameLabel.topAnchor.constraint(equalTo: userNameLabel.topAnchor, constant: 30),
+            userChannelNameLabel.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor)
         ])
     }
     
@@ -287,4 +270,5 @@ extension MyPageVC {
         ])
     }
 }
+
 

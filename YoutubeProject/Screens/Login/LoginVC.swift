@@ -157,6 +157,7 @@ class LoginVC: UIViewController {
        
     }
     
+   
     // 셋팅
     private func configure() {
         view.backgroundColor = #colorLiteral(red: 0.07450980392, green: 0.07450980392, blue: 0.07450980392, alpha: 1)
@@ -230,6 +231,7 @@ class LoginVC: UIViewController {
         // 입력된 이메일과 비밀번호가 저장된 값과 일치하는지 확인
         if savedEmail == user.email && savedPassword == user.password {
             // 로그인 성공
+            userRepository.editCurrentUser(user: user)
             presentTabBar?()
         } else {
             // 로그인 실패
@@ -242,7 +244,7 @@ class LoginVC: UIViewController {
     }
     
     @objc func registerButtonTapped() {
-        let registerVC = RegisterVC()
+        let registerVC = RegisterVC(userRepository: userRepository)
         
         self.navigationController?.pushViewController(registerVC, animated: true)
         

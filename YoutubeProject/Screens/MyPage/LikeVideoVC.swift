@@ -3,7 +3,7 @@ import UIKit
 
 class LikeVideoVC: UIViewController {
     
-    var userInfo: User?
+//    var userInfo: User?
     var myPageVC: MyPageVC!
     
     
