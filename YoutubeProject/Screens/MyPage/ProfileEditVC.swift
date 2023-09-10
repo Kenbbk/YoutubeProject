@@ -235,12 +235,12 @@ class ProfileEditVC: UIViewController {
     }
     
     @objc func editCompleteButtonTapped(_ button: UIButton) {
-
+        
         user.firstName = firstNameTextField.text!
         user.lastName = lastNameTextField.text!
         user.channelName = channelNameTextField.text!
-        let profileImageData = profileImageView.image?.jpegData(compressionQuality: 1)
-        let backgroundImageData = backgroundImageView.image?.jpegData(compressionQuality: 1)
+        let profileImageData = profileImageView.image!.jpegData(compressionQuality: 1)!
+        let backgroundImageData = backgroundImageView.image!.jpegData(compressionQuality: 1)!
         user.profileImageData = profileImageData
         user.backgroundImageData = backgroundImageData
         
@@ -250,23 +250,23 @@ class ProfileEditVC: UIViewController {
         delegate?.editButtonTapped()
         self.dismiss(animated: true)
     }
-     // locaRepository, userdefaultRepository // register 2 저장을 // 로그인 2 페치 // 1번에 저장 // edit 1번에 변경정보 저장 // default 저장을 해요
+    // locaRepository, userdefaultRepository // register 2 저장을 // 로그인 2 페치 // 1번에 저장 // edit 1번에 변경정보 저장 // default 저장을 해요
     // 1
     
     
     //MARK: - Helper
     
     private func setUserInformation() {
-
+        
         channelNameTextField.text = user.channelName
         firstNameTextField.text = user.firstName
         lastNameTextField.text = user.lastName
-        if let profileimageData = user.profileImageData {
-            profileImageView.image = UIImage(data: profileimageData)
-        }
-        if let backgroundImageData = user.backgroundImageData {
-            backgroundImageView.image = UIImage(data: backgroundImageData)
-        }
+        
+        profileImageView.image = UIImage(data: user.profileImageData)
+        
+        
+        backgroundImageView.image = UIImage(data: user.backgroundImageData)
+        
         
         
         

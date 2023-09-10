@@ -128,9 +128,9 @@ class MainVC: UIViewController {
     }
     
     private func setImage() {
-        if let profileImageData = user.profileImageData {
-            youtubeLogoView.logoSectionView.profileImageView.image = UIImage(data: profileImageData)
-        }
+       
+        youtubeLogoView.logoSectionView.profileImageView.image = UIImage(data: user.profileImageData)
+        
     }
     
     

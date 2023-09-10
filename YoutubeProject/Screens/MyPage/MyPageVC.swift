@@ -156,13 +156,13 @@ class MyPageVC: UIViewController {
         
         userNameLabel.text = "\(currentUser.lastName)\(currentUser.firstName)"
         userChannelNameLabel.text = "@\(currentUser.channelName)"
-        if let profileImageData = currentUser.profileImageData {
-            profileImageView.image = UIImage(data: profileImageData)
-        }
         
-        if let backgroumdImageData = currentUser.backgroundImageData {
-            backgroundImageView.image = UIImage(data: backgroumdImageData)
-        }
+        profileImageView.image = UIImage(data: currentUser.profileImageData)
+        
+        
+        
+        backgroundImageView.image = UIImage(data: currentUser.backgroundImageData)
+        
         
     }
 }

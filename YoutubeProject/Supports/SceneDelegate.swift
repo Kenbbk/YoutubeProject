@@ -10,8 +10,8 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
-    private lazy var tabBarController = makeTabBarVC()
-    private lazy var userRepository = UserRepository(currentUser: User(email: "AA", password: "1234", firstName: "bb", lastName: "cc"))
+
+    private lazy var userRepository = UserRepository(currentUser: User(email: "aa", password: "1234", firstName: "cc", lastName: "dd", channelName: "ee", profileImageData: ImageData.defaultProfileImage, backgroundImageData: ImageData.defaultBackgroundImage))
     private lazy var dataManager = DataManager()
     private lazy var imageLoader = ImageLoader()
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -20,13 +20,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navigationController = UINavigationController(rootViewController: makeLoginVC())
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
-        let mainVC = makeMainVC()
-        let myPageVC = makeMyPageVC()
-        let myPageNavigation = UINavigationController(rootViewController: myPageVC)
+        
+        
        
         
         
-        tabBarController.viewControllers = [mainVC, myPageNavigation]
+        
         
     }
     
@@ -36,6 +35,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBar = UITabBarController()
         tabBar.modalPresentationStyle = .fullScreen
         tabBar.tabBar.tintColor = .black
+        let mainVC = makeMainVC()
+        let myPageVC = makeMyPageVC()
+        let myPageNavigation = UINavigationController(rootViewController: myPageVC)
+        tabBar.viewControllers = [mainVC, myPageNavigation]
         return tabBar
     }
     
@@ -45,7 +48,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         vc.userRepository = self.userRepository
         vc.presentTabBar = {
-            vc.present(self.tabBarController, animated: false)
+            let presentedController = self.makeTabBarVC()
+            vc.present(presentedController, animated: false)
         }
         
         return vc

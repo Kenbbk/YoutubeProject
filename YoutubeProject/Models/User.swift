@@ -9,8 +9,8 @@ struct User: Codable {
     var firstName: String
     var lastName: String
     var channelName: String = ""
-    var profileImageData: Data?
-    var backgroundImageData: Data?
+    var profileImageData: Data
+    var backgroundImageData: Data
     
 }
 

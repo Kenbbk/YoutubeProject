@@ -336,7 +336,7 @@ class RegisterVC: UIViewController {
         }
         
         // User 인스턴스를 불러와 회원가입 시 입력한 유저의 값 저장
-        let newUser = User(email: email, password: password, firstName: firstName, lastName: lastName)
+        let newUser = User(email: email, password: password, firstName: firstName, lastName: lastName, profileImageData: ImageData.defaultProfileImage, backgroundImageData: ImageData.defaultBackgroundImage)
         print(newUser, "!@#!@#!@#!@#!@#!@#@!")
         // UserDefaultsManager를 사용하여 사용자 저장
         UserDefaultsManager.shared.saveUser(user: newUser)
