@@ -15,10 +15,11 @@ enum Section {
     case thirdVideos
 }
 
-private let reuseIdentifier = "Cell"
+
 
 protocol MainCollectionVCDelegate: AnyObject {
     func itemTapped(indexPath: IndexPath)
+    func scrollViewDidScrolled(_ scrollView: UIScrollView )
 }
 
 class MainCollectionVC: UICollectionViewController {
@@ -29,14 +30,16 @@ class MainCollectionVC: UICollectionViewController {
     
     var dataSource: UICollectionViewDiffableDataSource<Section, VideoModel>!
     
-    var snapshot: NSDiffableDataSourceSnapshot<Section, VideoModel>! {
-        didSet {
-            dataSource.apply(snapshot)
-        }
-    }
+    var snapshot: NSDiffableDataSourceSnapshot<Section, VideoModel>!
+        {
+            didSet {
+                dataSource.apply(snapshot)
+            }
+}
     
    override func viewDidLoad() {
         super.viewDidLoad()
+       print("I am init")
         configureCollectionView()
         configureDataSource()
         
@@ -48,7 +51,9 @@ class MainCollectionVC: UICollectionViewController {
     }
     
     private func configureCollectionView() {
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: makeLayout())
+        
+        
+       
         
         collectionView.register(ShortCell.self, forCellWithReuseIdentifier: ShortCell.identifier)
         collectionView.register(LongCell.self, forCellWithReuseIdentifier: LongCell.identifier)
@@ -89,46 +94,20 @@ class MainCollectionVC: UICollectionViewController {
         .init(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(30)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
     }
     
-    private func makeLayout() -> UICollectionViewCompositionalLayout {
-        
-        return UICollectionViewCompositionalLayout { [ weak self ] sectionIndex, layoutEnviro in
-            //            guard let self else { return collectionViewLayout)}
-            
-            let section = self!.sections[sectionIndex]
-            print("working")
-            switch section {
-            case .firstVideos, .secondVideos, .thirdVideos:
-                
-                let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .estimated(317)), repeatingSubitem: item, count: 1)
-                
-                let section = NSCollectionLayoutSection(group: group)
-                
-                section.interGroupSpacing = 10
-                
-                return section
-                
-            case .firstShorts, .secondShorts:
-                let item = NSCollectionLayoutItem(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: .init(widthDimension: .fractionalWidth(0.4), heightDimension: .fractionalHeight(0.35)), subitems: [item])
-                let section = NSCollectionLayoutSection(group: group)
-                section.orthogonalScrollingBehavior = .continuous
-                section.interGroupSpacing = 10
-                section.contentInsets = .init(top: 0, leading: 9, bottom: 25, trailing: 19)
-                
-                section.boundarySupplementaryItems = [self!.supplementaryHeaderItem()]
-                
-                return section
-                
-            }
-        }
-        
-    }
+    
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate?.itemTapped(indexPath: indexPath)
     }
     
+    
+}
+
+extension MainCollectionVC {
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        delegate?.scrollViewDidScrolled(scrollView)
+    }
 }
 
 
