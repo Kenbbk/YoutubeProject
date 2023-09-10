@@ -11,13 +11,16 @@ class MainVC: UIViewController {
     
     //MARK: - Properties
     
+    let userRepository: UserRepository
+    
+    var user: User
     var lastPositionY: CGFloat = 0
     var currentOffsetY: CGFloat = 0
     var heightConstraint: NSLayoutConstraint!
     
-    let dataManager = DataManager()
+    let dataManager: DataManager
     
-    let imageLoader = ImageLoader()
+    let imageLoader: ImageLoader
     
     var videoModels: [VideoModel] = []
     
@@ -78,9 +81,24 @@ class MainVC: UIViewController {
         }
     }
     
+    init(userRepository: UserRepository, dataManager: DataManager, imageLoader: ImageLoader) {
+        self.userRepository = userRepository
+        self.dataManager = dataManager
+        self.imageLoader = imageLoader
+        self.user = userRepository.getCurrentUser()
+        super.init(nibName: nil, bundle: nil)
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        user = userRepository.getCurrentUser()
         changeStatusBarBgColor(bgColor: .white)
+        setImage()
     }
     
     //MARK: - Actions
@@ -107,6 +125,12 @@ class MainVC: UIViewController {
         snapshot.appendItems([shortVidoeModels[1],shortVidoeModels[2],shortVidoeModels[3],shortVidoeModels[4]], toSection: .firstShorts)
         snapshot.appendItems([shortVidoeModels[5],shortVidoeModels[6],shortVidoeModels[7],shortVidoeModels[8]], toSection: .secondShorts)
         dataSource.apply(snapshot)
+    }
+    
+    private func setImage() {
+        if let profileImageData = user.profileImageData {
+            youtubeLogoView.logoSectionView.profileImageView.image = UIImage(data: profileImageData)
+        }
     }
     
     func changeStatusBarBgColor(bgColor: UIColor?) {

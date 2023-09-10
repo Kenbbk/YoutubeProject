@@ -21,7 +21,7 @@ class YoutubeCollapsableView: UIView {
         return view
     }()
     
-    private lazy var logoSectionView: MainLogosView = {
+    lazy var logoSectionView: MainLogosView = {
         let view = MainLogosView()
         view.delegate = self
         return view

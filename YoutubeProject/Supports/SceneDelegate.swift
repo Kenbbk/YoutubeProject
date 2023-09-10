@@ -12,6 +12,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     private lazy var tabBarController = makeTabBarVC()
     private lazy var userRepository = UserRepository(currentUser: User(email: "AA", password: "1234", firstName: "bb", lastName: "cc"))
+    private lazy var dataManager = DataManager()
+    private lazy var imageLoader = ImageLoader()
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
         
@@ -50,7 +52,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func makeMainVC() -> MainVC {
-        let vc = MainVC()
+        let vc = MainVC(userRepository: userRepository, dataManager: dataManager, imageLoader: imageLoader)
         vc.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
         return vc
     }
