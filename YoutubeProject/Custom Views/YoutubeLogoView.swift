@@ -15,43 +15,13 @@ class YoutubeLogoView: UIView {
         return view
     }()
     
-    let stackView: UIStackView = {
-       let view = UIStackView()
-        view.axis = .horizontal
-        view.distribution = .fillEqually
-        view.spacing = 10
-        view.backgroundColor = .brown
-        return view
-    }()
+    let logoSectionView = MainLogosView()
+    
+  
     
     let logoImageView: UIImageView = {
        let iv = UIImageView()
-        iv.image = UIImage(named: "logo1")
-        return iv
-    }()
-    
-    let squareImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.backgroundColor = .red
-        return iv
-    }()
-    
-    let bellImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.backgroundColor = .red
-        
-        return iv
-    }()
-    
-    let searchImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.backgroundColor = .red
-        return iv
-    }()
-    
-    let profileImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.backgroundColor = .red
+        iv.image = UIImage(named: "youtubeLogo")
         return iv
     }()
     
@@ -107,26 +77,20 @@ class YoutubeLogoView: UIView {
         NSLayoutConstraint.activate([
             logoImageView.bottomAnchor.constraint(equalTo: upperContainerView.bottomAnchor, constant: -7.5),
             logoImageView.leadingAnchor.constraint(equalTo: upperContainerView.leadingAnchor, constant: 10),
-            logoImageView.heightAnchor.constraint(equalToConstant: 25),
-            logoImageView.widthAnchor.constraint(equalToConstant: 90)
+            logoImageView.heightAnchor.constraint(equalToConstant: 30),
+            logoImageView.widthAnchor.constraint(equalToConstant: 110)
         ])
     }
     
     private func configureStackView() {
-        upperContainerView.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        upperContainerView.addSubview(logoSectionView)
+        logoSectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: upperContainerView.topAnchor, constant: 5),
+            logoSectionView.topAnchor.constraint(equalTo: upperContainerView.topAnchor, constant: 5),
             
-            stackView.trailingAnchor.constraint(equalTo: upperContainerView.trailingAnchor, constant: -10),
-            stackView.bottomAnchor.constraint(equalTo: upperContainerView.bottomAnchor, constant: -5),
-            stackView.widthAnchor.constraint(equalToConstant: 160)
+            logoSectionView.trailingAnchor.constraint(equalTo: upperContainerView.trailingAnchor, constant: -10),
+            logoSectionView.bottomAnchor.constraint(equalTo: upperContainerView.bottomAnchor, constant: -5),
+            logoSectionView.widthAnchor.constraint(equalToConstant: 180)
         ])
-        
-        [squareImageView, bellImageView, searchImageView, profileImageView].forEach { imageView in
-            stackView.addArrangedSubview(imageView)
-            
-        }
     }
-    
 }
