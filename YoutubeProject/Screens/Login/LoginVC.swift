@@ -25,7 +25,7 @@ class LoginVC: UIViewController {
     // "이메일" 안내문구
     private let emailInfoLabel: UILabel = {
         let label = UILabel()
-        label.text = "이메일주소"
+        label.text = "이메일"
         label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = #colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1)
         return label
@@ -100,7 +100,7 @@ class LoginVC: UIViewController {
     private lazy var loginButton: UIButton = {
         let button = UIButton(type: .custom)
         button.backgroundColor = .clear
-        button.layer.cornerRadius = 5
+        button.layer.cornerRadius = 10
         button.layer.borderWidth = 1
         button.layer.borderColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         button.setTitle("로그인", for: .normal)
@@ -134,7 +134,7 @@ class LoginVC: UIViewController {
     private let textViewHeight: CGFloat = 48
     
     // 오토레이아웃 향후 변경을 위한 변수(애니메이션)
-    lazy var emailInfoLabelCenterYConstraint = emailInfoLabel.centerYAnchor.constraint(equalTo: emailTextFieldView.centerYAnchor)
+    lazy var idInfoLabelCenterYConstraint = emailInfoLabel.centerYAnchor.constraint(equalTo: emailTextFieldView.centerYAnchor)
     lazy var passwordInfoLabelCenterYConstraint = passwordInfoLabel.centerYAnchor.constraint(equalTo: passwordTextFieldView.centerYAnchor)
     
     override func viewDidLoad() {
@@ -171,8 +171,8 @@ class LoginVC: UIViewController {
         emailInfoLabel.translatesAutoresizingMaskIntoConstraints = false
         emailInfoLabel.leadingAnchor.constraint(equalTo: emailTextFieldView.leadingAnchor, constant: 8).isActive = true
         emailInfoLabel.trailingAnchor.constraint(equalTo: emailTextFieldView.trailingAnchor, constant: -8).isActive = true
-        //emailInfoLabel.centerYAnchor.constraint(equalTo: emailTextFieldView.centerYAnchor).isActive = true
-        emailInfoLabelCenterYConstraint.isActive = true
+        
+        idInfoLabelCenterYConstraint.isActive = true
         
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         emailTextField.topAnchor.constraint(equalTo: emailTextFieldView.topAnchor, constant: 15).isActive = true
@@ -198,14 +198,12 @@ class LoginVC: UIViewController {
         passwordSecureButton.bottomAnchor.constraint(equalTo: passwordTextFieldView.bottomAnchor, constant: -15).isActive = true
         passwordSecureButton.trailingAnchor.constraint(equalTo: passwordTextFieldView.trailingAnchor, constant: -8).isActive = true
         
-        
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
         stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
         stackView.heightAnchor.constraint(equalToConstant: textViewHeight*3 + 36).isActive = true
-        
         
         registerButton.translatesAutoresizingMaskIntoConstraints = false
         registerButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10).isActive = true
@@ -216,48 +214,39 @@ class LoginVC: UIViewController {
     }
     
     
-    // MARK: - 비밀번호 가리기 모드 켜고 끄기
+    //MARK: - Actions
+    
     @objc private func passwordSecureModeSetting() {
         // 이미 텍스트필드에 내장되어 있는 기능
         passwordTextField.isSecureTextEntry.toggle()
     }
     
-    //    // 로그인 버튼 누르면 동작하는 함수
-    //    @objc func loginButtonTapped() {
-    //        presentTabBar?()
-    //        print("다음 화면으로 넘어가기")
-    //    }
-    
     @objc private func loginButtonTapped() {
-        
-        //        let user = UserDefaultsManager.shared.fetchUser()!
-        //
         // UserDefaults에서 저장된 이메일과 비밀번호 가져오기
-        //        let savedEmail = user.address
-        ////        let savedPassword = user.password
-        //
-        //    // 입력된 이메일과 비밀번호가 저장된 값과 일치하는지 확인
-        ////    if emailTextField.text == savedEmail && passwordTextField.text == savedPassword {
-        //    // 로그인 성공
-            presentTabBar?() // TabBar를 보여주는 함수 호출
-        //    } else {
-        //    // 로그인 실패
-        //    let alert = UIAlertController(title: "로그인 실패", message: "이메일 또는 비밀번호가 일치하지 않습니다.", preferredStyle: .alert)
-        //    let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
-        //    alert.addAction(okAction)
-        //    present(alert, animated: true, completion: nil)
-        //    }
-        //    }
-        //
-        //
-        //
-        //    // 회원가입버튼 눌리면 회원가입화면으로 넘어가는함수
-    }
-    @objc func registerButtonTapped() {
-        //                let registerVC = RegisterVC()
-        //                self.navigationController?.pushViewController(registerVC, animated: true)
-        //                print("회원가입 버튼 눌림")
+        let savedEmail = emailTextField.text!
+        let savedPassword = passwordTextField.text!
         
+        guard let user = UserDefaultsManager.shared.fetchUser(email: savedEmail) else { return }
+        // 입력된 이메일과 비밀번호가 저장된 값과 일치하는지 확인
+        if savedEmail == user.email && savedPassword == user.password {
+            // 로그인 성공
+            presentTabBar?()
+        } else {
+            // 로그인 실패
+            print ("싦패")
+            let alert = UIAlertController(title: "로그인 실패", message: "이메일 또는 비밀번호가 일치하지 않습니다.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+            alert.addAction(okAction)
+            present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    @objc func registerButtonTapped() {
+        let registerVC = RegisterVC()
+        
+        self.navigationController?.pushViewController(registerVC, animated: true)
+        
+        print("회원가입 버튼 눌림")
     }
     
 }
@@ -272,7 +261,7 @@ extension LoginVC: UITextFieldDelegate {
             emailTextFieldView.backgroundColor = #colorLiteral(red: 0.2972877622, green: 0.2973434925, blue: 0.297280401, alpha: 1)
             emailInfoLabel.font = UIFont.systemFont(ofSize: 11)
             // 오토레이아웃 업데이트
-            emailInfoLabelCenterYConstraint.constant = -13
+            idInfoLabelCenterYConstraint.constant = -13
         }
         
         if textField == passwordTextField {
@@ -296,7 +285,7 @@ extension LoginVC: UITextFieldDelegate {
             // 빈칸이면 원래로 되돌리기
             if emailTextField.text == "" {
                 emailInfoLabel.font = UIFont.systemFont(ofSize: 18)
-                emailInfoLabelCenterYConstraint.constant = 0
+                idInfoLabelCenterYConstraint.constant = 0
             }
         }
         if textField == passwordTextField {

@@ -49,7 +49,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return vc
     }
     
-    
     private func makeMainVC() -> MainVC {
         let vc = MainVC()
         vc.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
