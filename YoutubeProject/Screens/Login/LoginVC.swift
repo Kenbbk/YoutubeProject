@@ -144,6 +144,25 @@ class LoginVC: UIViewController {
         setupAutoLayout()
         //        let a = UserDefaultsManager.shared.fetchUser()
         //        print(a)
+        
+        let manager = SearchManager()
+        
+        manager.performRequest("손흥민") { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let searchModel):
+                print(searchModel.items.first?.snippet.title)
+                manager.performRequest("손흥민", token: searchModel.nextPageToken) { result in
+                    switch result {
+                    case .failure(let error):
+                        print(error)
+                    case .success(let searchModel):
+                        print(searchModel.items.first?.snippet.title)
+                    }
+                }
+            }
+        }
     }
     
     // 셋팅

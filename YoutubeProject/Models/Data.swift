@@ -57,10 +57,25 @@ struct SearchItem: Codable {
 
 struct SearchSnippet: Codable {
     let title: String
+    let description: String
+    let channelId: String
+    let thumbnails: SearchThumbnail
+    let channelTitle: String
+    let publishTime: String
+}
+
+struct SearchThumbnail: Codable {
+    let `default`: SearchThumbnailInfo
+    let medium: SearchThumbnailInfo
+    let high: SearchThumbnailInfo
+}
+
+struct SearchThumbnailInfo: Codable {
+    let url: String
 }
 
 
-// MARK: Channel Data
+// MARK: - Channel Data
 struct ChannelData: Codable {
     let items: [ChannelItem]
 }

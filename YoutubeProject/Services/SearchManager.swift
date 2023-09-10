@@ -8,7 +8,7 @@
 import Foundation
 
 class SearchManager {
-    func performRequest(_ search: String, token: String = "", completion: @escaping (Result<[SearchModel], VideoError>) -> Void) {
+    func performRequest(_ search: String, token: String = "", completion: @escaping (Result<SearchModel, VideoError>) -> Void) {
         let encodeSearchString = search.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         
         var pageToken = ""
@@ -49,18 +49,15 @@ class SearchManager {
         task.resume()
     }
     
-    func parseSearchJSON(_ searchData: Data, completion: @escaping (Result<[SearchModel], VideoError>) -> Void) {
+    func parseSearchJSON(_ searchData: Data, completion: @escaping (Result<SearchModel, VideoError>) -> Void) {
         let decode = JSONDecoder()
         
         do {
             let decodedData = try decode.decode(SearchData.self, from: searchData)
-            let searchItems = decodedData.items
+            let searchModel = SearchModel(searchData: decodedData)
             
-            let searchModels = searchItems.map { item in
-                return SearchModel(searchData: decodedData, searchItem: item)
-            }
             
-            completion(.success(searchModels))
+            completion(.success(searchModel))
         } catch {
             completion(.failure(.failParsing))
         }

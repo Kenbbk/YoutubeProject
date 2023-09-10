@@ -10,14 +10,10 @@ import Foundation
 
 struct SearchModel: Codable {
     let nextPageToken: String
-    let items: [VideoItem]
-  
-class SearchModel {
-    let nextPageToken: String
-    let title: String
-    
-    init(searchData: SearchData, searchItem: SearchItem) {
+    let items: [SearchItem]
+
+    init(searchData: SearchData) {
         self.nextPageToken = searchData.nextPageToken
-        self.title = searchItem.snippet.title
+        self.items = searchData.items
     }
 }
