@@ -229,13 +229,13 @@
 		D6F09E9A2AA5B27D002E87D5 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				D6F09E9B2AA5B28A002E87D5 /* Login */,
 				D66817B42AA9F0D100F2DD25 /* Register */,
 				D668178A2AA898A300F2DD25 /* Description */,
 				D66817892AA8983700F2DD25 /* Comment */,
-				D66817882AA897ED00F2DD25 /* Detail */,
 				D6F09EA12AA5B551002E87D5 /* Main */,
+				D66817882AA897ED00F2DD25 /* Detail */,
 				D6F09E9E2AA5B342002E87D5 /* MyPage */,
-				D6F09E9B2AA5B28A002E87D5 /* Login */,
 			);
 			path = Screens;
 			sourceTree = "<group>";

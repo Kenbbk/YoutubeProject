@@ -3,13 +3,13 @@ import UIKit
 
 protocol SendDataDelegate: AnyObject {
     // 수정된 데이터 전달할 델리게이트
-    func didEditUserInfo(data: User)
+    func didEditUserInfo(data: User1)
 }
 
 //MARK: - Properties
 
 class ProfileEditVC: UIViewController {
-    var userInfo: User?
+    var userInfo: User1?
     var myPageVC = MyPageVC()
     let profileImagePicker = UIImagePickerController()
     let backgroundImagePicker = UIImagePickerController()
@@ -33,7 +33,7 @@ class ProfileEditVC: UIViewController {
     
     let backgroundImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.alpha = 0.5
+        imageView.alpha = 0.8
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         
@@ -43,6 +43,7 @@ class ProfileEditVC: UIViewController {
     let firstNameLabel: UILabel = {
         let label = UILabel()
         label.text = "이름"
+        label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 15)
         
         return label
@@ -51,7 +52,7 @@ class ProfileEditVC: UIViewController {
     let lastNameLabel: UILabel = {
         let label = UILabel()
         label.text = "성"
-        label.textColor = .black
+        label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 15)
         
         return label
@@ -60,7 +61,7 @@ class ProfileEditVC: UIViewController {
     let addressLabel: UILabel = {
         let label = UILabel()
         label.text = "채널명"
-        label.textColor = .black
+        label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 15)
         
         return label
@@ -68,7 +69,6 @@ class ProfileEditVC: UIViewController {
     
     let addressDataLabel: UILabel = {
         let label = UILabel()
-        label.text = "@"
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 12)
         
@@ -77,9 +77,11 @@ class ProfileEditVC: UIViewController {
     
     let firstNameTextField: UITextField = {
         let textField = UITextField()
+        textField.backgroundColor = .clear
+        textField.textColor = .white
         textField.layer.cornerRadius = 10
         textField.layer.borderWidth = 1
-        textField.layer.borderColor = UIColor.lightGray.cgColor
+        textField.layer.borderColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 0)) // 커서 위치 설정
         textField.leftViewMode = .always
         
@@ -88,9 +90,11 @@ class ProfileEditVC: UIViewController {
     
     let lastNameTextField: UITextField = {
         let textField = UITextField()
+        textField.backgroundColor = .clear
+        textField.textColor = .white
         textField.layer.cornerRadius = 10
         textField.layer.borderWidth = 1
-        textField.layer.borderColor = UIColor.lightGray.cgColor
+        textField.layer.borderColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 0))
         textField.leftViewMode = .always
         
@@ -99,9 +103,11 @@ class ProfileEditVC: UIViewController {
     
     let addressTextField: UITextField = {
         let textField = UITextField()
+        textField.backgroundColor = .clear
+        textField.textColor = .white
         textField.layer.cornerRadius = 10
         textField.layer.borderWidth = 1
-        textField.layer.borderColor = UIColor.lightGray.cgColor
+        textField.layer.borderColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 0))
         textField.leftViewMode = .always
         
@@ -114,7 +120,7 @@ class ProfileEditVC: UIViewController {
         button.setImage(buttonImage, for: .normal)
         button.setTitle("", for: .normal)
         button.tintColor = .white
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = .lightGray
         button.layer.borderColor = UIColor.white.cgColor
         button.layer.borderWidth = 3
         button.layer.cornerRadius = 25
@@ -128,7 +134,7 @@ class ProfileEditVC: UIViewController {
         let buttonImage = UIImage(systemName: "camera")
         button.setImage(buttonImage, for: .normal)
         button.setTitle("", for: .normal)
-        button.tintColor = .lightGray
+        button.tintColor = .white
         button.layer.cornerRadius = 15
         button.addTarget(self, action: #selector(backgroundImageEditButtonTapped(_:)), for: .touchUpInside)
         
@@ -151,7 +157,7 @@ class ProfileEditVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .black
         profileImagePicker.delegate = self
         backgroundImagePicker.delegate = self
         firstNameTextField.delegate = self
@@ -159,10 +165,10 @@ class ProfileEditVC: UIViewController {
         addressTextField.delegate = self
         
         // 이미지 가져오기
-        if let profileImage = profileImage {
+        if let profileImage = loadImageFromUserDefaults(forKey: "ProfileImage") {
             profileImageView.image = profileImage
         }
-        if let backgroundImage = backgroundImage {
+        if let backgroundImage = loadImageFromUserDefaults(forKey: "BackgroundImage") {
             backgroundImageView.image = backgroundImage
         }
         configureUI()
@@ -213,41 +219,13 @@ class ProfileEditVC: UIViewController {
     }
     
     @objc func editCompleteButtonTapped(_ button: UIButton) {
-    // 데이터 수정 값 받아오기
-
-    var profileData: Data? = nil
-    var backgroundData: Data? = nil
-
-    if let profileImage = profileImageView.image {
-    profileData = profileImage.jpegData(compressionQuality: 1.0)
+//        let editedData = User(id: "user1", firstName: firstNameTextField.text ?? "", lastName: lastNameTextField.text ?? "", address: addressTextField.text ?? "", password: "1234", profileImage: profileImageView.image!, backgroundImage: backgroundImageView.image!)
+        
+        let edit = User1(firstName: firstNameTextField.text ?? "", lastName: lastNameTextField.text ?? "", email: <#T##String#>, password: <#T##String#>)
+        // 델리게이트를 통해 데이터 전달
+        delegate?.didEditUserInfo(data: editedData)
+        self.dismiss(animated: true)
     }
-
-    if let backgroundImage = backgroundImageView.image {
-    backgroundData = backgroundImage.jpegData(compressionQuality: 1.0)
-    }
-
-//    let editedData = User1(id: "user1",
-//    firstName: firstNameTextField.text ?? "",
-//    lastName: lastNameTextField.text ?? "",
-//    address: addressTextField.text ?? "",
-//    password: "1234",
-//    profileImageData: profileData,
-//    backgroundImageData: backgroundData)
-
-    // 델리게이트를 통해 데이터 전달
-//    delegate?.didEditUserInfo(data: editedData)
-
-    self.dismiss(animated: true)
-    }
-//    ///tㅅ
-//    @objc func editCompleteButtonTapped(_ button: UIButton){
-//        // 데이터 수정 값 받아오기
-//        let editedData = User(id: "user1", firstName: firstNameTextField.text ?? "", lastName: lastNameTextField.text ?? "", address: addressTextField.text ?? "", password: "1234", profileImageData: profileImageView.image!, backgroundImageData: backgroundImageView.image!)
-//        // 델리게이트를 통해 데이터 전달
-//        delegate?.didEditUserInfo(data: editedData)
-//
-//        self.dismiss(animated: true)
-//    }
     
     
     //MARK: - Helper
@@ -264,7 +242,7 @@ class ProfileEditVC: UIViewController {
         let addressIsEmpty = addressTextField.text?.isEmpty ?? true
         // TextField 활성화일 때 Button Color 지정
         editCompleteButton.isEnabled = !firstNameIsEmpty && !lastNameIsEmpty && !addressIsEmpty
-        editCompleteButton.backgroundColor = editCompleteButton.isEnabled ? .systemBlue : .lightGray
+        editCompleteButton.backgroundColor = editCompleteButton.isEnabled ? .systemRed : .lightGray
     }
     
     func profileImageLibrary(){
@@ -277,6 +255,14 @@ class ProfileEditVC: UIViewController {
         present(backgroundImagePicker, animated: false, completion: nil)
     }
     
+    
+    // UserDefaults에서 이미지 데이터를 불러오는 함수
+    func loadImageFromUserDefaults(forKey key: String) -> UIImage? {
+        if let imageData = UserDefaults.standard.data(forKey: key) {
+            return UIImage(data: imageData)
+        }
+        return nil
+    }
 }
 
 
@@ -286,7 +272,7 @@ extension ProfileEditVC: UITextFieldDelegate{
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         // TextField 활성화일 때 Border Color 지정
-        textField.layer.borderColor = UIColor.systemBlue.cgColor
+        textField.layer.borderColor = UIColor.systemRed.cgColor
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -300,19 +286,18 @@ extension ProfileEditVC: UITextFieldDelegate{
            let lastName = lastNameTextField.text, !lastName.isEmpty,
            let address = addressTextField.text, !address.isEmpty {
             editCompleteButton.isEnabled = true
-            editCompleteButton.backgroundColor = .systemBlue
+            editCompleteButton.backgroundColor = .systemRed
         } else {
             editCompleteButton.isEnabled = false
             editCompleteButton.backgroundColor = .lightGray
         }
         
         let currentText = textField.text ?? ""
-        let address = (currentText as NSString).replacingCharacters(in: range, with: string)
-        addressDataLabel.text = "@\(address)"
+        let addressEdit = (currentText as NSString).replacingCharacters(in: range, with: string)
+        addressDataLabel.text = "@\(addressEdit)"
         return true
     }
 }
-
 
 extension ProfileEditVC: SendDataDelegate{
     func didEditUserInfo(data: User) {

@@ -34,7 +34,7 @@ class MyPageVC: UIViewController {
     let userNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 24)
-        label.textColor = .black
+        label.textColor = .white
         
         return label
     }()
@@ -50,10 +50,12 @@ class MyPageVC: UIViewController {
     lazy var profileEditButton: UIButton = {
         let button = UIButton()
         button.setTitle("프로필 수정", for: .normal)
-        button.setTitleColor(UIColor.black, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.backgroundColor = .lightGray.withAlphaComponent(0.3)
+        button.backgroundColor = .clear
         button.layer.cornerRadius = 10
+        button.layer.borderWidth = 1
+        button.layer.borderColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         button.addTarget(self, action: #selector(profileEditButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
@@ -61,10 +63,13 @@ class MyPageVC: UIViewController {
     lazy var likeVideoButton: UIButton = {
         let button = UIButton()
         button.setTitle("좋아요 표시한 동영상", for: .normal)
-        button.setTitleColor(UIColor.black, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.backgroundColor = .lightGray.withAlphaComponent(0.3)
+        button.backgroundColor = .lightGray.withAlphaComponent(0.7)
+        button.backgroundColor = .clear
         button.layer.cornerRadius = 10
+        button.layer.borderWidth = 1
+        button.layer.borderColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         button.addTarget(self, action: #selector(likeVideoButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
@@ -72,10 +77,13 @@ class MyPageVC: UIViewController {
     lazy var logoutButton: UIButton = {
         let button = UIButton()
         button.setTitle("로그아웃", for: .normal)
-        button.setTitleColor(UIColor.black, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.backgroundColor = .lightGray.withAlphaComponent(0.3)
+        button.backgroundColor = .lightGray.withAlphaComponent(0.7)
+        button.backgroundColor = .clear
         button.layer.cornerRadius = 10
+        button.layer.borderWidth = 1
+        button.layer.borderColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
         button.addTarget(self, action: #selector(logoutButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
@@ -85,13 +93,18 @@ class MyPageVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .black
         
         configureUI()
         initiateUser()
         setUserInfoLabels()
-        
     }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        self.tabBarController?.tabBar.isHidden = true // Tapbar 숨기기
+//    }
+    
     
     //MARK: - Actions
     
@@ -111,6 +124,20 @@ class MyPageVC: UIViewController {
             editVC.addressDataLabel.text = nil
         }
         
+        // UserDefaults에서 프로필 이미지 불러오기
+        if let profileImageData = UserDefaults.standard.data(forKey: "UserProfileImageKey") {
+            if let profileImage = UIImage(data: profileImageData) {
+                profileImageView.image = profileImage
+            }
+        }
+
+        // UserDefaults에서 배경 이미지 불러오기
+        if let backgroundImageData = UserDefaults.standard.data(forKey: "UserBackgroundImageKey") {
+            if let backgroundImage = UIImage(data: backgroundImageData) {
+                backgroundImageView.image = backgroundImage
+            }
+        }
+        
         // MyPageVC 이미지뷰의 이미지 -> ProfileEditVC 이미지뷰로 전달
         editVC.profileImage = self.profileImageView.image
         editVC.backgroundImage = self.backgroundImageView.image
@@ -122,14 +149,19 @@ class MyPageVC: UIViewController {
     @objc func likeVideoButtonTapped(_ button: UIButton){
         let likeVideoVC = LikeVideoVC()
         likeVideoVC.myPageVC = self
-        // likeVideoVC.delegate = self
         
         // LikeVideoVC로 화면 전환
         self.navigationController?.pushViewController(likeVideoVC, animated: true)
     }
     
     @objc func logoutButtonTapped(_ button: UIButton){
-        // Logout Page
+        let loginVC = LoginVC()
+        let navController = UINavigationController(rootViewController: loginVC)
+        navController.modalPresentationStyle = .fullScreen
+        self.present(navController, animated: true, completion: nil)
+        // LoginVC로 화면 전환
+//        self.navigationController?.pushViewController(loginVC, animated: true)
+//        self.present(loginVC, animated: true)
     }
     
     
@@ -145,7 +177,7 @@ class MyPageVC: UIViewController {
     
     func initiateUser(){
         // User 초기화
-        user = User(id: "User1", firstName: "구름", lastName: "정", address: "KingGuruem", password: "1234")
+        user = User(id: "User1", firstName: "구름", lastName: "정", address: "guruem", password: "1234")
     }
 }
 
@@ -206,7 +238,6 @@ extension MyPageVC {
         NSLayoutConstraint.activate([
             userNameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 10),
             userNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
         ])
     }
     
@@ -217,7 +248,6 @@ extension MyPageVC {
         NSLayoutConstraint.activate([
             userAddressLabel.topAnchor.constraint(equalTo: userNameLabel.topAnchor, constant: 30),
             userAddressLabel.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor)
-            
         ])
     }
     
@@ -228,7 +258,7 @@ extension MyPageVC {
         NSLayoutConstraint.activate([
             profileEditButton.widthAnchor.constraint(equalToConstant: 360), // 가로 너비
             profileEditButton.heightAnchor.constraint(equalToConstant: 50), // 세로 길이
-            profileEditButton.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 400),
+            profileEditButton.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 420),
             profileEditButton.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor), // 중앙정렬
         ])
     }
