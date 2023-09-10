@@ -35,8 +35,14 @@ class DataManager {
     
     var delegate: DataManagerDeleage?
     
-    func performRequest(completion: @escaping (Result<[VideoModel], VideoError>) -> Void) {
-        let urlString = "\(videoString)&maxResults=\(maxResult)&key=\(apiKey)"
+    func performRequest(categoryId: String = "", completion: @escaping (Result<[VideoModel], VideoError>) -> Void) {
+        var categoryIdString = ""
+        
+        if categoryId != "" {
+            categoryIdString = "&videoCategoryId=\(categoryId)"
+        }
+        
+        let urlString = "\(videoString)&maxResults=\(maxResult)\(categoryIdString)&key=\(apiKey)"
         
         // url 생성
         guard let url = URL(string: urlString) else {
