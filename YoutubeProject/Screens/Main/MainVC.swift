@@ -21,6 +21,8 @@ class MainVC: UIViewController {
     
     var videoModels: [VideoModel] = []
     
+    var formattedVideoModels: [[VideoModel]] = []
+    
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: CompositionalLayout().makeLayout())
         collectionView.register(ShortCell.self, forCellWithReuseIdentifier: ShortCell.identifier)
@@ -54,6 +56,7 @@ class MainVC: UIViewController {
         configureDataSource()
         
         getModels {
+            self.formattedVideoModels = DataFormatter().makeLongVideos(models: self.videoModels)
             DispatchQueue.main.async {
                 self.makeSnapshot()
                 self.collectionView.contentInset = .init(top: 80, left: 0, bottom: 0, right: 0)
@@ -78,15 +81,12 @@ class MainVC: UIViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Section, VideoModel>()
         
         snapshot.appendSections([.firstVideos, .firstShorts, .secondVideos, .secondShorts, .thirdVideos])
-        if videoModels.count != 0 {
-            snapshot.appendItems([videoModels[0]], toSection: .firstVideos)
-            snapshot.appendItems([videoModels[1],videoModels[2],videoModels[3],videoModels[4]], toSection: .firstShorts)
-        }
+       
         
         
-        snapshot.appendItems([], toSection: .secondVideos)
-        snapshot.appendItems([], toSection: .secondShorts)
-        snapshot.appendItems([], toSection: .thirdVideos)
+        snapshot.appendItems(formattedVideoModels[0], toSection: .firstVideos)
+        snapshot.appendItems(formattedVideoModels[1], toSection: .secondVideos)
+        snapshot.appendItems(formattedVideoModels[2], toSection: .thirdVideos)
         dataSource.apply(snapshot)
     }
     

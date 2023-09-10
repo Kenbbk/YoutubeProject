@@ -9,7 +9,7 @@ import Foundation
 
 struct DataFormatter {
     
-    func makeLongVideos(models: [VideoModel]) {
+    func makeLongVideos(models: [VideoModel]) -> [[VideoModel]] {
         var models = models
         var firstVideo: [VideoModel] = []
         var secondViedo: [VideoModel] = []
@@ -24,6 +24,12 @@ struct DataFormatter {
             models.remove(at: 0)
         }
         
+        thirdVideos.append(contentsOf: models)
+        var result: [[VideoModel]] = []
+        [firstVideo, secondViedo, thirdVideos].forEach { array in
+            result.append(array)
+        }
         
+        return result
     }
 }
