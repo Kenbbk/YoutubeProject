@@ -35,6 +35,9 @@
 		D668178F2AA9668B00F2DD25 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = D668178E2AA9668B00F2DD25 /* String+Ext.swift */; };
 		D66817B32AA9F00400F2DD25 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66817B22AA9F00400F2DD25 /* RegisterVC.swift */; };
 		D6C4F1492AAC950200D7DE26 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F1482AAC950200D7DE26 /* UserDefaultsManager.swift */; };
+		D6C4F14B2AAC9C9600D7DE26 /* YoutubeLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F14A2AAC9C9600D7DE26 /* YoutubeLogoView.swift */; };
+		D6C4F14D2AACBEEC00D7DE26 /* SearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F14C2AACBEEC00D7DE26 /* SearchModel.swift */; };
+		D6C4F14F2AAD55E900D7DE26 /* CompositionalLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C4F14E2AAD55E900D7DE26 /* CompositionalLayout.swift */; };
 		D6DDCDFD2AAAE1FC0098D67D /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DDCDFC2AAAE1FC0098D67D /* ImageLoader.swift */; };
 		D6F09E7B2AA59CC3002E87D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F09E7A2AA59CC3002E87D5 /* AppDelegate.swift */; };
 		D6F09E7D2AA59CC3002E87D5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F09E7C2AA59CC3002E87D5 /* SceneDelegate.swift */; };
@@ -82,6 +85,9 @@
 		D668178E2AA9668B00F2DD25 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		D66817B22AA9F00400F2DD25 /* RegisterVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
 		D6C4F1482AAC950200D7DE26 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
+		D6C4F14A2AAC9C9600D7DE26 /* YoutubeLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeLogoView.swift; sourceTree = "<group>"; };
+		D6C4F14C2AACBEEC00D7DE26 /* SearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModel.swift; sourceTree = "<group>"; };
+		D6C4F14E2AAD55E900D7DE26 /* CompositionalLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionalLayout.swift; sourceTree = "<group>"; };
 		D6DDCDFC2AAAE1FC0098D67D /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		D6F09E772AA59CC3002E87D5 /* YoutubeProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YoutubeProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F09E7A2AA59CC3002E87D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -267,6 +273,8 @@
 				D66817612AA847F100F2DD25 /* LongCell.swift */,
 				D66817632AA8555500F2DD25 /* ShortsHeader.swift */,
 				D66817672AA8833600F2DD25 /* ShortCell.swift */,
+				D6C4F14A2AAC9C9600D7DE26 /* YoutubeLogoView.swift */,
+				D6C4F14E2AAD55E900D7DE26 /* CompositionalLayout.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -298,6 +306,7 @@
 				D66817792AA8960E00F2DD25 /* VideoModel.swift */,
 				D668177D2AA8962900F2DD25 /* Data.swift */,
 				D66817832AA8965300F2DD25 /* ChannelModel.swift */,
+				D6C4F14C2AACBEEC00D7DE26 /* SearchModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -471,6 +480,9 @@
 				D6F09EB12AA5BB03002E87D5 /* CurrentUser.swift in Sources */,
 				D6F09E7D2AA59CC3002E87D5 /* SceneDelegate.swift in Sources */,
 				7B0969A52AA83D3700784962 /* LogoutVC.swift in Sources */,
+				D6C4F14B2AAC9C9600D7DE26 /* YoutubeLogoView.swift in Sources */,
+				D6C4F14F2AAD55E900D7DE26 /* CompositionalLayout.swift in Sources */,
+				D6C4F14D2AACBEEC00D7DE26 /* SearchModel.swift in Sources */,
 				D66817842AA8965300F2DD25 /* ChannelModel.swift in Sources */,
 				D6DDCDFD2AAAE1FC0098D67D /* ImageLoader.swift in Sources */,
 			);

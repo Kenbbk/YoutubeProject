@@ -11,6 +11,10 @@ class MainVC: UIViewController {
     
     //MARK: - Properties
     
+    var lastPositionY: CGFloat = 0
+    var currentOffsetY: CGFloat = 0
+    var heightConstraint: NSLayoutConstraint!
+    
     let dataManager = DataManager()
     
     let imageLoader = ImageLoader()
@@ -19,21 +23,34 @@ class MainVC: UIViewController {
     
     var videoModels: [VideoModel] = []
     
-    var collectionVC = MainCollectionVC(collectionViewLayout: UICollectionViewLayout())
+    private lazy var collectionVC: MainCollectionVC = {
+        let collectionVC = MainCollectionVC(collectionViewLayout: CompositionalLayout().makeLayout())
+        collectionVC.collectionView.contentInset = .init(top: 80, left: 0, bottom: 0, right: 0)
+        collectionVC.delegate = self
+        return collectionVC
+    }()
     
     var channelModel: ChannelModel!
+    
+    let youtubeLogoView = YoutubeLogoView()
     
     //MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        configureContainerView()
+        
+        configureUI()
         addVCS()
         getModels {
-            
+            print("get models get called")
             self.giveSnapshot()
         }
+//        getModels {
+//            self.addVCS()
+//            print("get models get called")
+//            self.giveSnapshot()
+//        }
     }
     
     //MARK: - Actions
@@ -71,12 +88,31 @@ class MainVC: UIViewController {
         collectionVC.snapshot = snapshot
     }
     
+    private func configureUI() {
+        configureContainerView()
+        configureYoutubeLogoView()
+    }
     
     private func addVCS() {
         
         add(collectionVC, to: containerView)
-        collectionVC.delegate = self
     }
+    
+    
+    
+    private func configureYoutubeLogoView() {
+        view.addSubview(youtubeLogoView)
+        youtubeLogoView.translatesAutoresizingMaskIntoConstraints = false
+        heightConstraint = youtubeLogoView.heightAnchor.constraint(equalToConstant: 80)
+        NSLayoutConstraint.activate([
+            youtubeLogoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            youtubeLogoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            youtubeLogoView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            heightConstraint
+            
+        ])
+    }
+    
     
     private func configureContainerView() {
         
@@ -86,8 +122,10 @@ class MainVC: UIViewController {
             containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+        
+        
         
     }
     
@@ -101,6 +139,35 @@ class MainVC: UIViewController {
     //            }
     //        }
     //    }
+    
+    func updateOffset(offsetY: CGFloat) {
+        guard offsetY != 0 else { return }
+        guard offsetY > -80 else { return }
+        let diff = lastPositionY - offsetY
+        self.currentOffsetY = currentOffsetY + diff
+       
+        if offsetY == 0 {
+            
+        } else {
+            currentOffsetY = min(80, currentOffsetY)
+            currentOffsetY = max(0, currentOffsetY)
+        }
+        
+        if offsetY == 0 {
+            
+        } else {
+            heightConstraint.constant = currentOffsetY
+        }
+        print(heightConstraint.constant)
+        
+        lastPositionY = offsetY
+        
+    }
+    
+    func aa() {
+        guard lastPositionY == 0 else { return }
+        lastPositionY = youtubeLogoView.frame.origin.y
+    }
 }
 
 extension MainVC: MainCollectionVCDelegate {
@@ -126,5 +193,26 @@ extension MainVC: MainCollectionVCDelegate {
                 }
             }
         }
+    }
+    
+    func scrollViewDidScrolled(_ scrollView: UIScrollView) {
+        let height = scrollView.frame.size.height
+          let contentYoffset = scrollView.contentOffset.y
+          let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+//        print(UIScreen.main.bounds.height)
+//        print(distanceFromBottom)
+          if distanceFromBottom < height {
+              heightConstraint.constant = 0
+          } else if contentYoffset <= -80 {
+//              print(" you reached top of the table")
+//              updateOffset1(offsetY: scrollView.contentOffset.y)
+          } else {
+              aa()
+              updateOffset(offsetY: scrollView.contentOffset.y)
+//              print(Int(currentOffsetY), Int(lastPositionY), Int(bottomConstraint.constant))
+          }
+
+        
+//        print(scrollView.contentOffset.y)
     }
 }
