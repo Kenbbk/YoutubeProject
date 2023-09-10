@@ -130,6 +130,11 @@ class MyPageVC: UIViewController {
     
     @objc func logoutButtonTapped(_ button: UIButton){
         // Logout Page
+        dismiss(animated: true) {
+            let loginVC = LoginVC()
+            loginVC.modalPresentationStyle = .fullScreen
+            self.present(loginVC, animated: true)
+        }
     }
     
     
