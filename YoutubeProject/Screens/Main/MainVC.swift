@@ -68,7 +68,7 @@ class MainVC: UIViewController {
                     print(error)
                 case .success(let videomodels):
                     self.shortVidoeModels = videomodels
-
+                    
                     DispatchQueue.main.async {
                         self.makeSnapshot()
                         self.collectionView.contentInset = .init(top: 80, left: 0, bottom: 0, right: 0)
@@ -77,7 +77,7 @@ class MainVC: UIViewController {
                     }
                 }
             }
-
+            
         }
     }
     
@@ -97,7 +97,7 @@ class MainVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         user = userRepository.getCurrentUser()
-        changeStatusBarBgColor(bgColor: .white)
+        StatusBarChanger().changeStatusBarBgColor(bgColor: .white)
         setImage()
     }
     
@@ -133,20 +133,7 @@ class MainVC: UIViewController {
         }
     }
     
-    func changeStatusBarBgColor(bgColor: UIColor?) {
-        if #available(iOS 13.0, *) {
-            let window = UIApplication.shared.windows.first
-            let statusBarManager = window?.windowScene?.statusBarManager
-            
-            let statusBarView = UIView(frame: statusBarManager?.statusBarFrame ?? .zero)
-            statusBarView.backgroundColor = bgColor
-            
-            window?.addSubview(statusBarView)
-        } else {
-            let statusBarView = UIApplication.shared.value(forKey: "statusBar") as? UIView
-            statusBarView?.backgroundColor = bgColor
-        }
-    }
+    
     
     
     private func getModels(completion: @escaping () -> Void) {

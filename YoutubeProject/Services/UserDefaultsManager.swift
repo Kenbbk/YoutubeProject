@@ -29,5 +29,27 @@ class UserDefaultsManager {
         return nil
     }
     
+    func Login(user: User) {
+        let key = "Login"
+        do {
+            let encodedData = try JSONEncoder().encode(user)
+            userDefaults.set(encodedData, forKey: key)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func logout() {
+        let key = "Login"
+        
+        userDefaults.removeObject(forKey: key)
+       
+    }
+    
+    func checkLogin() -> Bool {
+        let key = "Login"
+        return userDefaults.object(forKey: key) == nil ? false : true
+    }
+    
     
 }

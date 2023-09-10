@@ -156,7 +156,13 @@ class LoginVC: UIViewController {
 //        }
        
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print(UserDefaultsManager.shared.checkLogin())
+        if UserDefaultsManager.shared.checkLogin() == true {
+            presentTabBar?()
+        }
+    }
    
     // 셋팅
     private func configure() {
@@ -232,6 +238,7 @@ class LoginVC: UIViewController {
         if savedEmail == user.email && savedPassword == user.password {
             // 로그인 성공
             userRepository.editCurrentUser(user: user)
+            UserDefaultsManager.shared.Login(user: user)
             presentTabBar?()
         } else {
             // 로그인 실패

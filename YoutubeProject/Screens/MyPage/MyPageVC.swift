@@ -108,6 +108,11 @@ class MyPageVC: UIViewController {
         print("\(currentUser.firstName), \(userRepository.getCurrentUser().firstName)")
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        StatusBarChanger().changeStatusBarBgColor(bgColor: .systemBackground)
+    }
+    
     
     init(userRepository: UserRepository) {
         self.userRepository = userRepository
@@ -137,13 +142,10 @@ class MyPageVC: UIViewController {
     }
     
     @objc func logoutButtonTapped(_ button: UIButton){
-        let loginVC = LoginVC()
-        let navController = UINavigationController(rootViewController: loginVC)
-        navController.modalPresentationStyle = .fullScreen
-        self.present(navController, animated: true, completion: nil)
-        // LoginVC로 화면 전환
-        //        self.navigationController?.pushViewController(loginVC, animated: true)
-        //        self.present(loginVC, animated: true)
+        print("Logout button tapped")
+        UserDefaultsManager.shared.logout()
+        self.navigationController?.dismiss(animated: true)
+      
     }
     
     

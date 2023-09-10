@@ -15,8 +15,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private lazy var dataManager = DataManager()
     private lazy var imageLoader = ImageLoader()
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        
-        
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         let navigationController = UINavigationController(rootViewController: makeLoginVC())
@@ -25,6 +23,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let mainVC = makeMainVC()
         let myPageVC = makeMyPageVC()
         let myPageNavigation = UINavigationController(rootViewController: myPageVC)
+       
+        
         
         tabBarController.viewControllers = [mainVC, myPageNavigation]
         
@@ -45,7 +45,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         vc.userRepository = self.userRepository
         vc.presentTabBar = {
-            vc.present(self.tabBarController, animated: true)
+            vc.present(self.tabBarController, animated: false)
         }
         
         return vc
