@@ -8,17 +8,6 @@
 import Foundation
 import UIKit
 
-protocol DataManagerDeleage {
-    // 영상 정보 업데이트
-    func didUpdateVideos(videos: [VideoModel])
-    
-    // 채널 정보 업데이트
-    func didUpdateChannelInfo(channelInfo: ChannelModel)
-    
-    // 오류 처리
-    func didFailWithError(error: Error)
-}
-
 class DataManager {
     
     // 비디오 JSON url
@@ -33,9 +22,7 @@ class DataManager {
     // api가 갖고 있는 영상의 갯수
     var maxResult: Int = 50
     
-    var delegate: DataManagerDeleage?
-    
-    func performRequest(categoryId: String = "", completion: @escaping (Result<[VideoModel], VideoError>) -> Void) {
+    func performRequest(categoryId: String = "", completion: @escaping (Result<[VideoModel], YoutubeProjectError>) -> Void) {
         var categoryIdString = ""
         
         if categoryId != "" {
@@ -82,7 +69,7 @@ class DataManager {
         task.resume()
     }
     
-    func parseJSON(_ videoData: Data, compeltion: @escaping (Result<[VideoModel], VideoError>) -> Void) {
+    func parseJSON(_ videoData: Data, compeltion: @escaping (Result<[VideoModel], YoutubeProjectError>) -> Void) {
         let decoder = JSONDecoder()
         
         do {
@@ -101,7 +88,7 @@ class DataManager {
         }
     }
 
-    func fetchChannelInfo(channelId: String, completion: @escaping (Result<ChannelModel, VideoError>) -> Void) {
+    func fetchChannelInfo(channelId: String, completion: @escaping (Result<ChannelModel, YoutubeProjectError>) -> Void) {
         let channelurl = "\(channelString)&id=\(channelId)&key=\(apiKey)"
         
         guard let channelInfoURL = URL(string: channelurl) else {
@@ -135,7 +122,7 @@ class DataManager {
         task.resume()
     }
     
-    func parseChannelJSON(_ channelData: Data, completion: @escaping (Result<ChannelModel, VideoError>) -> Void) {
+    func parseChannelJSON(_ channelData: Data, completion: @escaping (Result<ChannelModel, YoutubeProjectError>) -> Void) {
         let decoder = JSONDecoder()
         
         do {
@@ -154,7 +141,7 @@ class DataManager {
         }
     }
     
-    func getImage(urlString: String, completion: @escaping (Result<UIImage, VideoError>) -> Void) {
+    func getImage(urlString: String, completion: @escaping (Result<UIImage, YoutubeProjectError>) -> Void) {
         guard let url = URL(string: urlString) else {
             completion(.failure(.invalidURL))
             return

@@ -16,7 +16,6 @@ class VideoModel: Equatable, Hashable {
     let description: String
     let duration: String
     let viewCount: String
-    let likeCount: String
     let thumbnails: String
     var commentList: [Comment] = []
     
@@ -28,7 +27,6 @@ class VideoModel: Equatable, Hashable {
         self.title = videoItem.snippet.title
         self.description = videoItem.snippet.description
         self.viewCount = videoItem.statistics.viewCount
-        self.likeCount = "0"
         self.thumbnails = videoItem.snippet.thumbnails.standard.url
         self.commentList = []
         self.duration = videoItem.contentDetails.duration

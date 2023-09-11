@@ -24,7 +24,21 @@ class CommentViewController: UIViewController, UITextFieldDelegate {
     
     weak var delegate: CommentViewControllerDelegate?
     
-    var selectedVideoId: String = ""
+    var selectedVideoId: String
+    
+    private let userRepository: UserRepository
+    private let user: User
+    
+    init(selectedVideoId: String, userRepository: UserRepository) {
+        self.selectedVideoId = selectedVideoId
+        self.userRepository = userRepository
+        self.user = userRepository.getCurrentUser()
+        super.init(nibName: "CommentViewController", bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     @IBAction func rightButton(_ sender: UIButton) {
         dismiss(animated: true)
@@ -32,7 +46,7 @@ class CommentViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func doneButton(_ sender: UIButton) {
         if let commentText = coommentTextField.text, !commentText.isEmpty {
-            let comment = Comment(userName: userInfoList.userName, userImageURL: userInfoList.userImageURL, comment: commentText)
+            let comment = Comment(userName: "\(user.firstName)\(user.lastName)", userImageURL: user.profileImageData, comment: commentText)
             
             CommentManager.shared.addComment(comment, videoId: selectedVideoId)
             
@@ -101,6 +115,12 @@ class CommentViewController: UIViewController, UITextFieldDelegate {
         
         leftButton.isUserInteractionEnabled = false
         
+        userImageView.image = UIImage(data: user.profileImageData)
+        
+        textFieldView.layer.borderWidth = 0.5
+        coommentTextField.layer.borderWidth = 0.5
+        
+        
         let userCommentNib = UINib(nibName: "CommentTableViewCell", bundle: nil)
         commentTableView.register(userCommentNib, forCellReuseIdentifier: "CommentTableViewCell")
     }
@@ -132,10 +152,10 @@ extension CommentViewController: UITableViewDelegate, UITableViewDataSource {
         let comments = CommentManager.shared.getComments(videoId: selectedVideoId)
         
         let comment = comments[indexPath.row]
+        
         cell.userName.text = comment.userName
+        cell.userImageView.image = UIImage(data: comment.userImageURL)
         cell.userComment.text = comment.comment
-        
-        
         
         return cell
     }

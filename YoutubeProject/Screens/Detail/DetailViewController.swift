@@ -11,13 +11,13 @@ import youtube_ios_player_helper
 class DetailViewController: UIViewController, YTPlayerViewDelegate {
     
     @IBOutlet weak var playerView: YTPlayerView!
+    
     @IBOutlet weak var videoTitleLabel: UILabel!
     @IBOutlet weak var thumbnailImage: UIImageView!
     @IBOutlet weak var channelNameLabel: UILabel!
     
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var userComment: UILabel!
-    
     @IBOutlet weak var commmentView: UIView!
     
     // 채널 정보
@@ -64,20 +64,10 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
     
     func setUpUi() {
         userComment.text = videoModel.commentList.first?.comment
-        imageLoader.loadImage(urlString: channelModel.thumbnailURL) { result in
-            switch result {
-            case .success(let userImageURL):
-                if userImageURL != nil {
-                    DispatchQueue.main.async {
-                        self.userImageView.image = userImageURL
-                    }
-                } else {
-                    print("이미지 없음")
-                }
-            case .failure(let error):
-                print(error)
-            }
-        }
+        
+        let userImage = UIImage(data: user.profileImageData)
+        
+        self.userImageView.image = userImage
         
         thumbnailImage.layer.cornerRadius = thumbnailImage.frame.height / 2
         userImageView.layer.cornerRadius = userImageView.frame.height / 2
@@ -127,7 +117,9 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
     
     
     @objc func commentViewTapped() {
-        let commentVC = CommentViewController()
+        
+        let commentVC = CommentViewController(selectedVideoId: self.videoModel.id, userRepository: self.userRepository)
+        
         commentVC.modalPresentationStyle = .pageSheet
         commentVC.modalTransitionStyle = .coverVertical
 
@@ -136,8 +128,6 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
 
             sheet.prefersGrabberVisible = true
         }
-        
-        commentVC.selectedVideoId = videoModel.id
         
         commentVC.delegate = self
 
@@ -160,7 +150,6 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
         descriptionVC.videoDescription = videoModel.description
         
         descriptionVC.videoViewCount = videoModel.viewCount
-        descriptionVC.videoLikeCount = videoModel.likeCount
         
         present(descriptionVC, animated: true)
     }

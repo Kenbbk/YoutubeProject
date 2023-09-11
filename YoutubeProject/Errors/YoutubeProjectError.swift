@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum VideoError: Error {
+enum YoutubeProjectError: Error {
     case invalidURL
     case failDataTask
     case noData

@@ -38,7 +38,6 @@ struct VideoThumbnail: Codable {
     let medium: VideoThumbnailInfo
     let high: VideoThumbnailInfo
     let standard: VideoThumbnailInfo
-//    let maxres: VideoThumbnailInfo
 }
 
 struct VideoThumbnailInfo: Codable {
@@ -48,7 +47,6 @@ struct VideoThumbnailInfo: Codable {
 
 struct VideoStatistics: Codable {
     let viewCount: String
-//    let likeCount: String
 }
 
 // MARK: - Search Data

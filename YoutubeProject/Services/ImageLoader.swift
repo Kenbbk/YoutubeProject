@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 struct ImageLoader {
-    func loadImage(urlString: String, completion: @escaping (Result<UIImage, VideoError>) -> Void) {
+    func loadImage(urlString: String, completion: @escaping (Result<UIImage, YoutubeProjectError>) -> Void) {
         guard let url = URL(string: urlString) else { return }
         
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
