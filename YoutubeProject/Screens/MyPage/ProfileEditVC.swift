@@ -12,6 +12,8 @@ protocol ProfileEditVCDelegate: AnyObject {
 
 class ProfileEditVC: UIViewController {
     
+    private let userDefaultManager: UserDefaultsManager
+    
     var userRepository: UserRepository
     
     var user: User
@@ -171,16 +173,17 @@ class ProfileEditVC: UIViewController {
         
         
         // 이미지 가져오기
-        if let profileImage = loadImageFromUserDefaults(forKey: "ProfileImage") {
-            profileImageView.image = profileImage
-        }
-        if let backgroundImage = loadImageFromUserDefaults(forKey: "BackgroundImage") {
-            backgroundImageView.image = backgroundImage
-        }
+//        if let profileImage = loadImageFromUserDefaults(forKey: "ProfileImage") {
+//            profileImageView.image = profileImage
+//        }
+//        if let backgroundImage = loadImageFromUserDefaults(forKey: "BackgroundImage") {
+//            backgroundImageView.image = backgroundImage
+//        }
         configureUI()
     }
     
-    init(userRepository: UserRepository) {
+    init(userRepository: UserRepository, userDefaultManager: UserDefaultsManager) {
+        self.userDefaultManager = userDefaultManager
         self.userRepository = userRepository
         self.user = userRepository.getCurrentUser()
         super.init(nibName: nil, bundle: nil)
@@ -245,7 +248,8 @@ class ProfileEditVC: UIViewController {
         user.backgroundImageData = backgroundImageData
         
         userRepository.editCurrentUser(user: user)
-        UserDefaultsManager.shared.saveUser(user: user)
+        userDefaultManager.saveUser(user: user)
+        userDefaultManager.Login(user: user)
         // 델리게이트를 통해 데이터 전달
         delegate?.editButtonTapped()
         self.dismiss(animated: true)
@@ -263,14 +267,7 @@ class ProfileEditVC: UIViewController {
         lastNameTextField.text = user.lastName
         
         profileImageView.image = UIImage(data: user.profileImageData)
-        
-        
         backgroundImageView.image = UIImage(data: user.backgroundImageData)
-        
-        
-        
-        
-        
     }
     
     func textFieldDeselectTapGesture() {
@@ -298,20 +295,14 @@ class ProfileEditVC: UIViewController {
         present(backgroundImagePicker, animated: false, completion: nil)
     }
     
-    
-    // UserDefaults에서 이미지 데이터를 불러오는 함수
-    func loadImageFromUserDefaults(forKey key: String) -> UIImage? {
-        if let imageData = UserDefaults.standard.data(forKey: key) {
-            return UIImage(data: imageData)
-        }
-        return nil
-    }
 }
 
 
 //MARK: - TextField Delegate
 
 extension ProfileEditVC: UITextFieldDelegate{
+    
+    
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         // TextField 활성화일 때 Border Color 지정
@@ -330,9 +321,6 @@ extension ProfileEditVC: UITextFieldDelegate{
            let address = channelNameTextField.text, !address.isEmpty {
             editCompleteButton.isEnabled = true
             editCompleteButton.backgroundColor = .systemRed
-        } else {
-            editCompleteButton.isEnabled = false
-            editCompleteButton.backgroundColor = .lightGray
         }
         
         let currentText = textField.text ?? ""

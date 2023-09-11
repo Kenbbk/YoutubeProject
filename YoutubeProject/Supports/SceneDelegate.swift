@@ -14,19 +14,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private lazy var userRepository = UserRepository(currentUser: User(email: "aa", password: "1234", firstName: "cc", lastName: "dd", channelName: "ee", profileImageData: ImageData.defaultProfileImage, backgroundImageData: ImageData.defaultBackgroundImage))
     private lazy var dataManager = DataManager()
     private lazy var imageLoader = ImageLoader()
+    private lazy var userDefaultManager = UserDefaultsManager()
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         let navigationController = UINavigationController(rootViewController: makeLoginVC())
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
-        
-        
-       
-        
-        
-        
-        
     }
     
     //MARK: - VC Factory
@@ -44,14 +39,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func makeLoginVC() -> LoginVC {
         
-        let vc = LoginVC()
+        let vc = LoginVC(userDefaultManager: userDefaultManager)
         
         vc.userRepository = self.userRepository
         vc.presentTabBar = {
             let presentedController = self.makeTabBarVC()
             vc.present(presentedController, animated: false)
         }
-        
         return vc
     }
     
@@ -62,9 +56,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func makeMyPageVC() -> MyPageVC {
-        //        let storyBoard = UIStoryboard(name: StoryBoards.myPage, bundle: nil)
-        //        let vc = storyBoard.instantiateViewController(withIdentifier: VCIdentifier.myPageVC) as! MyPageVC
-        let vc = MyPageVC(userRepository: userRepository)
+        let vc = MyPageVC(userRepository: userRepository, userDefaultManager: userDefaultManager)
         vc.tabBarItem = UITabBarItem(title: "My Page", image: UIImage(systemName: "person.crop.circle"), tag: 1)
         
         return vc

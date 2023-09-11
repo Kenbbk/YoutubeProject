@@ -8,6 +8,8 @@
 import UIKit
 
 class LoginVC: UIViewController {
+    
+    let userDefaultManager: UserDefaultsManager
     var userRepository: UserRepository!
     var presentTabBar: (() -> Void)?
     
@@ -155,15 +157,33 @@ class LoginVC: UIViewController {
 //            }
 //        }
        
+       
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(UserDefaultsManager.shared.checkLogin())
-        if UserDefaultsManager.shared.checkLogin() == true {
+        
+        if let loginnedUser = userDefaultManager.checkLoginAndGetUser() {
+            userRepository.currentUser = loginnedUser
             presentTabBar?()
         }
+        
+        
+        
+           
+            
+        
     }
-   
+    
+    init(userDefaultManager: UserDefaultsManager) {
+        self.userDefaultManager = userDefaultManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // 셋팅
     private func configure() {
         view.backgroundColor = #colorLiteral(red: 0.07450980392, green: 0.07450980392, blue: 0.07450980392, alpha: 1)
@@ -233,12 +253,12 @@ class LoginVC: UIViewController {
         let savedEmail = emailTextField.text!
         let savedPassword = passwordTextField.text!
         
-        guard let user = UserDefaultsManager.shared.fetchUser(email: savedEmail) else { return }
+        guard let user = userDefaultManager.fetchUser(email: savedEmail) else { return }
         // 입력된 이메일과 비밀번호가 저장된 값과 일치하는지 확인
         if savedEmail == user.email && savedPassword == user.password {
             // 로그인 성공
             userRepository.editCurrentUser(user: user)
-            UserDefaultsManager.shared.Login(user: user)
+            userDefaultManager.Login(user: user)
             presentTabBar?()
         } else {
             // 로그인 실패
@@ -251,7 +271,7 @@ class LoginVC: UIViewController {
     }
     
     @objc func registerButtonTapped() {
-        let registerVC = RegisterVC(userRepository: userRepository)
+        let registerVC = RegisterVC(userRepository: userRepository, userDefaultManager: userDefaultManager)
         
         self.navigationController?.pushViewController(registerVC, animated: true)
         

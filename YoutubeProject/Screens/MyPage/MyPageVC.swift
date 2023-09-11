@@ -9,6 +9,8 @@ class MyPageVC: UIViewController {
     
     var currentUser: User
     
+    private let userDefaultManager: UserDefaultsManager
+    
     lazy var safeArea = view.safeAreaLayoutGuide
     
     let profileImageView: UIImageView = {
@@ -114,8 +116,9 @@ class MyPageVC: UIViewController {
     }
     
     
-    init(userRepository: UserRepository) {
+    init(userRepository: UserRepository, userDefaultManager: UserDefaultsManager) {
         self.userRepository = userRepository
+        self.userDefaultManager = userDefaultManager
         self.currentUser = userRepository.getCurrentUser()
         super.init(nibName: nil, bundle: nil)
     }
@@ -128,7 +131,7 @@ class MyPageVC: UIViewController {
     //MARK: - Actions
     
     @objc func profileEditButtonTapped(_ button: UIButton){
-        let editVC = ProfileEditVC(userRepository: userRepository)
+        let editVC = ProfileEditVC(userRepository: userRepository, userDefaultManager: userDefaultManager)
         editVC.delegate = self
         self.present(editVC, animated: true)
     }
@@ -143,9 +146,9 @@ class MyPageVC: UIViewController {
     
     @objc func logoutButtonTapped(_ button: UIButton){
         print("Logout button tapped")
-        UserDefaultsManager.shared.logout()
+        userDefaultManager.logout()
         self.navigationController?.dismiss(animated: true)
-      
+        
     }
     
     
@@ -158,12 +161,7 @@ class MyPageVC: UIViewController {
         userChannelNameLabel.text = "@\(currentUser.channelName)"
         
         profileImageView.image = UIImage(data: currentUser.profileImageData)
-        
-        
-        
         backgroundImageView.image = UIImage(data: currentUser.backgroundImageData)
-        
-        
     }
 }
 

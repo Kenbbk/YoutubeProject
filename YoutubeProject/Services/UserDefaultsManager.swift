@@ -3,9 +3,6 @@ import Foundation
 
 class UserDefaultsManager {
     
-    static let shared = UserDefaultsManager()
-    private init() {}
-    
     let userDefaults = UserDefaults.standard
     
     func saveUser(user: User) { // 값 저장하기
@@ -46,11 +43,20 @@ class UserDefaultsManager {
        
     }
     
-    func checkLogin() -> Bool {
+    func checkLoginAndGetUser() -> User? {
         let key = "Login"
-        return userDefaults.object(forKey: key) == nil ? false : true
+        if let logginedUser = userDefaults.object(forKey: key) as? Data {
+            do {
+                let decodedUser = try JSONDecoder().decode(User.self, from: logginedUser)
+                return decodedUser
+            } catch {
+                print(error)
+            }
+        }
+        return nil
     }
-    //
+    
+    
     
     
 }

@@ -9,6 +9,8 @@ class RegisterVC: UIViewController {
     
     let user: User
     
+    private var userDefaultManager: UserDefaultsManager
+    
     private lazy var lastNameTextFieldView: UIView = {
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
@@ -234,7 +236,8 @@ class RegisterVC: UIViewController {
         makeUI()
     }
     
-    init(userRepository: UserRepository) {
+    init(userRepository: UserRepository, userDefaultManager: UserDefaultsManager) {
+        self.userDefaultManager = userDefaultManager
         self.userRepository = userRepository
         self.user = userRepository.getCurrentUser()
         super.init(nibName: nil, bundle: nil)
@@ -339,11 +342,11 @@ class RegisterVC: UIViewController {
         let newUser = User(email: email, password: password, firstName: firstName, lastName: lastName, profileImageData: ImageData.defaultProfileImage, backgroundImageData: ImageData.defaultBackgroundImage)
         print(newUser, "!@#!@#!@#!@#!@#!@#@!")
         // UserDefaultsManager를 사용하여 사용자 저장
-        UserDefaultsManager.shared.saveUser(user: newUser)
+        userDefaultManager.saveUser(user: newUser)
         
 
         // UserDefaults에서 사용자를 다시 가져와서 확인
-        if let fetchedUser = UserDefaultsManager.shared.fetchUser(email: newUser.email) {
+        if let fetchedUser = userDefaultManager.fetchUser(email: newUser.email) {
             print("Saved User:")
             print("First Name: \(fetchedUser.firstName)")
             print("Last Name: \(fetchedUser.lastName)")
