@@ -24,6 +24,10 @@ class MainVC: UIViewController {
     
     var videoModels: [VideoModel] = []
     
+    var searchModel: SearchModel?
+    
+    var searchVideoModels: [SearchVideoModel] = []
+    
     var shortVidoeModels: [VideoModel] = []
     var formattedVideoModels: [[VideoModel]] = []
     
@@ -60,26 +64,45 @@ class MainVC: UIViewController {
         addVC()
         configureDataSource()
         
-        getModels {
-            self.formattedVideoModels = DataFormatter().makeLongVideos(models: self.videoModels)
-            self.dataManager.performRequest(categoryId: "20") { result in
-                switch result {
-                case .failure(let error):
-                    print(error)
-                case .success(let videomodels):
-                    self.shortVidoeModels = videomodels
-                    
-                    DispatchQueue.main.async {
-                        self.makeSnapshot()
-                        self.collectionView.contentInset = .init(top: 80, left: 0, bottom: 0, right: 0)
-                        self.collectionView.delegate = self
-                        self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
-                    }
+//        getModels {
+//            self.formattedVideoModels = DataFormatter().makeLongVideos(models: self.videoModels)
+//            self.dataManager.performRequest(categoryId: "20") { result in
+//                switch result {
+//                case .failure(let error):
+//                    print(error)
+//                case .success(let videomodels):
+//                    self.shortVidoeModels = videomodels
+//
+//                    DispatchQueue.main.async {
+//                        self.makeSnapshot()
+//                        self.collectionView.contentInset = .init(top: 80, left: 0, bottom: 0, right: 0)
+//                        self.collectionView.delegate = self
+//                        self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+//                    }
+//                }
+//            }
+//
+//        }
+        
+        let searchManager = SearchManager()
+        
+        searchManager.performRequest("손흥민") { result in
+            switch result {
+            case .failure(let failure):
+                print(failure)
+            case .success(let searchModel):
+                self.searchModel = searchModel
+                let videoSearchModels = searchModel.items.map { item in
+                    SearchVideoModel(searchItem: item)
                 }
+                self.searchVideoModels.append(contentsOf: videoSearchModels)
             }
-            
         }
     }
+    
+//    private func getSearchModel(searchString: String, completion: @escaping (Result<SearchModel, YoutubeProjectError>) -> Void) {
+//
+//    }
     
     init(userRepository: UserRepository, dataManager: DataManager, imageLoader: ImageLoader) {
         self.userRepository = userRepository
@@ -244,10 +267,9 @@ extension MainVC: UICollectionViewDelegate {
                 
                 DispatchQueue.main.async {
                     let vc = storyboard.instantiateViewController(identifier: "DetailViewController") { coder ->  DetailViewController in
-                        DetailViewController(coder: coder, dataManager: self.dataManager, imageLoader: self.imageLoader, videoModel: self.videoModels[indexPath.row], channelModel: channelModel, userRepository: self.userRepository)!
+                        DetailViewController(coder: coder, dataManager: self.dataManager, imageLoader: self.imageLoader, videoModel: self.videoModels[indexPath.row], channelModel: channelModel, userRepository: self.userRepository, searchVideoModel: self.searchVideoModels[indexPath.row])!
                         
                     }
-                    vc.videoModel = self.videoModels[indexPath.row]
                     vc.modalPresentationStyle = .fullScreen
                     self.present(vc, animated: true)
                 }

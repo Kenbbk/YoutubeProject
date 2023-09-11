@@ -26,6 +26,7 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
     // 영상 정보
     var videoModel: VideoModel
     
+    var searchVideoModel: SearchVideoModel
     
     private let userRepository: UserRepository
     private let user: User
@@ -37,8 +38,9 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
         dismiss(animated: true)
     }
     
-    required init?(coder: NSCoder, dataManager: DataManager, imageLoader: ImageLoader, videoModel: VideoModel, channelModel: ChannelModel, userRepository: UserRepository) {
+    required init?(coder: NSCoder, dataManager: DataManager, imageLoader: ImageLoader, videoModel: VideoModel, channelModel: ChannelModel, userRepository: UserRepository, searchVideoModel: SearchVideoModel) {
         self.dataManager = dataManager
+        self.searchVideoModel = searchVideoModel
         self.imageLoader = imageLoader
         self.videoModel = videoModel
         self.channelModel = channelModel

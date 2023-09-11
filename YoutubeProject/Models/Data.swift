@@ -42,7 +42,6 @@ struct VideoThumbnail: Codable {
 
 struct VideoThumbnailInfo: Codable {
     let url: String
-    
 }
 
 struct VideoStatistics: Codable {
@@ -56,16 +55,32 @@ struct SearchData: Codable {
 }
 
 struct SearchItem: Codable {
+    let id: SearchIdInfo
     let snippet: SearchSnippet
-    
 }
 
-
+struct SearchIdInfo: Codable {
+    let videoId: String
+}
 
 struct SearchSnippet: Codable {
     let title: String
+    let channelId: String
+    let channelTitle: String
+    let description: String
+    let publishedAt: String
+    let thumbnails: SearchThumbnail
 }
 
+struct SearchThumbnail: Codable {
+    let `default`: SearchThumbnailInfo
+    let medium: SearchThumbnailInfo
+    let high: SearchThumbnailInfo
+}
+
+struct SearchThumbnailInfo: Codable {
+    let url: String
+}
 
 // MARK: Channel Data
 struct ChannelData: Codable {
@@ -76,10 +91,7 @@ struct ChannelItem: Codable {
     let id: String
     let snippet: ChannelSnippet
     let statistics: ChannelStatistics
-    
 }
-
-
 
 struct ChannelSnippet: Codable {
     let title: String

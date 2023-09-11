@@ -27,7 +27,7 @@ class VideoModel: Equatable, Hashable {
         self.title = videoItem.snippet.title
         self.description = videoItem.snippet.description
         self.viewCount = videoItem.statistics.viewCount
-        self.thumbnails = videoItem.snippet.thumbnails.standard.url
+        self.thumbnails = videoItem.snippet.thumbnails.high.url
         self.commentList = []
         self.duration = videoItem.contentDetails.duration
     }
