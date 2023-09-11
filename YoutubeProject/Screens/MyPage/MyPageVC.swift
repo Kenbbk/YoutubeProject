@@ -101,15 +101,9 @@ class MyPageVC: UIViewController {
         
         configureUI()
         setUserInfoLabels()
+        
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.currentUser = userRepository.getCurrentUser()
-        setUserInfoLabels()
-        print("\(currentUser.firstName), \(userRepository.getCurrentUser().firstName)")
-    }
-    
+        
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         StatusBarChanger().changeStatusBarBgColor(bgColor: .systemBackground)
@@ -169,7 +163,7 @@ extension MyPageVC: ProfileEditVCDelegate {
     func editButtonTapped() {
         currentUser = userRepository.getCurrentUser()
         setUserInfoLabels()
-        print("Hello!@#!@#@!#")
+        
     }
     
 }

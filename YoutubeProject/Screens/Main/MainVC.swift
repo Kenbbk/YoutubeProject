@@ -12,7 +12,9 @@ class MainVC: UIViewController {
     //MARK: - Properties
     
     let userRepository: UserRepository
+    let searchManager: SearchManager
     
+    var searchModel: SearchModel?
     var user: User
     var lastPositionY: CGFloat = 0
     var currentOffsetY: CGFloat = 0
@@ -22,7 +24,7 @@ class MainVC: UIViewController {
     
     let imageLoader: ImageLoader
     
-    var videoModels: [VideoModel] = []
+    var videoModels: [SearchItem] = []
     
     var shortVidoeModels: [VideoModel] = []
     var formattedVideoModels: [[VideoModel]] = []
@@ -60,31 +62,32 @@ class MainVC: UIViewController {
         addVC()
         configureDataSource()
         
-        getModels {
-            self.formattedVideoModels = DataFormatter().makeLongVideos(models: self.videoModels)
-            self.dataManager.performRequest(categoryId: "20") { result in
-                switch result {
-                case .failure(let error):
-                    print(error)
-                case .success(let videomodels):
-                    self.shortVidoeModels = videomodels
-                    
-                    DispatchQueue.main.async {
-                        self.makeSnapshot()
-                        self.collectionView.contentInset = .init(top: 80, left: 0, bottom: 0, right: 0)
-                        self.collectionView.delegate = self
-                        self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
-                    }
-                }
-            }
-            
-        }
+//        getModels {
+//            self.formattedVideoModels = DataFormatter().makeLongVideos(models: self.videoModels)
+//            self.dataManager.performRequest(categoryId: "20") { result in
+//                switch result {
+//                case .failure(let error):
+//                    print(error)
+//                case .success(let videomodels):
+//                    self.shortVidoeModels = videomodels
+//
+//                    DispatchQueue.main.async {
+//                        self.makeSnapshot()
+//                        self.collectionView.contentInset = .init(top: 80, left: 0, bottom: 0, right: 0)
+//                        self.collectionView.delegate = self
+//                        self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+//                    }
+//                }
+//            }
+//
+//        }
     }
     
-    init(userRepository: UserRepository, dataManager: DataManager, imageLoader: ImageLoader) {
+    init(userRepository: UserRepository, dataManager: DataManager, imageLoader: ImageLoader, searchManager: SearchManager) {
         self.userRepository = userRepository
         self.dataManager = dataManager
         self.imageLoader = imageLoader
+        self.searchManager = searchManager
         self.user = userRepository.getCurrentUser()
         super.init(nibName: nil, bundle: nil)
         
@@ -134,19 +137,30 @@ class MainVC: UIViewController {
     }
     
     
-    
-    
-    private func getModels(completion: @escaping () -> Void) {
-        dataManager.performRequest { result in
+    private func getModels(with string: String, completion: @escaping () -> Void) {
+        searchManager.performRequest(string) { result in
             switch result {
             case .failure(let error):
                 print(error)
-            case .success(let videoModels):
-                self.videoModels = videoModels
+            case .success(let searchModel):
+                self.searchModel = searchModel
+                self.videoModels = searchModel.items
                 completion()
             }
         }
     }
+    
+//    private func getModels(completion: @escaping () -> Void) {
+//        dataManager.performRequest { result in
+//            switch result {
+//            case .failure(let error):
+//                print(error)
+//            case .success(let videoModels):
+//                self.videoModels = videoModels
+//                completion()
+//            }
+//        }
+//    }
     
     private func configureUI() {
         configureCollectionView()

@@ -260,6 +260,11 @@ class ProfileEditVC: UIViewController {
     
     //MARK: - Helper
     
+    private func makeButtonEnabled() {
+        editCompleteButton.isEnabled = true
+        editCompleteButton.backgroundColor = .systemRed
+    }
+    
     private func setUserInformation() {
         
         channelNameTextField.text = user.channelName
@@ -319,8 +324,7 @@ extension ProfileEditVC: UITextFieldDelegate{
         if let firstName = firstNameTextField.text, !firstName.isEmpty,
            let lastName = lastNameTextField.text, !lastName.isEmpty,
            let address = channelNameTextField.text, !address.isEmpty {
-            editCompleteButton.isEnabled = true
-            editCompleteButton.backgroundColor = .systemRed
+            makeButtonEnabled()
         }
         
         let currentText = textField.text ?? ""
@@ -337,6 +341,7 @@ extension ProfileEditVC: UIImagePickerControllerDelegate, UINavigationController
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             // 프로필 편집 버튼을 눌렀을 때 프로필 이미지 업데이트
+            
             if picker == profileImagePicker {
                 profileImage = selectedImage
                 profileImageView.image = selectedImage
@@ -347,6 +352,7 @@ extension ProfileEditVC: UIImagePickerControllerDelegate, UINavigationController
                 backgroundImageView.contentMode = .scaleAspectFill
             }
         }
+        makeButtonEnabled()
         dismiss(animated: true, completion: nil)
     }
 }

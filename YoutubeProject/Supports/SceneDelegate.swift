@@ -15,6 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private lazy var dataManager = DataManager()
     private lazy var imageLoader = ImageLoader()
     private lazy var userDefaultManager = UserDefaultsManager()
+    private lazy var searchManager = SearchManager()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -50,7 +51,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func makeMainVC() -> MainVC {
-        let vc = MainVC(userRepository: userRepository, dataManager: dataManager, imageLoader: imageLoader)
+        let vc = MainVC(userRepository: userRepository, dataManager: dataManager, imageLoader: imageLoader, searchManager: searchManager)
         vc.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
         return vc
     }
