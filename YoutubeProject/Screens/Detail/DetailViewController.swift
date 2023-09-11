@@ -64,27 +64,28 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
     
     func setUpUi() {
         userComment.text = videoModel.commentList.first?.comment
-        imageLoader.loadImage(urlString: channelModel.thumbnailURL) { result in
-            switch result {
-            case .success(let userImageURL):
-                if userImageURL != nil {
-                    DispatchQueue.main.async {
-                        self.userImageView.image = userImageURL
-                    }
-                } else {
-                    print("이미지 없음")
-                }
-            case .failure(let error):
-                print(error)
-            }
-        }
+        userImageView.image = UIImage(data: user.profileImageData)
+//        imageLoader.loadImage(urlString: channelModel.thumbnailURL) { result in
+//            switch result {
+//            case .success(let userImageURL):
+//                if userImageURL != nil {
+//                    DispatchQueue.main.async {
+//                        self.userImageView.image = userImageURL
+//                    }
+//                } else {
+//                    print("이미지 없음")
+//                }
+//            case .failure(let error):
+//                print(error)
+//            }
+        
         
         thumbnailImage.layer.cornerRadius = thumbnailImage.frame.height / 2
         userImageView.layer.cornerRadius = userImageView.frame.height / 2
-        
+        userImageView.contentMode = .scaleToFill
         commmentView.layer.borderColor = UIColor.black.cgColor
         commmentView.layer.borderWidth = 0.5
-        commmentView.layer.cornerRadius = 20
+        commmentView.layer.cornerRadius = 35
     }
     
     // 공유 버튼
@@ -127,7 +128,7 @@ class DetailViewController: UIViewController, YTPlayerViewDelegate {
     
     
     @objc func commentViewTapped() {
-        let commentVC = CommentViewController()
+        let commentVC = CommentViewController(userRepository: userRepository)
         commentVC.modalPresentationStyle = .pageSheet
         commentVC.modalTransitionStyle = .coverVertical
 

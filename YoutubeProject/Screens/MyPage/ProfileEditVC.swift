@@ -337,6 +337,8 @@ extension ProfileEditVC: UIImagePickerControllerDelegate, UINavigationController
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             // 프로필 편집 버튼을 눌렀을 때 프로필 이미지 업데이트
+            editCompleteButton.isEnabled = true
+            editCompleteButton.backgroundColor = .systemRed
             if picker == profileImagePicker {
                 profileImage = selectedImage
                 profileImageView.image = selectedImage

@@ -128,7 +128,7 @@ class MainVC: UIViewController {
     }
     
     private func setImage() {
-       
+        
         youtubeLogoView.logoSectionView.profileImageView.image = UIImage(data: user.profileImageData)
         
     }
@@ -183,7 +183,8 @@ class MainVC: UIViewController {
             if a.contains(indexPath.section) {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LongCell.identifier, for: indexPath) as! LongCell
                 
-                cell.play(model: itemIdentifier)
+                
+                cell.load(model: itemIdentifier)
                 return cell
             } else {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShortCell.identifier, for: indexPath) as! ShortCell
@@ -234,27 +235,47 @@ class MainVC: UIViewController {
 
 extension MainVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        var a = 0
+        switch indexPath.section {
+        case 0:
+            a = 0
+        case 2:
+            a = 1
+        case 4:
+            a = 2
+        default:
+            a = 0
+            
+        }
+        
         let storyboard = UIStoryboard(name: "Detail", bundle: nil)
-        dataManager.fetchChannelInfo(channelId: videoModels[indexPath.row].channelId) { result in
+        dataManager.fetchChannelInfo(channelId: self.formattedVideoModels[a][indexPath.item].channelId) { result in
             switch result {
             case .failure(let failure):
                 print(failure)
             case .success(let channelModel):
                 self.channelModel = channelModel
+               
+                
+                
                 
                 DispatchQueue.main.async {
                     let vc = storyboard.instantiateViewController(identifier: "DetailViewController") { coder ->  DetailViewController in
-                        DetailViewController(coder: coder, dataManager: self.dataManager, imageLoader: self.imageLoader, videoModel: self.videoModels[indexPath.row], channelModel: channelModel, userRepository: self.userRepository)!
-                        
+                        DetailViewController(coder: coder, dataManager: self.dataManager, imageLoader: self.imageLoader, videoModel: self.formattedVideoModels[a][indexPath.item], channelModel: channelModel, userRepository: self.userRepository)!
                     }
-                    vc.videoModel = self.videoModels[indexPath.row]
                     vc.modalPresentationStyle = .fullScreen
                     self.present(vc, animated: true)
                 }
+                
+                
+                
+                
+                
             }
         }
     }
 }
+
 
 extension MainVC: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -271,6 +292,15 @@ extension MainVC: UIScrollViewDelegate {
             updateOffset(offsetY: scrollView.contentOffset.y)
             
         }
+        
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
+        
+        
+        
+        
         
     }
 }

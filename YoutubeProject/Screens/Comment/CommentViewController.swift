@@ -13,6 +13,10 @@ protocol CommentViewControllerDelegate: AnyObject {
 
 class CommentViewController: UIViewController, UITextFieldDelegate {
     
+    private let userRepository: UserRepository
+    
+    private let user: User
+    
     @IBOutlet weak var leftButton: UIButton!
     @IBOutlet weak var commentTableView: UITableView!
     
@@ -58,6 +62,20 @@ class CommentViewController: UIViewController, UITextFieldDelegate {
         setUpCommentView()
         
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
+    }
+    
+    init(userRepository: UserRepository) {
+        self.user = userRepository.getCurrentUser()
+        self.userRepository = userRepository
+        super.init(nibName: "CommentViewController", bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setImage() {
+        
     }
     
     @objc func dismissKeyboard() {
@@ -132,9 +150,10 @@ extension CommentViewController: UITableViewDelegate, UITableViewDataSource {
         let comments = CommentManager.shared.getComments(videoId: selectedVideoId)
         
         let comment = comments[indexPath.row]
-        cell.userName.text = comment.userName
-        cell.userComment.text = comment.comment
         
+        cell.userName.text = "\(user.lastName)\(user.firstName)"
+        cell.userComment.text = comment.comment
+        cell.userImageView.image = UIImage(data: user.profileImageData)
         
         
         return cell

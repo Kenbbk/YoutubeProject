@@ -88,29 +88,66 @@ class LongCell: UICollectionViewCell {
         
     }
     
-    func play(model: VideoModel) {
-        
+    func load(model: VideoModel) {
+        videoModel = model
         DataManager().getImage(urlString: model.thumbnails) { result in
             switch result {
-            case .failure(let error):
+            case . failure(let error):
                 print(error)
             case .success(let image):
-                
                 let image = self.cropImage1(image: image, rect: CGRect(x: 0, y: 64, width: 640, height: 354))
                 DispatchQueue.main.async {
-                
                     self.imageView.image = image
                     self.titleLabel.text = model.title
                     self.infoLabel.attributedText = NSAttributedString(string: "\(model.channelTitle) ・ \(model.viewCount.formatViewCounts()) ・ \(model.publishedAt.getHowLongAgo())", attributes: [.foregroundColor: UIColor.darkGray, .font: UIFont.systemFont(ofSize: 12)])
+                    self.videoView.load(withVideoId: model.id)
                 }
-                
             }
         }
-
-        
-        
+    }
+    func pause() {
         
     }
+    
+    
+    func play() {
+        self.videoView.playVideo()
+        imageView.isHidden = false
+        //
+        //
+        //        DispatchQueue.main.async {
+        //            self.videoView.playVideo()
+        //        }
+        //
+        //
+        //
+        
+        //
+    }
+    
+//    func load() {
+//
+//        DataManager().getImage(urlString: videoModel!.thumbnails) { result in
+//            switch result {
+//            case .failure(let error):
+//                print(error)
+//            case .success(let image):
+//
+//                let image = self.cropImage1(image: image, rect: CGRect(x: 0, y: 64, width: 640, height: 354))
+//                DispatchQueue.main.async {
+//
+//                    self.imageView.image = image
+//                    self.titleLabel.text = self.videoModel!.title
+//                    self.infoLabel.attributedText = NSAttributedString(string: "\(self.videoModel!.channelTitle) ・ \(self.videoModel!.viewCount.formatViewCounts()) ・ \(videoModel?.publishedAt.getHowLongAgo())", attributes: [.foregroundColor: UIColor.darkGray, .font: UIFont.systemFont(ofSize: 12)])
+//                }
+//
+//            }
+//        }
+//
+//
+//
+//
+//    }
     
     
     
@@ -121,9 +158,11 @@ class LongCell: UICollectionViewCell {
     private func setTitle() {
         titleLabel.text = "조회수 784만회 나온 코코넛애플 직접 가서 먹어봄 (한국에 없음)"
         infoLabel.attributedText = NSAttributedString(string: "코코보라 ・ 447k views ・ 12 dyas ago", attributes: [.foregroundColor: UIColor.darkGray, .font: UIFont.systemFont(ofSize: 13)])
+        
     }
     
     private func setImage() {
+        
         let url = URL(string: "https://yt3.ggpht.com/ytc/AOPolaQ1_4Ebm2nVlFiEJWF3tjhbMfjMulFqwtFwxqxd=s88-c-k-c0x00ffffff-no-rj")
         DispatchQueue.global().async {
             if let data = try? Data(contentsOf: url!) {

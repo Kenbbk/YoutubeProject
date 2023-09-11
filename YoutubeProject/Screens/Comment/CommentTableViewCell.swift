@@ -19,7 +19,7 @@ class CommentTableViewCell: UITableViewCell {
         // Initialization code
         
         userImageView.layer.cornerRadius = userImageView.frame.height / 2
-        
+        userImageView.contentMode = .scaleToFill
         userComment.textAlignment = .left
         
     }

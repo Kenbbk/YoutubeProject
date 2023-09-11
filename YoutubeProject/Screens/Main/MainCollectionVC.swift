@@ -69,8 +69,8 @@ class MainCollectionVC: UICollectionViewController {
             let a = [0, 2, 4]
             if a.contains(indexPath.section) {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LongCell.identifier, for: indexPath) as! LongCell
+                cell.load(model: itemIdentifier)
                 
-                cell.play(model: itemIdentifier)
                 return cell
             } else {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ShortCell.identifier, for: indexPath)
