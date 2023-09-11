@@ -1,21 +1,17 @@
-//
-//  AppDelegate.swift
-//  YoutubeProject
-//
-//  Created by Woojun Lee on 2023/09/04.
-//
 
 import UIKit
+
+
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        return true
-    }
+        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+            // Override point for customization after application launch.
+            // ########### 원하는 딜레이 시간을 sleep()안에 넣어주세요! ############
+            sleep(2) // 이런식으로 작성하시면 됩니다!
+            return true
+        }
 
     // MARK: UISceneSession Lifecycle
 

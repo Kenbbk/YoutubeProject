@@ -1,19 +1,18 @@
-//
-//  User.swift
-//  YoutubeProject
-//
-//  Created by Woojun Lee on 2023/09/04.
-//
 
 import UIKit
 
-struct User {
-    let id: String
-    let firstName: String
-    let lastName: String
-    let address: String
+
+
+struct User: Codable {
+    let email: String
     let password: String
-    let profileImage = UIImage()
-    let backgroundImage = UIImage()
+    var firstName: String
+    var lastName: String
+    var channelName: String = ""
+    var profileImageData: Data
+    var backgroundImageData: Data
     
 }
+
+
+
