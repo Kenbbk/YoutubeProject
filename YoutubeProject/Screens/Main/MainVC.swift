@@ -244,7 +244,7 @@ extension MainVC: UICollectionViewDelegate {
                 
                 DispatchQueue.main.async {
                     let vc = storyboard.instantiateViewController(identifier: "DetailViewController") { coder ->  DetailViewController in
-                        DetailViewController(coder: coder, dataManager: self.dataManager, imageLoader: self.imageLoader, videoModel: self.videoModels[indexPath.row], channelModel: channelModel)!
+                        DetailViewController(coder: coder, dataManager: self.dataManager, imageLoader: self.imageLoader, videoModel: self.videoModels[indexPath.row], channelModel: channelModel, userRepository: self.userRepository)!
                         
                     }
                     vc.videoModel = self.videoModels[indexPath.row]
